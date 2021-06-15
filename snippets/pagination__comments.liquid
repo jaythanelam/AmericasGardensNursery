@@ -1,0 +1,21 @@
+<div class="pagination text-align--left font-size__basic pt2 mxn1">
+  {% if paginate.previous %}
+    <a class="p1 pointer" href="{{ paginate.previous.url }}" title="{{ 'general.pagination.previous' | t }}">
+      <span class="font-size--xxxxs inline-block align--top">{% render 'icon-chevron-left' %}</span>
+    </a>
+  {% endif %}
+  {% for part in paginate.parts %}
+    {% if part.is_link %}
+      <a class="p1 pointer" href="{{  part.url  }}">
+        {{ part.title }}
+      </a>
+    {% else %}
+      <a class="p1"><span class="border-bottom--main">{{ part.title }}</span></a>
+    {% endif %}
+  {% endfor %}
+  {% if paginate.next %}
+    <a class="p1 pointer" href="{{ paginate.next.url }}" title="{{ 'general.pagination.next' | t }}">
+      <span class="font-size--xxxxs inline-block align--top">{% render 'icon-chevron-right' %}</span>
+    </a>
+  {% endif %}
+</div>

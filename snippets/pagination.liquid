@@ -1,0 +1,29 @@
+<div class="pagination {% unless align == 'left' %}text-align--center{% else %}mxn1{% endunless %} font-size__basic pt4 flex items--center justify--center">
+  {% if paginate.previous %}
+    <a class="p1 pointer color--{{ section_color }}-text" href="{{ paginate.previous.url }}" title="{{ 'general.pagination.previous' | t }}">
+      <span class="font-size--xxxxs inline-block align--middle border-bottom--transparent hv--border-bottom--{{ section_color }}-text">{% render 'icon-chevron-left' %}</span>
+    </a>
+  {% endif %}
+  {% for part in paginate.parts %}
+    {% unless part.title == paginate.current_page %}
+      {% if part.title == '&hellip;' %}
+      <a class="p1 pointer color--{{ section_color }}-text" href="{{  part.url  }}">
+        <span class="border-bottom--transparent">{{ part.title }}</span>
+      </a>
+      {% else %}
+      <a class="p1 pointer color--{{ section_color }}-text hv--span--border-bottom--{{ section_color }}-text" href="{{  part.url  }}">
+        <span class="border-bottom--transparent">{{ part.title }}</span>
+      </a>
+      {% endif %}
+    {% else %}
+      <div class="p1 color--{{ section_color }}-text"><span class="border-bottom--{{ section_color }}-text">{{ part.title }}</span></div>
+    {% endunless %}
+  {% endfor %}
+  {% if paginate.next %}
+    <a class="p1 pointer color--{{ section_color }}-text" href="{{ paginate.next.url }}" title="{{ 'general.pagination.next' | t }}">
+      <span class="font-size--xxxxs inline-block align--middle border-bottom--transparent hv--border-bottom--{{ section_color }}-text">
+        {% render 'icon-chevron-right' %}
+      </span>
+    </a>
+  {% endif %}
+</div>

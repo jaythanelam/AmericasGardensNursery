@@ -1,0 +1,196 @@
+{%- assign section_color = section.settings.color_scheme -%}
+
+{%- case section.blocks.size -%}
+  {%- when 1 -%}
+     {%- assign block_class = 'lg--up--three-quarters font-size--ml line-height--5 lg--up--font-size--xl lg--up--line-height--6' -%}
+  {%- when 2 -%}
+    {%- assign block_class = 'lg--up--one-half' -%}
+  {%- when 3 -%}
+    {%- assign block_class = 'lg--up--one-third' -%}
+  {%- when 4 -%}
+    {%- assign block_class = 'lg--up--one-quarter' -%}
+{%- endcase -%}
+
+{% assign mobile_flickity = section.settings.enable_mobile_flickity %}
+
+<section class="richtext section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background"
+         {% if mobile_flickity %}
+         data-enable-mobile-flickity="true"
+         {% endif %}
+         data-section-type="flickity-only"
+         data-section-id="{{ section.id }}">
+  <div class="max-site-width lg--up--px3">
+    <div class="lg--up--grid">
+
+      {% assign show_info = true %}
+      {% if section.settings.title == blank and section.settings.cta_url == blank  %}
+        {% assign show_info = false %}
+      {% endif %}
+
+      {% if show_info %}
+      <div class="lg--up--grid__item lg--up--one-quarter">
+        <div class="pb3 pl2 pr4 lg--up--px0">
+
+          {% if section.settings.title  %}
+            <h2 class="f--heading font-size__heading">{{ section.settings.title }}</h2>
+          {% endif %}
+
+          {% if section.settings.cta_url %}
+          <a class="inline-block homepage-more-link font-size__basic link-underline--{{ section_color }} hover-underline--{{ section_color }}" href="{{ section.settings.cta_url }}" >
+            {{ section.settings.cta_text }}
+          </a>
+          {% endif %}
+
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="lg--up--grid__item {% if show_info == true %} lg--up--three-quarters{% endif %}">
+        <div class="mobile-flickity relative {% unless mobile_flickity %}md--dn--px2{% endunless %}">
+          <div class="mobile-flickity__slides pb3 {% if mobile_flickity %}lg--up--{% endif %}grid{% if section.blocks.size > 3 %}--half-gutter{% endif %} mtn2 grid--uniform lg--up--mt0">
+            {% for block in section.blocks %}
+            {% assign image = block.settings.image %}
+            <div class="{% if mobile_flickity %}lg--up--{% endif %}grid__item mt2 lg--up--mt0 {% if section.blocks.size > 1 %}font-size__basic{% endif %} {% if mobile_flickity %}nine-twelfths md--six-twelfths{% endif %} {{ block_class }}"
+                 {{ block.shopify_attributes }}>
+              <div {% if mobile_flickity %}class="px2 lg--up--px0"{% endif %}>
+              {% if image %}
+                {% render 'responsive-image' with
+                   image: block.settings.image,
+                   max_width: 2000,
+                   max_height: 2000,
+                   section_color: section_color,
+                %}
+              {% else %}
+                <div class="placeholder-img-wrapper bg--{{ section_color }}-placeholder">
+                  <div class="relative"
+                      style="padding-top: 66.6%;">
+                    {{ 'image' | placeholder_svg_tag }}
+                  </div>
+                </div>
+              {% endif %}
+              </div>
+              <div class="mt2 {% if mobile_flickity %}px2 lg--up--px0{% endif %} {{ section.settings.text_align }}">
+                {{ block.settings.richtext }}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          {% if mobile_flickity %}
+          <div class="lg--up--hide">
+            <div class="spacer pt1"></div>
+            <div class='mobile-flickity__button-container absolute bottom--0 right--0 pt1 pr2'>
+              <button aria-label="{{ 'general.accessibility.slideshows.next_slide' | t }}"
+                      class="btn border--none bg--transparent btn--next color--{{ section_color }}-text hv--{{ section_color }}-accent font-size--sm">
+                {% render 'icon-next' %}
+              </button>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text columns",
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Heading",
+      "default": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile_flickity",
+      "label": "Enable horizontal scrolling on mobile",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Optional: Call to action link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Call to action button text"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-align--left",
+          "label": "Left"
+        },
+        {
+          "value": "text-align--center",
+          "label": "Center"
+        },
+        {
+          "value": "text-align--right",
+          "label": "Right"
+        }
+      ],
+      "default":   "text-align--left"
+    },
+    {
+      "type":      "header",
+      "content":   "Color"
+    },
+    {
+       "type": "select",
+       "id": "color_scheme",
+       "label": "Color scheme",
+       "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+       ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_with_text",
+      "name": "Image with text",
+      "limit": 4,
+      "settings": [
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Image"
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text columns",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "image_with_text"
+        },
+        {
+          "type": "image_with_text"
+        },
+        {
+          "type": "image_with_text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

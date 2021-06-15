@@ -1,0 +1,152 @@
+{%- assign section_color = section.settings.color_scheme -%}
+
+{%- assign grid_item_width = '' -%}
+{%- case section.settings.no_posts -%}
+  {%- when '3' -%}
+    {%- assign grid_item_width = 'lg--up--one-third' -%}
+  {%- when '4' -%}
+    {%- assign grid_item_width = 'lg--up--one-quarter' -%}
+  {%- when '6' -%}
+    {%- assign grid_item_width = 'lg--up--one-third' -%}
+  {%- when '8' -%}
+    {%- assign grid_item_width = 'lg--up--one-quarter' -%}
+{%- endcase -%}
+
+<section class="homepage-blog section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background" data-enable-mobile-flickity="true" data-section-type="flickity-only" data-section-id="{{ section.id }}">
+  <div class="max-site-width lg--up--px3">
+
+    {%- assign blog = blogs[section.settings.selected_blog] -%}
+
+    <div class="lg--up--grid">
+      <div class="lg--up--grid__item  lg--up--one-quarter">
+        <div class="homepage-blog__info pb3 pl2 pr4 lg--up--px0">
+
+          {% if blog != empty and section.blog.title != '' %}
+            {% if section.settings.title == blank %}
+              <h2 class="f--heading font-size__heading">{{ blog.title }}</h2>
+            {% else %}
+              <h2 class="f--heading font-size__heading">{{ section.settings.title | escape }}</h2>
+            {% endif %}
+          {% else %}
+            {% if section.settings.title == blank %}
+              <h2 class="f--heading font-size__heading">{{ 'homepage.onboarding.blog_section_title' | t }}</h2>
+            {% else %}
+              <h2 class="f--heading font-size__heading">{{ section.settings.title }}</h2>
+            {% endif %}
+          {% endif %}
+
+          {% if section.settings.subheading != blank %}
+            <div class="homepage-blog__desc font-size__basic">
+              {{ section.settings.subheading }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.show_blog_link %}
+          <a class="inline-block homepage-more-link font-size__basic  f--accent link-underline--{{ section_color }} hover-underline--{{ section_color }}" href="{{ blog.url }}" >
+            {{ 'blogs.general.more_of_blog' | t: blog:  blog.title }}
+          </a>
+          {% endif %}
+
+        </div>
+      </div>
+      <div class="lg--up--grid__item lg--up--three-quarters">
+        <div class="mobile-flickity relative">
+          <div class="mobile-flickity__slides pb3 lg--up--grid grid--uniform lg--up--mtn3">
+          {% for article in blog.articles limit:section.settings.no_posts %}
+            <div class="blog-grid-item nine-twelfths md--six-twelfths lg--up--grid__item {{ grid_item_width }} lg--up--mt3">
+              <div class="px2 lg--up--px0">
+                {%- render 'article-grid-item',
+                    article: article,
+                    section_color: section_color
+                -%}
+              </div>
+            </div>
+          {% else %}
+            {% for i in (1..section.settings.no_posts) %}
+            <div class="product-grid-item nine-twelfths md--six-twelfths lg--up--grid__item {{ grid_item_width }} lg--up--mt3">
+              <div class="px2 lg--up--px0">
+                {% render 'article-grid-item__onboarding',
+                  section_color: section_color
+                %}
+              </div>
+            </div>
+            {% endfor %}
+          {% endfor %}
+
+          </div>
+          <div class="lg--up--hide">
+            <div class="spacer pt1"></div>
+            <div class='mobile-flickity__button-container absolute bottom--0 right--0 pt1 pr2'>
+              <button aria-label="{{ 'general.accessibility.slideshows.next_slide' | t }}"
+                      class="btn border--none bg--transparent btn--next color--{{ section_color }}-text hv--{{ section_color }}-accent font-size--sm">
+                {% render 'icon-next' %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "section-blog",
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Heading",
+      "info": "If left blank, name of blog will be used."
+    },
+    {
+       "type": "blog",
+       "id": "selected_blog",
+       "label": "Blog"
+    },
+    {
+       "type": "select",
+       "id": "no_posts",
+       "options": [
+          { "value": "3", "label": "3 Posts"},
+          { "value": "4", "label": "4 Posts"},
+          { "value": "6", "label": "6 Posts"},
+          { "value": "8", "label": "8 Posts"}
+       ],
+       "label": "Number of posts"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog_link",
+      "label": "Show link to blog",
+      "default": true
+    },
+    {
+      "type":      "header",
+      "content":   "Color"
+    },
+    {
+       "type": "select",
+       "id": "color_scheme",
+       "label": "Color scheme",
+       "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

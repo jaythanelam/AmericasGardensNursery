@@ -1,0 +1,14 @@
+
+{%- if layout == 'theme' -%}
+<script>
+window.baseAssetsUrl = '{{ 'theme.min.js' | asset_url | split: 'assets/theme.min.js' | first }}';
+</script>
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+<!--[if lt IE 9]><script src="{{ 'theme.min.js' | asset_url }}"></script><![endif]-->
+{%- endif -%} {%- if layout == 'giftcard' -%}
+<script>
+window.baseAssetsUrl = '{{ 'giftcard.min.js' | asset_url | split: 'assets/giftcard.min.js' | first }}';
+</script>
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'giftcard.min.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+<!--[if lt IE 9]><script src="{{ 'giftcard.min.js' | asset_url }}"></script><![endif]-->
+{%- endif -%}

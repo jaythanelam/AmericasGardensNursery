@@ -1,0 +1,11 @@
+<div class="grid__item {% unless single_linklist %}one-half{% endunless %}">
+  <ul class="font-size__basic list--reset p0 m0 mxn1 mtn1 {% if single_linklist %}flex justify--start flex--wrap{% endif %}">
+    {% for link in linklists[link_list].links %}
+      <li class="">
+        <a href="{{ link.url }}" class="footer__nav-link p1 inline-block mobile-nav__link color--{{ section_color }}-text ">
+          <span class="footer__nav-link-span">{{ link.title }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

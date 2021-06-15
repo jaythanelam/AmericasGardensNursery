@@ -1,0 +1,74 @@
+{% assign section_color = 'primary' %}
+
+
+
+
+<section class="page section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background">
+  <div class="max-site-width px2 lg--up--px3">
+
+    <div class="max-width--2 lg--up--max-width--4 mx--auto">
+
+      <div class="grid">
+        <div class="grid__item lg--up--one-third">
+
+          <h1 class="f--heading font-size__heading">{{ 'customer.account.title' | t }}</h1>
+
+          <h2 class="font-size--m mt3">{{ 'customer.account.details' | t }}</h2>
+
+          <div class="font-size--sm">
+            {{ customer.default_address | format_address }}
+            <a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+          </div>
+
+          {% render 'account__logout' %}
+
+        </div>
+        <div class="grid__item lg--up--two-thirds mt3 lg--up--mt0">
+
+              <h2 class="font-size--l">{{ 'customer.orders.title' | t }}</h2>
+
+              {% paginate customer.orders by 10 %}
+                {% if customer.orders.size != 0 %}
+                  <table class="responsive-table full font-size--sm mt2">
+                    <thead class="">
+                      <tr>
+                        <th class="text-align--left pb1">{{ 'customer.orders.order_number' | t }}</th>
+                        <th class="text-align--left pb1">{{ 'customer.orders.date' | t }}</th>
+                        <th class="text-align--left pb1">{{ 'customer.orders.payment_status' | t }}</th>
+                        <th class="text-align--left pb1">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                        <th class="text-align--right pb1">{{ 'customer.orders.total' | t }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for order in customer.orders %}
+                        <tr class="responsive-table-row line-height--8">
+                          <td class="text-align--left" data-label="{{ 'customer.orders.order_number' | t }}"><a class="border-bottom--{{ section_color }}-text" href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                          <td class="text-align--left" data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                          <td class="text-align--left" data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                          <td class="text-align--left" data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                          <td class="text-align--right" data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% else %}
+                  <p>{{ 'customer.orders.none' | t }}</p>
+                {% endif %}
+
+                {% if paginate.pages > 1 %}
+                  {% render 'pagination', align: 'left', paginate: paginate, %}
+                {% endif %}
+
+              {% endpaginate %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+

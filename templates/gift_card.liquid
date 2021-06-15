@@ -1,0 +1,81 @@
+{% comment %}
+  QR code is rendered in `#QrCode`
+
+  `gift_card.pass_url` is true if apple wallet is enabled for the shop
+{% endcomment %}
+
+{% layout 'gift_card' %}
+
+{% assign section_color = 'primary' %}
+
+
+<div class="max-width--2 mx--auto text-align--center">
+
+  <header role="banner" class="py3">
+    <div>
+      <h1 class="f--heading font-size__heading" >
+        <a href="{{ shop.url }}" class="site-logo">
+          {{ shop.name }}
+        </a>
+      </h1>
+    </div>
+  </header>
+
+  <main class="giftcard {% if gift_card.expired or gift_card.enabled != true %} giftcard--disabled{% endif %} pb4">
+
+    <h1>{{ 'gift_cards.issued.subtext' | t }}</h1>
+    {% unless gift_card.enabled %}
+      <span class="giftcard-tag">{{ 'gift_cards.issued.disabled' | t }}</span>
+    {% endunless %}
+
+    {%- assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" -%}
+
+    {% if gift_card.expired and gift_card.enabled %}
+      <span class="giftcard-tag">{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+    {% endif %}
+
+    {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+      <span class="giftcard-tag giftcard-tag--active">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+    {% endif %}
+
+    <div class="relative">
+      <img src="{{ 'gift-card/card.jpg' | shopify_asset_url }}" alt="Gift card illustration">
+      {%- assign code_size = gift_card.code | format_code | size -%}
+      <div class="giftcard__code absolute full--w text-align--center font-size--l">
+        <div id="GiftCardDigits" class="inline-block p1 bg--white-text mx--auto">
+          <div class="giftcard__dotted p1">{{ gift_card.code | format_code }}</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt1">{{ 'gift_cards.issued.redeem' | t }}</p>
+
+    <div class="py2 font-size--sm">
+      {% assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency %}
+      <h2>{{ 'gift_cards.issued.initial_value' | t: value: formatted_initial_value }}</h2>
+      {% assign formatted_current_balance = gift_card.balance | money %}
+      {% if gift_card.balance != gift_card.initial_value %}
+        <p>{{ 'gift_cards.issued.remaining_html' | t: balance: formatted_current_balance }}</p>
+      {% endif %}
+    </div>
+
+    <div class="p2 bg--white-text inline-block">
+      <div id="QrCode" class="giftcard-qr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+    </div>
+
+    {% if gift_card.pass_url %}
+      <a href="{{ gift_card.pass_url }}" class="apple-wallet">
+        <img class="apple-wallet-image" src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}">
+      </a>
+    {% endif %}
+
+    <div class="py2">
+      <a href="#" id="PrintGiftCard" class="print-giftcard px2 py1 border--primary-text color--primary-text inline-block">
+        {{ 'gift_cards.issued.print' | t }}
+      </a>
+      &nbsp;
+      <a href="{{ shop.url }}" class="px2 py1 bg--primary-text color--primary-text--overlay inline-block border--primary-text" target="_blank">{{ 'gift_cards.issued.shop_link' | t }}</a>
+    </div>
+
+  </main>
+</div>

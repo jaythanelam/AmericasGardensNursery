@@ -1,0 +1,80 @@
+<noscript>
+
+  <input type="checkbox" id="nav" class="hide"/>
+  <label for="nav" class="nav-open">
+    <span class="block nav-open__default">
+      {% if section.settings.use_menu_icon %}
+        <button type="button" class="t--header-navigation site-header__menu-btn btn font-size--m bg--transparent">
+          <span class="left">{% render 'icon-menu' %}</span>
+        </button>
+      {% else %}
+        <a class="t--header-navigation header__link color--{{ section_color }}-text color--header-active font-size--m bg--transparent inline-block pointer">
+          <span class="header__link-wrapper">{{ 'general.navigation.menu' | t }}</span>
+        </a>
+      {% endif %}
+    </span>
+    <span class="nav-open__close">
+      <span class="inline-block btn font-size--m bg--transparent">
+        <span class="left">{% render 'icon-close' %}</span>
+      </span>
+    </span>
+  </label>
+
+  <div class="no-js__navigation bg--active-background color--active-text fixed top--0 left--0 z4 full p3">
+    <ul class="mobile-navigation f--heading list--reset m0 font-size--xxl">
+      {% for link in linklists[section.settings.main_linklist].links %}
+        {% if link.links != blank %}
+          {%- assign child_list_handle = link.title | handleize -%}
+          <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}" aria-haspopup="true">
+            <a class="mobile-nav__link mobile-nav__link--sublist block p1 pointer color--header-active" data-first-level-link="mobile" data-key="{{ child_list_handle }}--{{ forloop.index }}" tabindex="0"  {% if forloop.last and section.settings.show_search_sidebar == false and linklists[section.settings.secondary_linklist].links == blank  and shop.customer_accounts_enabled == false  %}data-mobile-active-last-item{% endif %}>
+              <span class="align--middle">{{ link.title }}</span>
+            </a>
+
+            {%- assign child_list_handle = link.title | handleize -%}
+            {% if linklists[child_list_handle].links != blank %}
+
+              {% assign mega_nav = true %}
+              {% for childlink in linklists[child_list_handle].links %}
+                {% if childlink.links == blank %}
+                  {% assign mega_nav = false %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+              <div class="px1">
+                <ul class="mobile-navigation__second-level t--header-navigation list--reset m0 font-size--m mxn1 ">
+                  {% for childlink in linklists[child_list_handle].links %}
+                    {% if childlink.links != blank %}
+                      <li class="mobile-nav__item{% if childlink.active %} mobile-nav__item--active{% endif %}" aria-haspopup="true">
+                        {%- assign child_link_handle = link.title | handleize -%}
+                        <a href="{{ link.url }}" class="mobile-nav__link mobile-nav__link--sublist block p1 line-height--6 color--header-active" data-navigation-toggle="desktop" data-key="{{ child_link_handle }}--{{ forloop.index }}" {% if forloop.first %}data-mobile-active-first-item{% endif %} {% if forloop.last%}data-mobile-active-last-item{% endif %}>
+                          <span class="align--middle">{{ childlink.title }}</span>
+                        </a>
+                        <ul class="mobile-navigation__third-level list--reset t--header-navigation font-size--m mtn1" data-toggle-nav>
+                          {% for childchildlink in childlink.links %}
+                            <li class="{% if link.active %} mobile-nav__item--active{% endif %} pl2">
+                              <a href="{{ childchildlink.url }}" class="mobile-nav__link p1 block line-height--1 color--header-active">- {{ childchildlink.title | escape }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </li>
+                    {% else %}
+                      <li class="mobile-nav__item{% if childlink.active %} mobile-nav__item--active{% endif %}">
+                        <a href="{{ childlink.url }}" class="mobile-nav__link block p1 line-height--6 color--header-active" {% if forloop.first %}data-mobile-active-first-item{% endif %} {% if forloop.last%}data-mobile-active-last-item{% endif %}>{{ childlink.title }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+                <hr class="bg--active-text" />
+              </div>
+            {% endif %}
+          </li>
+        {% else %}
+          <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
+            <a href="{{ link.url }}" class="mobile-nav__link block p1 color--header-active" {% if forloop.last and section.settings.show_search_sidebar == false and linklists[section.settings.secondary_linklist].links == blank  and shop.customer_accounts_enabled == false  %}data-mobile-active-last-item{% endif %}>{{ link.title }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+</noscript>

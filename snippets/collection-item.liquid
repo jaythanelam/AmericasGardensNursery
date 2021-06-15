@@ -1,0 +1,60 @@
+{%- if collection.image -%}
+  {%- assign image = collection.image -%}
+{%- else -%}
+  {%- for product in collection.products limit:1 -%}
+    {%- assign image = product.featured_image.src -%}
+  {%- endfor -%}
+{%- endif -%}
+<div class="image-with-text__container relative">
+  {% if text_position == 'under' %}
+  <a href="{{ collection.url }}">
+  {% endif %}
+    <div class="image-with-text__image">
+      <div class="image-holder">
+        {% render 'responsive-image' with
+          image: image,
+          max_width: 2000,
+          max_height: 2000,
+          section_color: section_color,
+        %}
+      </div>
+    </div>
+  {% if text_position == 'under' %}
+  </a>
+  {% endif %}
+  {% if text_position == 'over' %}
+  <div class="image-with-text__content absolute full top--0 left--0 p1 z2">
+    <a href="{{ collection.url }}" class="block full color--{{ local_color }}-text hv--{{ local_color }}-accent collection-item__link">
+      <div class="table full">
+        <div class="table-cell text-align--center align--middle">
+          <div class="inline-block  align--middle">
+            <h3 class=" m0 {{ heading_class }}">{{ title }}</h3>
+            {% if show_cta %}
+              <p class="{% if block_width_mobile == 'half' %}sm--hide{% endif %} m0 lg--up--mt1 inline-block link-underline f--accent collection-item__button color--{{ local_color }}-text border-bottom--{{ local_color }}-text">
+                {{ cta_text }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% else %}
+  <div class="image-with-text__content full p1 z2 pt2 lg-up--pt3">
+    <a href="{{ collection.url }}" class="block full color--{{ section_color }}-text hv--{{ section_color }}-accent collection-item__link">
+      <div class="table full">
+        <div class="table-cell text-align--center align--middle">
+          <div class="inline-block  align--middle">
+            <h2 class=" m0 {{ heading_class }}">{{ title }}</h2>
+            {% if show_cta %}
+              <p class="{% if block_width_mobile == 'half' %}sm--hide{% endif %} mt1 collection-item__button inline-block link-underline f--accent color--{{ section_color }}-text border-bottom--{{ section_color }}-text">
+                {{ cta_text }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endif %}
+</div>

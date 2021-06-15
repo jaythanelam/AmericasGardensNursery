@@ -1,0 +1,188 @@
+{%- assign section_color = section.settings.color_scheme -%}
+{%- assign tags_enabled = section.settings.enable_tag_filter -%}
+{%- assign sorting_enabled = section.settings.enable_sort_filter -%}
+{%- assign posts_per_row_mobile = section.settings.posts_per_row_mobile -%}
+{%- assign posts_per_row_desktop = section.settings.posts_per_row_desktop -%}
+
+<section class="collection section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background" data-section-type="collection" data-section-id="{{ section.id }}" {% if settings.fade_in_items %}data-fade-in="true"{% endif %}>
+  <div class="max-site-width px2 lg--up--px3">
+
+    {% assign layout = '' %}
+    {% if template contains 'grid' %}
+      {% assign layout = 'grid' %}
+    {% endif %}
+
+    {% paginate collection.products by section.settings.no_posts %}
+
+      <header role="banner">
+        {% if collection.image and section.settings.show_collection_image %}
+        <div class="mb3 lg--up--mb4 md--up--four-fifths mx--auto">
+          {% assign image = collection.image  %}
+          {% render 'responsive-image' with
+            image: image,
+            max_width: 2000,
+            max_height: 2000,
+            section_color: section_color,
+          %}
+        </div>
+        {% endif %}
+
+        <div class="lg--up--flex">
+          <div class="lg--up--one-half lg--up--self--end">
+            <h1 class="f--heading  font-size--xxl line-height-6 wd--font-size--xxxl m0 pb1">
+              <span class="">{{ collection.title }}</span>
+            </h1>
+            {% if collection.description != blank %}
+              <div class="m0 f--main font-size__basic three-quarters">
+                {{ collection.description }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="mt3 lg--up--mt0 lg--up--one-half lg--up--flex lg--up--text-align--right">
+              <div class="md--dn--table full--w lg--up--self--end">
+                {% if tags_enabled and sorting_enabled == false %}
+                <div class="md--dn--table-cell md--dn--one-half md--dn--align--top">
+                  <div class="lg--up--hide font-size__basic mxn1">
+                    <a class="lg--up--hide px1 inline-block pointer color--{{ section_color }}-text" data-tag-filter-mobile-trigger>
+                      <div class="inline-block">
+                      {{ 'collections.general.filter' | t }}
+                      <span class="font-size--xxxxs inline-block align--middle">
+                        <span class="chevron-down">{% render 'icon-chevron-down' %}</span>
+                        <span class="chevron-up hide">{% render 'icon-chevron-up' %}</span>
+                      </span>
+                      </div>
+                    </a>
+                    <div class="p1 md--dn--hide" data-tag-list>
+                      <ul class="list--reset m0">
+                        {%- render 'collection__tag-items',
+                            expanded: expanded,
+                            section_color: section_color,
+                        -%}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% if sorting_enabled %}
+                <div class="md--dn--table-cell md--dn--one-half md--dn--align--middle">
+                  <div class="form-horizontal">
+                    {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                    <label class="sm--hide font-size__basic mr1" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+                    <select name="SortBy" id="SortBy" class="bg--transparent border--{{ section_color }}-text color--{{ section_color }}-text p1 inline-block font-size__basic pr3">
+                      <option value="manual"{% if sort_by == "manual" %} selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+                      <option value="best-selling"{% if sort_by == "best-selling" %} selected="selected"{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+                      <option value="title-ascending"{% if sort_by == "title-ascending"  %} selected="selected"{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+                      <option value="title-descending"{% if sort_by == "title-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+                      <option value="price-ascending"{% if sort_by == "price-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+                      <option value="price-descending"{% if sort_by == "price-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+                      <option value="created-descending"{% if sort_by == "created-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+                      <option value="created-ascending"{% if sort_by == "created-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+                    </select>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="grid mt3 lg--up--mt4">
+
+        {% if tags_enabled %}
+          {% assign expanded = false %}
+          {% assign count = 0 %}
+          {% for tag in collection.all_tags %}
+            {% if current_tags contains tag and count > 10 %}
+              {% assign expanded = true %}
+            {% endif %}
+            {% assign count = count | plus: 1 %}
+          {% endfor %}
+          <div class="collection__sticky-tags grid__item lg--up--one-seventh {% unless expanded %}lg--up--sticky--unless-sticky-header{% endunless %} top--0 font-size__basic {% if sorting_enabled == false %}md--dn--hide{% endif %}">
+            <a class="lg--up--hide p1 inline-block mxn1 mb1 pointer color--{{ section_color }}-text" data-tag-filter-mobile-trigger>
+              <div class="inline-block">
+              {{ 'collections.general.filter' | t }}
+              <span class="font-size--xxxxs inline-block align--middle">
+                <span class="chevron-down">{% render 'icon-chevron-down' %}</span>
+                <span class="chevron-up hide">{% render 'icon-chevron-up' %}</span>
+              </span>
+              </div>
+            </a>
+            <ul class="list--reset m0 mtn1 pb3 lg--up--pb0 lg--up--pt3 md--dn--hide font-size__basic {% if section.settings.capitalize_tags %}capitalize{% endif %}" data-tag-list>
+                {%- render 'collection__tag-items',
+                    expanded: expanded,
+                    section_color: section_color,
+                -%}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="grid__item pt1 {% if section.settings.enable_tag_filter %}lg--up--six-sevenths{% endif %}">
+          {% if collection.all_products_count > 0 %}
+            {% if layout == 'grid' %}
+              <div class="grid grid--uniform sm--grid--half-gutter mtn3 lg--up--mtn4">
+                {% for product in collection.products %}
+                  <div class="product-grid-item grid__item sm--{{ posts_per_row_mobile }} md--up--{{ posts_per_row_desktop }} mt3 lg--up--mt4">
+                      {%- render 'product-grid-item',
+                          product: product,
+                          section_color: section_color,
+                          loop_index: forloop.index0,
+                      -%}
+                  </div>
+                {% else %}
+                  {% for i in (1..section.settings.no_products) %}
+                  <div class="product-grid-item  grid__item  lg--up--one-third">
+                    {%- render 'product-grid-item__onboarding',
+                        section_color: section_color,
+                    -%}
+                  </div>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="collection-cascade" data-collection-cascade>
+                <div class="items">
+                  <div class="item-sizer"></div>
+                  <div class="column-sizer"></div>
+
+                  {% assign col_count_desktop = 1 %}
+                  {% for product in collection.products %}
+                    {% assign block_width_mobile = 'full' %}
+                    {% assign block_width_desktop = 'half' %}
+                    {% capture mobile_count %}{% cycle '1', '2' %}{% endcapture %}
+
+                    <div class="item item--large-gap item--desktop--half item--mobile--full {% if forloop.first %}item--first{% endif %}  {% if last_col %}item--last{% endif %}  {% if settings.fade_in_items %}fade-in{% endif %}">
+                      <div class="item__inner {% if mobile_count == '1' %}md--dn--pr4{% else %}md--dn--pl4{% endif %} {% if col_count_desktop == 2 or col_count_desktop == 3 %}lg--up--five-sixths lg--up--mx--auto{% endif %}">
+                        {%- render 'product-grid-item',
+                            product: product,
+                            section_color: section_color,
+                            loop_index: forloop.index0,
+                        -%}
+                      </div>
+                    </div>
+
+                    {% assign col_count_desktop = col_count_desktop | plus: 1 %}
+                    {% if col_count_desktop == 5 %}
+                      {% assign col_count_desktop = 1 %}
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+              </div>
+            {% endif %}
+          {% else %}
+            <p class="mt2">{{ 'collections.general.no_matches' | t }}</p>
+          {% endif %}
+
+          {% if paginate.pages > 1 %}
+            {%- render 'pagination',
+                paginate: paginate,
+                section_color: section_color,
+            -%}
+          {% endif %}
+        </div>
+      </div>
+
+    {% endpaginate %}
+
+  </div>
+</section>

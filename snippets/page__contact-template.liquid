@@ -1,0 +1,59 @@
+<div class="lg--up--seven-eighths mx--auto">
+  <div class="grid">
+    <div class="grid__item lg--up--two-fifths">
+      <h1 class="f--heading font-size__heading m0">{{ page.title }}</h1>
+      <div class="rte mt2  font-size__basic">
+        {{ page.content }}
+      </div>
+    </div>
+    <div class="grid__item lg--up--three-fifths  mt3 lg--up--mt0">
+      {%- assign form_id = 'ContactForm' -%}
+
+      {% form 'contact', id: form_id %}
+        {% render 'form-status',
+           form: form,
+           form_id: form_id,
+        %}
+
+        <label class="mt2 block" for="{{ form_id }}-name">{{ 'contact.form.name' | t }}</label>
+        <input type="text"
+          class="block mt1 full--w px2 py1 bg--transparent border--{{ section_color }}-text"
+          name="contact[name]"
+          id="{{ form_id }}-name"
+          placeholder="{{ 'contact.form.name' | t }}"
+          value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+        <label class="mt2 block" for="{{ form_id }}-email">{{ 'contact.form.email' | t }}</label>
+        <input type="email"
+          class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+          name="contact[email]"
+          id="{{ form_id }}-email"
+          placeholder="{{ 'contact.form.email' | t }}"
+          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off">
+
+        <label class="mt2 block" for="{{ form_id }}-phone">{{ 'contact.form.phone' | t }}</label>
+        <input type="tel"
+          class="block mt1 full--w px2 py1 bg--transparent border--{{ section_color }}-text"
+          name="contact[phone]"
+          id="{{ form_id }}-phone"
+          placeholder="{{ 'contact.form.phone' | t }}"
+          value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+          pattern="[0-9\-]*">
+
+        <label class="mt2 block" for="{{ form_id }}-message">{{ 'contact.form.message' | t }}</label>
+        <textarea rows="10"
+          class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+          name="contact[body]"
+          id="{{ form_id }}-message"
+          placeholder="{{ 'contact.form.message' | t }}">{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+
+        <input type="submit" class="block full--w max-width--1 btn border--none mt3 px2 py1 bg--{{ section_color }}-text color--{{ section_color }}-text--overlay hover-bg--{{ section_color }}" value="{{ 'contact.form.send' | t }}">
+
+      {% endform %}
+
+    </div>
+  </div>
+</div>

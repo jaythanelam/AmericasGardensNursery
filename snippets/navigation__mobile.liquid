@@ -1,0 +1,205 @@
+{% assign link_all = section.settings.show_all_navigation_links %}
+<div id="MobileNav" class="mobile-navigation absolute top--0 left--0 full color--active-text overflow--hidden">
+  <div class="mobile-navigation-container absolute full--h overflow--hidden left--0 top--0" data-mobile-navigation-container>
+    <div class="mobile-navigation__pane full--h full--vw left overflow--scroll py4 px2">
+
+      <ul class="mobile-navigation f--heading list--reset m0 font-size--xxl">
+        {% for link in linklists[section.settings.main_linklist].links %}
+          {% if link.links != blank %}
+            {%- assign child_list_handle = link.title | handleize -%}
+            <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
+                <button class="mobile-nav__link mobile-nav__link--sublist appearance--none border--none bg--transparent block p1 pointer color--active-text hv--active-accent"
+                        data-first-level-link="mobile"
+                        data-key="{{ child_list_handle }}--{{ forloop.index }}"
+                        tabindex="0"
+                        aria-expanded="false"
+                        {% if forloop.last and section.settings.show_search_sidebar==false and
+                        linklists[section.settings.secondary_linklist].links==blank and shop.customer_accounts_enabled==false %}
+                        data-mobile-active-last-item
+                        {% endif %}
+                        {% if forloop.first %}
+                        data-first-nav-link
+                        {% endif %}
+                        >
+                  <span class="align--middle">{{ link.title }}</span>
+                  <span class="font-size--m inline-block align--baseline">{% render 'icon-chevron-right-small' %}</span>
+                </button>
+            </li>
+          {% else %}
+            <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
+              <a href="{{ link.url }}"
+                 class="mobile-nav__link block p1 color--active-text hv--active-accent"
+                 {% if forloop.last and section.settings.show_search_sidebar == false and linklists[section.settings.secondary_linklist].links == blank  and shop.customer_accounts_enabled == false  %}
+                 data-mobile-active-last-item
+                 {% endif %}
+                 {% if forloop.first %}
+                 data-first-nav-link
+                 {% endif %}
+                 >
+                {{- link.title -}}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+      {% if linklists[section.settings.secondary_linklist].links != blank %}
+      <ul class="mobile-navigation__third-level list--reset  t--header-navigation font-size--m mt4">
+        {% for link in linklists[section.settings.secondary_linklist].links %}
+          <li class="{% if link.active %} mobile-nav__item--active{% endif %}">
+            <a href="{{ link.url }}" class="mobile-nav__link p1 block line-height--1 color--active-text hv--active-accent" {% if forloop.last and section.settings.show_search_sidebar == false and shop.customer_accounts_enabled == false %}data-mobile-active-last-item{% endif %}>{{ link.title | escape }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% comment %}
+          If customer accounts are enabled, provide login and create account links
+        {% endcomment %}
+      {% if shop.customer_accounts_enabled %}
+      <ul class="mobile-navigation__third-level list--reset  t--header-navigation font-size--m mt4 color--active-text hv--active-accent">
+        {% if customer %}
+          <li>
+            {% if customer.first_name != blank %}
+              {% capture first_name %}{{ customer.first_name }}{% endcapture %}
+              <a class="p1 block line-height--1 color--active-text hv--active-accent" href="{{ routes.account_url }}">{{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}</a>
+            {% else %}
+              <a class="p1 block line-height--1 color--active-text hv--active-accent" href="{{ routes.account_url }}">{{ 'layout.customer.account' | t }}</a>
+            {% endif %}
+          </li>
+          <li>
+            <a class="p1 block line-height--1 color--active-text hv--active-accent" href="{{ routes.account_logout_url }}" {% if section.settings.show_search_sidebar == false %}data-mobile-active-last-item{% endif %}>{{ 'layout.customer.log_out' | t }}</a>
+          </li>
+        {% else %}
+          <li>
+            <a class="p1 block line-height--1 color--active-text hv--active-accent" href="{{ routes.account_login_url }}">{{ 'layout.customer.log_in' | t  }}</a>
+          </li>
+          {% if shop.customer_accounts_optional %}
+          <li>
+            <a class="p1 block line-height--1 color--active-text hv--active-accent" href="{{ routes.account_register_url }}" {% if section.settings.show_search_sidebar == false %}data-mobile-active-last-item{% endif %}>{{ 'layout.customer.create_account' | t }}</a>
+          </li>
+          {% endif %}
+        {% endif %}
+      </ul>
+      {% endif %}
+
+      {% if section.settings.show_search_sidebar %}
+      <div class="max-width--2 px1 mt3">
+        <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
+          <label for="search" class="hide">{{ 'general.search.submit' | t }}</label>
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="py1 search__input input-group-field border--none bg--transparent border-bottom--active-text font-size--m color--active-text" aria-label="{{ 'general.search.placeholder' | t }}" data-search-input>
+          <span class="input-group-btn search-btn">
+            <button type="submit" class="block font-size--sm bg--transparent color--active-text hv--active-accent border--none" data-mobile-active-last-item>
+              {% render 'icon-search' %}
+            </button>
+          </span>
+        </form>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <div class="mobile-navigation__pane full--h full--vw left overflow--scroll relative pt4 px2">
+      <button class="mobile-navigation__previous hide btn border--none bg--transparent inline-block p2 fixed top--0 left--0 font-size--ml color--active-text hv--active-accent" data-mobile-nav-previous>
+        {% render 'icon-previous' %}
+      </button>
+
+      {% comment %}
+      Second Level
+      {% endcomment %}
+      {% for link in linklists[section.settings.main_linklist].links %}
+
+        {%- assign child_list_handle = link.title | handleize -%}
+        {% if linklists[child_list_handle].links != blank %}
+
+          {% assign mega_nav = true %}
+          {% for childlink in linklists[child_list_handle].links %}
+            {% if childlink.links == blank %}
+              {% assign mega_nav = false %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          <div class="hide" data-key="{{ child_list_handle }}--{{ forloop.index }}" data-mobile-second-level-section>
+
+            <h4 class=" t--header-navigation mt1 mb3">
+              {% if link_all %}
+              <a href="{{ link.url }}" class="color--active-text hv--active-accent">
+              {% endif %}
+              <span class="border-bottom--active-text hv--border-bottom--active-accent inline-block">{{ linklists[child_list_handle].title }}</span>
+              {% if link_all %}
+              </a>
+              {% endif %}
+            </h4>
+
+            {% if mega_nav %}
+
+              {% for childlink in linklists[child_list_handle].links %}
+                {% if forloop.first %}
+                  {% assign first_list = true %}
+                {% else %}
+                  {% assign first_list = false %}
+                {% endif %}
+                {% if forloop.last %}
+                  {% assign last_list = true %}
+                {% else %}
+                  {% assign last_list = false %}
+                {% endif %}
+
+                <h4 class=" t--header-navigation mt1 mb1 inline-block">
+                  {% if link_all %}
+                  <a href="{{ childlink.url }}" class="color--active-text hv--active-accent">
+                  {% endif %}
+                  {{ childlink.title }}
+                  {% if link_all %}
+                  </a>
+                  {% endif %}
+                </h4>
+
+                <ul class="mobile-navigation__second-level f--heading list--reset m0 font-size--xxl mxn1 mb2">
+                  {% for childchildlink in childlink.links %}
+                  <li class="mobile-nav__item{% if childchildlink.active %} mobile-nav__item--active{% endif %}">
+                    <a href="{{ childchildlink.url }}" class="mobile-nav__link block p1 line-height--6 color--active-text"  {% if forloop.first and first_list %}data-mobile-active-first-item{% endif %} {% if forloop.last and last_list %}data-mobile-active-last-item{% endif %}>{{ childchildlink.title }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              {% endfor %}
+
+            {% else %}
+              <ul class="mobile-navigation__second-level f--heading list--reset m0 font-size--xxl mxn1 ">
+                {% for childlink in linklists[child_list_handle].links %}
+                  {% if childlink.links != blank %}
+                    <li class="mobile-nav__item{% if childlink.active %} mobile-nav__item--active{% endif %}" aria-haspopup="true">
+                      {%- assign child_link_handle = link.title | handleize -%}
+                      <a href="{{ link.url }}" class="mobile-nav__link mobile-nav__link--sublist block p1 line-height--6 color--active-text hv--active-accent" data-navigation-toggle="mobile" data-key="{{ child_link_handle }}--{{ forloop.index }}" {% if forloop.first %}data-mobile-active-first-item{% endif %} {% if forloop.last%}data-mobile-active-last-item{% endif %}>
+                        <span class="align--middle">{{ childlink.title }}</span>
+                        <span class="font-size--m inline-block align--baseline">
+                          <span class="chevron-down">{% render 'icon-chevron-down-small' %}</span>
+                          <span class="chevron-up hide">{% render 'icon-chevron-up-small' %}</span>
+                        </span>
+                      </a>
+                      <ul class="hide mobile-navigation__third-level list--reset t--header-navigation font-size--m mb2" data-toggle-nav>
+                        {% for childchildlink in childlink.links %}
+                          <li class="{% if link.active %} mobile-nav__item--active{% endif %}">
+                            <a href="{{ childchildlink.url }}" class="mobile-nav__link p1 block line-height--1 color--active-text hv--active-accent">{{ childchildlink.title | escape }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% else %}
+                    <li class="mobile-nav__item{% if childlink.active %} mobile-nav__item--active{% endif %}">
+                      <a href="{{ childlink.url }}" class="mobile-nav__link block p1 line-height--6 color--active-text hv--active-accent" {% if forloop.first %}data-mobile-active-first-item{% endif %} {% if forloop.last%}data-mobile-active-last-item{% endif %}>{{ childlink.title }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+

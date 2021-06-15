@@ -1,0 +1,49 @@
+{% render 'collection-template' %}
+
+{% schema %}
+  {
+    "name": "Collection pages",
+    "class": "collection-template",
+    "settings": [
+      {
+         "type": "select",
+         "id": "color_scheme",
+         "label": "Color scheme",
+         "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+         ]
+      },
+      {
+         "type":      "range",
+         "id":        "no_posts",
+         "min":       2,
+         "max":        24,
+         "step":       2,
+         "label":     "No of products per page",
+         "default":   12
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_image",
+        "label": "Show collection image"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_tag_filter",
+        "label": "Enable filtering by product tag"
+      },
+      {
+        "type": "checkbox",
+        "id": "capitalize_tags",
+        "label": "Capitalize tags"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_sort_filter",
+        "label": "Enable collection sorting"
+      }
+    ]
+  }
+{% endschema %}

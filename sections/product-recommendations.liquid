@@ -1,0 +1,85 @@
+{%- assign section_color = section.settings.color_scheme -%}
+{%- if section.settings.show_product_recommendations -%}
+  {%- if recommendations.performed -%}
+    {% if recommendations.products_count > 0 %}
+    <div class="product-recommendations">
+      <div class="section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background">
+        <div class="max-site-width lg--up--px3">
+          <div class="lg--up--grid">
+            <div class="lg--up--grid__item lg--up--one-quarter">
+              <div class="featured-collection__info pb3 pl2 pr4 lg--up--px0">
+                <h2 class="f--heading font-size__heading">{{ section.settings.product_recommendations_heading }}</h2>
+              </div>
+            </div>
+            <div class="lg--up--grid__item lg--up--three-quarters">
+              <div class="mobile-flickity relative">
+                <div class="mobile-flickity__slides pb3 lg--up--grid grid--uniform lg--up--mtn3">
+                  {%- for product in recommendations.products -%}
+                  <div class="product-grid-item nine-twelfths md--six-twelfths lg--up--grid__item lg--up--one-third lg--up--mt3">
+                    <div class="px2 lg--up--px0">
+                      {%- render 'product-grid-item',
+                          product: product,
+                          section_color: section_color,
+                      -%}
+                    </div>
+                  </div>
+                  {%- endfor -%}
+                </div>
+                <div class="lg--up--hide">
+                  <div class="spacer pt1"></div>
+                  <div class='mobile-flickity__button-container absolute bottom--0 right--0 pt1 pr2'>
+                    <button aria-label="{{ 'general.accessibility.slideshows.next_slide' | t }}"
+                            class="btn border--none bg--transparent btn--next color--{{ section_color }}-text hv--{{ section_color }}-accent font-size--sm">
+                      {% render 'icon-next' %}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  {%- else  -%}
+    <div
+      class="product-recommendations"
+      data-base-url="{{ routes.product_recommendations_url }}"
+      data-product-id="{{ product.id }}"
+      data-section-id="{{ section.id }}"
+      data-section-type="product-recommendations"
+      data-limit="3">
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_recommendations",
+      "label": "Show dynamic recommendations",
+      "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_recommendations_heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+         { "value": "primary", "label": "Primary"},
+         { "value": "secondary", "label": "Secondary"},
+         { "value": "tertiary", "label": "Tertiary"}
+      ]
+    }
+  ]
+}
+{% endschema %}

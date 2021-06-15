@@ -1,0 +1,70 @@
+<noscript>
+  {% if linklists[link_handle].links != blank %}
+    {% assign mega_nav = true %}
+    {% for childlink in linklists[link_handle].links %}
+      {% if childlink.links == blank %}
+        {% assign mega_nav = false %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    <div class="no-js--submenu bg--primary-background px1 py3 absolute full--w left--0 right--0">
+      <div class="max-site-width px2 lg--up--px3">
+        {% if mega_nav %}
+          <div class="flex flex--wrap mxn3 inline-block">
+              {% for childlink in linklists[link_handle].links %}
+              {% if forloop.first %}
+                {% assign first_list = true %}
+              {% else %}
+                {% assign first_list = false %}
+              {% endif %}
+              {% if forloop.last %}
+                {% assign last_list = true %}
+              {% else %}
+                {% assign last_list = false %}
+              {% endif %}
+              <div class="px3 inline-block">
+                <h4 class=" t--header-navigation mt1 mb1 inline-block">{{ childlink.title }}</h4>
+                <ul class="navigation__second-level f--heading list--reset m0 font-size--xxl mxn1 mb2">
+                  {% for childchildlink in childlink.links %}
+                  <li class="nav__item{% if childchildlink.active %} nav__item--active{% endif %}">
+                    <a href="{{ childchildlink.url }}" class="nav__link block p1 line-height--6 color--header-active" data-desktop-sub-link {% if forloop.first and first_list %}data-desktop-active-first-item{% endif %} {% if forloop.last and last_list %}data-desktop-active-last-item{% endif %}>{{ childchildlink.title }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endfor %}
+          </div>
+        {% else %}
+        <div class="inline-block">
+          <h4 class=" t--header-navigation mt1 mb2">
+            <span class="inline-block">{{ linklists[link_handle].title }}</span>
+          </h4>
+          <ul class="navigation__second-level f--heading list--reset m0 font-size--xxl mxn1">
+            {% for childlink in linklists[link_handle].links %}
+              {% if childlink.links != blank %}
+                <li class="nav__item{% if childlink.active %} nav__item--active{% endif %}" aria-haspopup="true">
+                  {%- assign child_link_handle = link.title | handleize -%}
+                  <a href="{{ link.url }}" class="nav__link nav__link--sublist block p1 line-height--6 color--header-active" {% if forloop.first %}data-desktop-active-first-item{% endif %} {% if forloop.last %}data-desktop-subnav-last-link{% endif %} data-navigation-toggle="desktop" data-key="{{ child_link_handle }}--{{ forloop.index }}" data-desktop-sub-link>
+                    <span class="align--middle">{{ childlink.title }}</span>
+                  </a>
+                  <ul class="mobile-navigation__third-level list--reset t--header-navigation font-size--m mb2" data-toggle-nav>
+                    {% for childchildlink in childlink.links %}
+                      <li class="{% if link.active %} nav__item--active{% endif %}">
+                        <a href="{{ childchildlink.url }}" class="nav__link p1 block line-height--1 color--header-active" data-desktop-sub-link>{{ childchildlink.title | escape }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% else %}
+                <li class="nav__item{% if childlink.active %} nav__item--active{% endif %}">
+                  <a href="{{ childlink.url }}" class="nav__link block p1 line-height--6 color--header-active" {% if forloop.first %}data-desktop-active-first-item{% endif %} {% if forloop.last%}data-desktop-active-last-item{% endif %}>{{ childlink.title }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+</noscript>

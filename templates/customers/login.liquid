@@ -1,0 +1,137 @@
+{% assign section_color = 'primary' %}
+
+
+<section class="page section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background">
+  <div class="max-site-width px2 lg--up--px3">
+
+    <div class="max-width--2 lg--up--max-width--4 mx--auto">
+
+      <div class="grid">
+        <div class="grid__item lg--up--one-half">
+
+          <h1 class="f--heading font-size__heading">{{ 'customer.login.title' | t }}</h1>
+
+          <div class="font-size__basic">
+            <a href="{{ routes.root_url }}">{{ 'customer.login.cancel' | t }}</a>
+          </div>
+
+        </div>
+        <div class="grid__item lg--up--one-half  mt3 lg--up--mt0">
+
+
+          {% form 'customer_login' %}
+
+          {%- if form.errors -%}
+          <div class="form__errors">
+            <h2 class="h3"
+                tabindex="-1"
+                data-form-status>
+              {{ 'contact.form.error_heading' | t }}
+            </h2>
+            {{ form.errors | default_errors }}
+          </div>
+          {%- endif -%}
+
+          <div class="form-success hide" id="ResetSuccess" data-form-status>
+            {{ 'customer.recover_password.success' | t }}
+          </div>
+
+          <div id="CustomerLoginForm">
+            <label class="block" for="CustomerEmail" class="label-hidden">
+              {{ 'customer.login.email' | t }}
+            </label>
+            <input type="email"
+                   class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                   name="customer[email]"
+                   id="CustomerEmail"
+                   class="{% if form.errors contains 'email' %}input-error{% endif %}"
+                   placeholder="{{ 'customer.login.email' | t }}"
+                   spellcheck="false"
+                   autocomplete="off"
+                   autocapitalize="off"
+                   autofocus>
+
+            {% if form.password_needed %}
+              <label class="mt2 block" for="CustomerPassword" class="label-hidden">
+                {{ 'customer.login.password' | t }}
+              </label>
+              <input type="password"
+                     class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                     name="customer[password]"
+                     id="CustomerPassword"
+                     class="{% if form.errors contains 'password' %}input-error{% endif %}"
+                     placeholder="{{ 'customer.login.password' | t }}">
+            {% endif %}
+
+            <input type="submit" class="block full--w btn border--none mt3 px2 py1 bg--{{ section_color }}-text color--{{ section_color }}-text--overlay lg--up--two-thirds"  value="{{ 'customer.login.sign_in' | t }}">
+
+            <div class="font-size--s mt3">
+              <a href="{{ routes.account_register_url }}">
+                {{ 'layout.customer.create_account' | t }}
+              </a>
+
+              {% if form.password_needed %}
+                &nbsp;&nbsp;
+                <a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+              {% endif %}
+            </div>
+          </div>
+
+          {% endform %}
+
+          <div id="RecoverPasswordForm" class="hide">
+            <h2 class="font-size--l m0">{{ 'customer.recover_password.title' | t }}</h2>
+            <p class="font-size__basic mt1 mb3">{{ 'customer.recover_password.subtext' | t }}</p>
+
+
+            {% form 'recover_customer_password' %}
+              {{ form.errors | default_errors }}
+
+              {% if form.posted_successfully? %}
+                <span class="hide reset-password-success"></span>
+              {% endif %}
+
+              <label class="block" for="RecoverEmail" class="label-hidden">
+                {{ 'customer.recover_password.email' | t }}
+              </label>
+              <input type="email"
+                     class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                     name="email"
+                     id="RecoverEmail"
+                     placeholder="{{ 'customer.recover_password.email' | t }}"
+                     spellcheck="false"
+                     autocomplete="off"
+                     autocapitalize="off">
+
+              <input type="submit" class="block full--w btn border--none mt3 px2 py1 bg--{{ section_color }}-text color--{{ section_color }}-text--overlay lg--up--two-thirds"  value="{{ 'customer.recover_password.submit' | t }}">
+
+              <button type="button" id="HideRecoverPasswordLink" class="mt1 border--none bg--transparent font-size--s">
+                {{ 'customer.recover_password.cancel' | t }}
+              </button>
+            {% endform %}
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+{% if shop.checkout.guest_login %}
+  <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+  {% form 'guest_login' %}
+    <input type="submit" class="btn border--none" value="{{ 'customer.login.guest_continue' | t }}">
+  {% endform %}
+{% endif %}

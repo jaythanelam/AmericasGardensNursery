@@ -1,0 +1,75 @@
+{%- render 'blog-template', layout: '' -%}
+
+{% schema %}
+  {
+    "name": "Blog pages",
+    "class": "blog-template",
+    "settings": [
+      {
+         "type": "select",
+         "id": "color_scheme",
+         "label": "Color scheme",
+         "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+         ]
+      },
+      {
+         "type":      "range",
+         "id":        "no_posts",
+         "min":       2,
+         "max":        24,
+         "step":       2,
+         "label":     "No of posts per page",
+         "default":   12
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_tag_filter",
+        "label": "Enable filtering by tag",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_subscribe_link",
+        "label": "Show RSS link",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Articles"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_excerpt",
+        "label": "Show excerpt",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tags",
+        "label": "Show tags",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_link",
+        "label": "Show read more link",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

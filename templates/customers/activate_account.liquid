@@ -1,0 +1,61 @@
+
+{% assign section_color = 'primary' %}
+
+
+<section class="page section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background">
+  <div class="max-site-width px2 lg--up--px3">
+
+    <div class="max-width--2 lg--up--max-width--4 mx--auto">
+
+      <div class="grid">
+        <div class="grid__item lg--up--one-half">
+
+          <h1 class="f--heading font-size__heading">{{ 'customer.activate_account.title' | t }}</h1>
+
+          <p class="font-size__basic">{{ 'customer.activate_account.subtext' | t }}</p>
+
+        </div>
+        <div class="grid__item lg--up--one-half  mt3 lg--up--mt0">
+
+
+          {% form 'activate_customer_password' %}
+
+            {{ form.errors | default_errors }}
+
+            <p>
+              <label for="CustomerPassword" class="label-hidden mt2 block">
+                {{ 'customer.activate_account.password' | t }}
+              </label>
+              <input type="password"
+                class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                name="customer[password]"
+                id="CustomerPassword"
+                placeholder="{{ 'customer.activate_account.password' | t }}">
+            </p>
+
+            <p>
+              <label for="CustomerPasswordConfirmation" class="label-hidden mt2 block">
+                {{ 'customer.activate_account.password_confirm' | t }}
+              </label>
+              <input type="password"
+                class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                name="customer[password_confirmation]"
+                id="CustomerPasswordConfirmation"
+                placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
+            </p>
+
+            <input type="submit" class="block full--w btn border--none mt3 px2 py1 bg--{{ section_color }}-text color--{{ section_color }}-text--overlay lg--up--two-thirds" value="{{ 'customer.activate_account.submit' | t }}">
+            <input type="submit" class="btn border--none mt2 bg--transparent border--{{ section_color }}-text" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
+          {% endform %}
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+  </div>
+</section>
+

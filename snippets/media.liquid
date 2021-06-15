@@ -1,0 +1,77 @@
+{% capture media_id %}FeaturedMedia-{{ module_id }}-{{ media.id }}{% endcapture %}
+{% capture media_class %}product-featured-media{% endcapture %}
+{% capture media_wrapper_id %}{{ media_id }}-wrapper{% endcapture %}
+
+{% assign hidden_class = '' %}
+{% if feature_product %}
+  {% unless featured_media == media   %}
+    {% assign hidden_class = 'hide' %}
+  {% endunless %}
+{% else %}
+  {% unless featured_media == media   %}
+    {% assign hidden_class = 'md--up--hide' %}
+  {% endunless %}
+{% endif %}
+
+<div id="{{ media_wrapper_id }}"
+     class="product-single__media-wrapper product-flickity__slide {% if product.media.size > 1 and feature_product == false %}nine-twelfths nine-twelfths md--up--one-whole{% endif %} js {{ hidden_class }}"
+     {% if media.media_type == 'image' %} data-product-media-type-image data-product-image-index="{{ image_index }}"{% endif %}
+     {% if media.media_type == 'video' or media.media_type == 'external_video' %} role="figure" data-product-media-type-video data-enable-video-looping="{{ enable_video_looping }}"{% endif %}
+     {% if media.media_type == 'model' %} data-product-media-type-model{% endif %}
+     {% if media.media_type == 'external_video' %} data-video-id="{{ media.external_id }}"{% endif %}
+     data-product-single-media-wrapper
+     data-media-id="{{ module_id }}-{{ media.id }}"
+     {% if media.media_type == 'image' %}
+      {% if enable_image_zoom %}
+      role="button"
+      aria-label="{{ 'general.accessibility.media.zoom_trigger_label' | t: alt: media.alt }}"
+      tabindex="0"
+      {% else %}
+      role="img"
+      aria-label="{{ media.alt }}"
+      {% endif %}
+      {% else %}
+      role="figure"
+      aria-label="{{ media.alt }}"
+      {% endif %}
+      >
+
+    <div class="px2 md--up--px0">
+    {% case media.media_type %}
+      {% when 'image' %}
+        {% capture image_attributes %}data-product-featured-image data-product-image-index="0" {% endcapture %}
+        {% comment %}
+        {% if product.images.size == 1 %}
+          {% capture data_image_zoom_data %} data-zoom-item data-image-master-url="{{ media | img_url: 'master' }}" data-image-master-width="{{ media.width }}" data-image-master-height="{{ media.height }}" data-aspectratio="{{ 1 | divided_by: media.aspect_ratio | times: 100 }}"{% endcapture %}
+          {% assign image_attributes = image_attributes | append: data_image_zoom_data %}
+        {% endif %}
+        {% endcomment %}
+        {% render 'responsive-image' with
+          image: media,
+          max_width: 2500,
+          max_height: 2500,
+          image_attributes: image_attributes,
+          wrapper_attributes: "data-feature-product-wrapper",
+          is_product_image: true,
+          section_color: section_color,
+          module_id: module_id,
+        %}
+      {% when 'external_video' %}
+        <div class="product-single__media relative" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+          {{ media | external_video_tag }}
+        </div>
+      {% when 'video' %}
+        <div class="product-single__media product-single__media--video product-single__media--{{ media.id }} relative" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+          {{ media | video_tag: class: 'media-video', image_size: '300x300' }}
+        </div>
+      {% when 'model' %}
+        <div class="product-single__media relative" style="padding-top: 100%">
+          {{ media | model_viewer_tag: image_size: '300x300', reveal: 'interaction', toggleable: true, data-model-id: media.id}}
+        </div>
+      {% else %}
+        <div class="product-single__media" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100}}%;">
+          {{ media | media_tag: class: 'media-item', image_size: '300x300' }}
+        </div>
+    {% endcase %}
+    </div>
+</div>

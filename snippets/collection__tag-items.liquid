@@ -1,0 +1,34 @@
+<li class="mb1">
+  {% if collection.handle %}
+  <a class="inline-block color--{{ section_color }}-text" href="{{ routes.collections_url }}/{{ collection.handle }}{% if collection.sort_by != '' %}?sort_by={{ collection.sort_by }}{% endif %}"><span {% unless current_tags %} class="border-bottom--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text"{% endunless %}>{{ 'collections.sorting.all_tags' | t }}</span></a>
+  {% elsif collection.current_type %}
+  <a class="inline-block color--{{ section_color }}-text" href="{{ collection.current_type | url_for_type | sort_by: collection.sort_by }}"><span {% unless current_tags %} class="border-bottom--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text"{% endunless %}>{{ 'collections.sorting.all_tags' | t }}</span></a>
+  {% elsif collection.current_vendor %}
+  <a class="p1 inline-block color--{{ section_color }}-text"href="{{ collection.current_vendor | url_for_vendor | sort_by: collection.sort_by }}"><span {% unless current_tags %} class="border-bottom--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text"{% endunless %}>{{ 'collections.sorting.all_tags' | t }}</span></a>
+  {% endif %}
+</li>
+
+{% assign tag_count = collection.all_tags.size %}
+{% assign count = 0 %}
+{% for tag in collection.all_tags %}
+  {% if current_tags contains tag %}
+  <li class="mb1 {% if tag_count > 10 and count > 10 and expanded == false %}expandable hide{% endif %}">
+    <a class="inline-block color--{{ section_color }}-text" href="{{ collection.url }}/{{ tag | handle }}"><span class="border-bottom--{{ section_color }}-text">{{ tag }}</span></a>
+  </li>
+  {% else %}
+  <li class="mb1 {% if tag_count > 10 and count > 10 and expanded == false %}expandable hide{% endif %}">
+    <a class="inline-block color--{{ section_color }}-text" href="{% if collection.handle %}{{ routes.collections_url }}/{{ collection.handle }}{% elsif collection.products.first.type == collection.title %}{{ collection.title | url_for_type }}{% elsif collection.products.first.vendor == collection.title %}{{ collection.title | url_for_vendor }}{% endif %}/{{ tag | handle }}">
+      <span class="hv--border-bottom--{{ section_color }}-text">{{ tag }}</span>
+    </a>
+  </li>
+  {% endif %}
+  {% assign count = count | plus: 1 %}
+{% endfor %}
+{% if tag_count > 10 and expanded == false %}
+<li class="mt2">
+  <button class="inline-block border--none p0 bg--transparent color--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text pointer" data-tags-expand><span>{{ 'collections.general.more_tags' | t }}</span></button>
+</li>
+<li class="mt2 hide">
+  <a class="inline-block color--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text pointer" data-tags-condense><span>{{ 'collections.general.less_tags' | t }}</span></a>
+</li>
+{% endif %}

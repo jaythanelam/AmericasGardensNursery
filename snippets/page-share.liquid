@@ -1,0 +1,49 @@
+{%- if template.name == 'article' -%}
+
+  {%- capture share_link -%}{{ shop.url }}{{ article.url }}{%- endcapture -%}
+  {%- capture share_title -%}{{ article.title | url_param_escape }}{%- endcapture -%}
+  {%- if article.image -%}
+    {%- capture share_img -%}{{ article.image.src | img_url: '1024x1024' }}{%- endcapture -%}
+  {%- endif -%}
+
+{%- elsif template.name == 'product' -%}
+
+  {%- capture share_link -%}{{ shop.url }}{{ product.url }}{%- endcapture -%}
+  {%- capture share_title -%}{{ product.title | url_param_escape }}{%- endcapture -%}
+  {%- capture share_img -%}{{ product.featured_image | product_img_url: '1024x1024' }}{%- endcapture -%}
+
+{%- elsif template.name == 'password' -%}
+
+  {%- capture share_link -%}{{ shop.url }}{%- endcapture -%}
+  {%- capture share_title -%}{%- unless shop.metafields.global.description_tag == blank -%}{{ shop.metafields.global.description_tag | url_param_escape }}{%- else -%}{{ shop.name | url_param_escape }}{%- endunless -%}{%- endcapture -%}
+  {%- assign share_img = '' -%}
+
+{%- endif -%}
+
+<ul class="page__sharing list--reset font-size__basic flex items--center justify--start">
+
+  {% unless show_label == false %}
+  <li class="label">{{ 'general.sharing.social_sharing.title' | t }}</li>
+  {% endunless %}
+
+  <li class="">
+    <a class="block color--{{ section_color }}-text share-on-facebook p1 font-size--xxxs" target="_blank" href="//www.facebook.com/sharer.php?u={{ share_link }}" title="{{ 'general.sharing.social_sharing.facebook' | t }}">
+      {% render 'icon-facebook' %}
+    </a>
+  </li>
+
+  <li class="">
+    <a class="block color--{{ section_color }}-text share-on-twitter  p1 font-size--xxxs" target="_blank" href="//twitter.com/share?text={{ share_title }}&amp;url={{ share_link }}" title="{{ 'general.sharing.social_sharing.twitter' | t }}">
+      {% render 'icon-twitter' %}
+    </a>
+  </li>
+
+  {% unless share_img == blank %}
+    <li class="">
+      <a class="block color--{{ section_color }}-text share-on-pinterest p1 font-size--xxxs" target="_blank" href="//pinterest.com/pin/create/button/?url={{ share_link }}&amp;media={{ share_img }}&amp;description={{ share_title }}" title="{{ 'general.sharing.social_sharing.pinterest' | t }}">
+        {% render 'icon-pinterest' %}
+      </a>
+    </li>
+  {% endunless %}
+
+</ul>

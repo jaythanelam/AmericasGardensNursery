@@ -1,0 +1,333 @@
+{%- assign section_color = section.settings.color_scheme -%}
+{%- assign show_author = section.settings.show_author -%}
+{%- assign show_date = section.settings.show_date  -%}
+{%- assign show_tags = section.settings.show_tags  -%}
+{%- assign show_share_links = section.settings.show_share_buttons -%}
+
+{%- comment -%}
+  In order to avoid showing "success" message when we post comments
+  with invalid format (eg. blank fields), we added logic to make sure it doesn't show.
+
+  Comment help page:
+  http://docs.shopify.com/themes/liquid-variables/comment
+{%- endcomment -%}
+{%- assign new_comment = false -%}
+{%- assign number_of_comments = article.comments_count -%}
+
+{%- if comment and comment.created_at -%}
+  {%- assign new_comment = true -%}
+  {%- assign new_comment_id = comment.id -%}
+{%- endif -%}
+
+{%- if new_comment -%}
+  {%- comment -%}
+    When you refresh the page with submitted comment, the comment is duplicated
+    so we added a flag to avoid this situation.
+  {%- endcomment -%}
+  {%- assign duplicate_comment = false -%}
+  {%- for comment in article.comments -%}
+    {%- if comment.id == new_comment_id -%}
+      {%- assign duplicate_comment = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- unless duplicate_comment -%}
+    {%- assign number_of_comments = article.comments_count | plus: 1 -%}
+  {%- endunless -%}
+{%- endif -%}
+
+<section class="article section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background" role="article">
+  <div class="max-site-width px2 lg--up--px3">
+
+    <div class="grid">
+      <div class="grid__item lg--up--one-third lg--up--text-align--right lg--up--sticky--unless-sticky-header lg--up--top--0 py1">
+        <div class="lg--up--pl3 wd--pt3 lg--up--inline-block lg--up--text-align--left">
+          <div class="lg--up--hide pb2">
+          {% unless article.image == blank %}
+            {% render 'responsive-image' with
+              image: article.image
+              max_width: 2000,
+              max_height: 2000,
+              section_color: section_color,
+            %}
+          {% endunless %}
+          </div>
+
+          <h2 class="f--heading font-size__heading m0 mb2">{{ article.title }}</h2>
+
+          {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+
+          {% if show_author or show_date %}
+          <p class="color--meta m0 mt1 font-size__basic">{% if show_author %}{{ 'blogs.article.by_author' | t: author: article.author }}<br/>{% endif %}{% if show_date %}{{  date }}{% endif %}</p>
+          {% endif %}
+
+          {% if blog.comments_enabled?  %}
+            <ul class=" list--reset  font-size__basic">
+              {% if blog.comments_enabled? %}
+                <li>
+                  <a href="{{ article.url }}#comments" class="color--{{ section_color }}-text hv--{{ section_color }}-accent">
+                    {{ 'blogs.comments.with_count' | t: count: article.comments_count }}
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          {% endif %}
+
+          {% if show_tags %}
+          {% if article.tags.size > 0 %}
+            <ul class=" list--reset  font-size__basic">
+              {% if article.tags.size > 0 %}
+                {% for tag in article.tags %}
+                  <li class="inline-block">
+                    <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="color--{{ section_color }}-text hv--{{ section_color }}-accent">#{{ tag }}</a>
+                    {% unless forloop.last %}&nbsp;{% endunless %}
+                  </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="grid__item lg--up--two-thirds">
+        <div class="lg--up--px4">
+          <div class="md--dn--hide">
+            {% unless article.image == blank %}
+              {% render 'responsive-image' with
+                image: article.image
+                max_width: 2000,
+                max_height: 2000,
+                section_color: section_color,
+              %}
+            {% endunless %}
+          </div>
+
+          <div class="rte lg--up--three-quarters {% if article.image %}mt3{% endif %}  font-size__basic">
+            {{ article.content }}
+          </div>
+
+          {% if show_share_links %}
+          <div class="mt3">
+            {% render 'page-share',
+              section_color: section_color
+            %}
+          </div>
+          {% endif %}
+
+          {% if blog.comments_enabled? %}
+          <div class="comments lg--up--three-quarters mt3 font-size__basic">
+
+            <h3 class="f--heading font-size--ml">{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+
+            {% paginate article.comments by 5 %}
+            <div id="comments">
+
+              {% if number_of_comments > 0 %}
+                <ul class="list--reset">
+                  {% comment %}
+                    Display comment from URL parameters if it is waiting moderation
+                  {% endcomment %}
+                  {% if comment and comment.status != 'published' %}
+                    <li id="{{ comment.id }}">
+                      <div class="rte">
+                        {{ comment.content }}
+                      </div>
+                      {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+                      <p>{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</p>
+                    </li>
+                  {% endif %}
+
+                  {% for comment in article.comments %}
+                    {% if forloop.first %}
+                    <hr class="hr border-bottom--{{ section_color }}-text" />
+                    {% endif %}
+                    <li class="py2 border-bottom--{{ section_color }}-text" id="{{ comment.id }}">
+                      <div class="rte">
+                        {{ comment.content }}
+                      </div>
+                      {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+                      <p class="m0">{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</p>
+                    </li>
+                  {% endfor %}
+                </ul>
+
+                {% if paginate.pages > 1 %}
+                  {% render 'pagination__comments', paginate: paginate %}
+                {% endif %}
+              {% endif %}
+
+            </div>
+            {% endpaginate %}
+
+            {% form 'new_comment', article %}
+
+              {%- assign form_id = 'CommentForm' -%}
+              <h3 class="f--main font-size__basic mt3">{{ 'blogs.comments.title' | t }}</h3>
+
+              {%- assign post_message = 'blogs.comments.success' -%}
+              {%- if blog.moderated? and comment.status == 'pending' -%}
+                {%- assign post_message = 'blogs.comments.success_moderated' -%}
+              {%- elsif comment.status == 'unapproved' or comment.status == 'spam' -%}
+                {%- assign post_message = 'blogs.comments.unapproved' -%}
+              {%- endif -%}
+
+              {% render 'form-status',
+                 form: form,
+                 form_id: form_id,
+                 success_message: post_message,
+              %}
+
+              <label for="{{ form_id }}-author" class="label-hidden">
+                {{ 'blogs.comments.name' | t }}
+              </label>
+              <input type="text"
+                     class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                     name="comment[author]"
+                     id="{{ form_id }}-author"
+                     class="{% if form.errors contains 'author' %}input-error{% endif %}"
+                     placeholder="{{ 'blogs.comments.name' | t }}"
+                     value="{{ form.author }}"
+                     autocapitalize="words">
+
+              <label for="{{ form_id }}-email" class="label-hidden">
+                {{ 'blogs.comments.email' | t }}
+              </label>
+              <input type="email"
+                     class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text"
+                     name="comment[email]"
+                     id="{{ form_id }}-email"
+                     class="{% if form.errors contains 'email' %}input-error{% endif %}"
+                     placeholder="{{ 'blogs.comments.email' | t }}"
+                     value="{{ form.email }}"
+                     spellcheck="false"
+                     autocomplete="off"
+                     autocapitalize="off">
+
+              <label for="{{ form_id }}-body" class="label-hidden">
+                {{ 'blogs.comments.message' | t }}
+              </label>
+              <textarea
+                name="comment[body]"
+                id="{{ form_id }}-body"
+                class="block mt1 full--w  px2 py1 bg--transparent border--{{ section_color }}-text {% if form.errors contains 'body' %}input-error{% endif %}"
+                placeholder="{{ 'blogs.comments.message' | t }}">
+                {{ form.body }}
+              </textarea>
+
+              {% if blog.moderated? %}
+                <p>{{ 'blogs.comments.moderated' | t }}</p>
+              {% endif %}
+
+              <input type="submit" class="block full--w max-width--1 btn border--none mt3 px2 py1 bg--{{ section_color }}-text color--{{ section_color }}-text--overlay hover-bg--{{ section_color }}" value="{{ 'blogs.comments.post' | t }}">
+            {% endform %}
+
+          {% endif %}
+
+          {% if section.settings.show_next_previous_links %}
+            {% if blog.next_article or blog.previous_article %}
+            <div class="pagination font-size__basic pt4">
+
+              {% if blog.next_article %}
+                <a class="p1 pointer left color--{{ section_color }}-text hv--{{ section_color }}-accent" href="{{ blog.next_article }}" title="{{ 'blogs.article.newer_post' | t }}">
+                  <span class="font-size--xxxxs inline-block align--top">{% render 'icon-chevron-left' %}</span>
+                  {{ 'blogs.article.newer_post' | t }}
+                </a>
+              {% endif %}
+
+              {% if blog.previous_article %}
+                <a class="p1 pointer right color--{{ section_color }}-text hv--{{ section_color }}-accent" href="{{ blog.previous_article }}" title="{{ 'blogs.article.older_post' | t }}">
+                  {{ 'blogs.article.older_post' | t  }}
+                  <span class="font-size--xxxxs inline-block align--top">{% render 'icon-chevron-right' %}</span>
+                </a>
+              {% endif %}
+
+            </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ shop.url | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      {% assign image_size = article.image.width | append: 'x' %}
+      "image": [
+        {{ article | img_url: image_size | prepend: "https:" | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }}
+    }
+  }
+</script>
+
+{% schema %}
+  {
+    "name": "Posts",
+    "settings": [
+      {
+         "type": "select",
+         "id": "color_scheme",
+         "label": "Color scheme",
+         "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+         ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social media sharing buttons",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tags",
+        "label": "Show tags",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_next_previous_links",
+        "label": "Show links to next / previous articles",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

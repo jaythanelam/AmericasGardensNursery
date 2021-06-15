@@ -1,0 +1,177 @@
+{%- assign section_color = section.settings.color_scheme -%}
+{%- assign show_author = section.settings.show_author -%}
+{%- assign show_date = section.settings.show_date  -%}
+{%- assign show_excerpt = section.settings.show_excerpt  -%}
+{%- assign show_tags = section.settings.show_tags  -%}
+{%- assign show_link = section.settings.show_link  -%}
+{%- assign tags_enabled = section.settings.enable_tag_filter -%}
+{%- assign posts_per_row_desktop = section.settings.posts_per_row_desktop -%}
+
+<section class="blog section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background" data-section-type="blog" data-section-id="{{ section.id }}"  {% if settings.fade_in_items %}data-fade-in="true"{% endif %}>
+  <div class="max-site-width px2 lg--up--px3">
+
+    {% paginate blog.articles by section.settings.no_posts %}
+      <header role="banner">
+        <div class="lg--up--flex">
+          <div class="lg--up--one-half lg--up--self--end">
+            <h1 class="f--heading  font-size--xxl line-height-6 wd--font-size--xxxl m0 pb1">
+              <span class="">{{ blog.title }}</span>
+              {% if section.settings.show_subscribe_link %}
+              <a href="{{ shop.url }}{{ blogs[blog.handle].url }}.atom" title="{{ 'general.sharing.rss_subscribe' | t }}" >
+                <span class="color--{{ section_color }}-text  hv--color--{{ section_color }}-accent font-size--xxxxs align--middle ml1">{% render 'icon-rss' %}</span>
+              </a>
+              {% endif %}
+            </h1>
+          </div>
+          <div class="mt3 lg--up--mt0 lg--up--one-half lg--up--flex lg--up--text-align--right">
+            <div class="md--dn--table full--w lg--up--self--end">
+              {% if tags_enabled %}
+              <div class="md--dn--table-cell md--dn--one-half md--dn--align--top">
+                <div class="lg--up--hide font-size__basic mxn1">
+                  <a class="lg--up--hide px1 inline-block pointer color--{{ section_color }}-text" data-tag-filter-mobile-trigger>
+                    <div class="inline-block">
+                    {{ 'collections.general.filter' | t }}
+                    <span class="font-size--xxxxs inline-block align--middle">
+                      <span class="chevron-down">{% render 'icon-chevron-down' %}</span>
+                      <span class="chevron-up hide">{% render 'icon-chevron-up' %}</span>
+                    </span>
+                    </div>
+                  </a>
+                  <div class="p1 md--dn--hide" data-tag-list>
+                    <ul class="list--reset m0 mtn1 pb3 pt2 lg--up--pb0 lg--up--pt3 font-size__basic">
+                      <li class="mb1">
+                        <a class="inline-block color--{{ section_color }}-text" href="{{ blog.url }}">
+                          <span {% unless current_tags %} class="s"{% endunless %}>{{ 'blogs.general.all_tags' | t }}</span>
+                        </a>
+                      </li>
+                      {% for tag in blog.all_tags %}
+                        {% if current_tags contains tag %}
+                        <li class="mb1">
+                            <a class="inline-block color--{{ section_color }}-text" href="{{ blog.url }}/tagged/{{ tag | handle }}"><span class="border-bottom--{{ section_color }}-text">{{ tag }}</span></a>
+                        </li>
+                        {% else %}
+                        <li class="mb1">
+                            <a class="inline-block color--{{ section_color }}-text" href="{{ blog.url }}/tagged/{{ tag | handle }}"><span>{{ tag }}</span></a>
+                        </li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="grid mt3 lg--up--mt4">
+
+        {% if tags_enabled %}
+        <div class="grid__item lg--up--one-seventh lg--up--sticky--unless-sticky-header top--0 font-size__basic md--dn--hide">
+          <a class="color--{{ section_color }}-text lg--up--hide p1 inline-block mxn1 mb1 pointer" data-tag-filter-mobile-trigger>
+            <div class="inline-block">
+            {{ 'collections.general.filter' | t }}
+            <span class="font-size--xxxxs inline-block align--middle">
+              <span class="chevron-down">{% render 'icon-chevron-down' %}</span>
+              <span class="chevron-up hide">{% render 'icon-chevron-up' %}</span>
+            </span>
+            </div>
+          </a>
+          <ul class="list--reset m0 mtn1 pb3 pt2 lg--up--pb0 lg--up--pt3 font-size__basic">
+            <li class="mb1">
+              <a class="color--{{ section_color }}-text {% unless current_tags %}border-bottom--{{ section_color }}-text{% endunless %} hv--border-bottom--{{ section_color }}-text inline-block" href="{{ blog.url }}">
+                <span>{{ 'blogs.general.all_tags' | t }}</span>
+              </a>
+            </li>
+            {% for tag in blog.all_tags %}
+              {% if current_tags contains tag %}
+              <li class="mb1">
+                  <a class="color--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text border-bottom--{{ section_color }}-text inline-block" href="{{ blog.url }}/tagged/{{ tag | handle }}"><span>{{ tag }}</span></a>
+              </li>
+              {% else %}
+              <li class="mb1">
+                  <a class="color--{{ section_color }}-text hv--border-bottom--{{ section_color }}-text  inline-block" href="{{ blog.url }}/tagged/{{ tag | handle }}"><span>{{ tag }}</span></a>
+              </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <div class="grid__item pt1 {% if section.settings.enable_tag_filter %}lg--up--six-sevenths{% endif %}">
+
+          {% if layout == 'grid' %}
+            <div class="grid grid--uniform sm--grid--half-gutter mtn3 lg--up--mtn4">
+              {% for article in blog.articles %}
+                <div class="product-grid-item grid__item sm--one-whole md--up--{{ posts_per_row_desktop }} mt3 lg--up--mt4">
+                  {% assign blog_page = true %}
+                  {%- render 'article-grid-item',
+                      article: article,
+                      blog_page: blog_page,
+                      section_color: section_color,
+                      show_author: show_author,
+                      show_date: show_date,
+                      show_excerpt: show_excerpt,
+                      show_tags: show_tags,
+                      show_link: show_link,
+                  -%}
+                </div>
+              {% else %}
+                {% for i in (1..section.settings.no_posts) %}
+                <div class="product-grid-item  grid__item  lg--up--one-third">
+                  {% render 'article-grid-item__onboarding' %}
+                </div>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="blog-cascade" data-blog-cascade>
+              <div class="items">
+                <div class="item-sizer"></div>
+                <div class="column-sizer"></div>
+
+                {% assign col_count_desktop = 1 %}
+                {% for article in blog.articles %}
+                  {% assign block_width_mobile = 'full' %}
+                  {% assign block_width_desktop = 'half' %}
+                  {% capture mobile_count %}{% cycle '1', '2' %}{% endcapture %}
+
+                  <div class="item item--large-gap item--desktop--half item--mobile--full {% if forloop.first %}item--first{% endif %}  {% if last_col %}item--last{% endif %} {% if settings.fade_in_items %}fade-in{% endif %}">
+                    <div class="item__inner {% if mobile_count == '1' %}md--dn--pr4{% else %}md--dn--pl4{% endif %} {% if col_count_desktop == 2 or col_count_desktop == 3 %}lg--up--five-sixths lg--up--mx--auto{% endif %}">
+                      {% assign blog_page = true %}
+                      {%- render 'article-grid-item__feature',
+                          article: article,
+                          blog_page: blog_page,
+                          section_color: section_color,
+                          show_author: show_author,
+                          show_date: show_date,
+                          show_excerpt: show_excerpt,
+                          show_tags: show_tags,
+                          show_link: show_link,
+
+                      -%}
+                    </div>
+                  </div>
+
+                  {% assign col_count_desktop = col_count_desktop | plus: 1 %}
+                  {% if col_count_desktop == 5 %}
+                    {% assign col_count_desktop = 1 %}
+                  {% endif %}
+                {% endfor %}
+
+              </div>
+            </div>
+          {% endif %}
+
+          {% if paginate.pages > 1 %}
+            {% render 'pagination', section_color: section_color, paginate: paginate %}
+          {% endif %}
+
+        </div>
+      </div>
+
+    {% endpaginate %}
+
+  </div>
+</section>

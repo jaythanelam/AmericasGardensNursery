@@ -1,0 +1,41 @@
+<!-- /snippets/product-grid-item.liquid -->
+{% comment %}
+
+  This snippet is used to showcase each product during the loop,
+  'for product in collection.products' in collection.liquid.
+
+  A liquid variable (grid_item_width) is set just before the this
+  snippet is included to change the size of the container.
+  Once the variable is set on a page, all future instances of this
+  snippet will use that width. Overwrite the variable to adjust this.
+
+  Example
+    - assign grid_item_width = 'large--one-quarter medium--one-half'
+
+{% endcomment %}
+
+{% comment %}
+  Set the default grid_item_width if no variable is set
+{% endcomment %}
+
+
+{%- unless grid_item_width -%}
+  {%- assign grid_item_width = 'md-dn--one-half lg---up--one-third wd--one-third' -%}
+{%- endunless -%}
+
+{%- unless text_color -%}
+  {%- assign section_color = 'primary' -%}
+{%- endunless -%}
+
+<a href="{{ page.url }}">
+  <p class="color--{{ section_color }}-text m0 mt2 font-size__basic">{{ page.title }}</p>
+  <div class="rte font-size--sm mt2 line-height--3">
+    {% if article.excerpt.size > 0 %}
+      {{ article.excerpt }}
+    {% else %}
+      <p>
+        {{ article.content | strip_html | truncatewords: 20 }}
+      </p>
+    {% endif %}
+  </div>
+</a>

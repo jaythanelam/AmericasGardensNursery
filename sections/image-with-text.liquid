@@ -1,0 +1,218 @@
+{%- assign section_color = section.settings.color_scheme -%}
+
+
+{%- assign text_color_overlay = section.settings.section_color_overlay -%}
+{%- assign content_position = section.settings.content_position -%}
+{%- assign text_align = section.settings.text_align -%}
+{%- assign hover_color = '' -%}
+{%- assign hover_color_overlay = '' -%}
+
+{%- if text_color != 'main' -%}
+  {%- assign hover_color = 'main' -%}
+{%- else -%}
+  {%- assign hover_color = 'primary' -%}
+{%- endif -%}
+
+{%- if text_color_overlay != 'main' -%}
+  {%- assign hover_color_overlay = 'main' -%}
+{%- else -%}
+  {%- assign hover_color_overlay = 'primary' -%}
+{%- endif -%}
+
+{%- assign heading = section.settings.heading -%}
+{%- assign text = section.settings.text -%}
+{%- assign cta_text = section.settings.cta_text -%}
+{%- assign cta_url = section.settings.cta_url -%}
+
+{%- if section.settings.feature_image -%}
+  {%- assign feature_image = section.settings.feature_image -%}
+{%- else -%}
+  {%- assign placeholder = true -%}
+{%- endif -%}
+
+<section class="image-with-text section-with-padding color--{{ section_color }}-text lg--up--color--{{ text_color_overlay }}-text bg--{{ section_color }}-background" data-section-type="newsletter" data-section-id="{{ section.id }}">
+  <div class="max-site-width px2 lg--up--px3">
+    <div class="image-with-text__container relative">
+      <div class="image-with-text__image">
+        {% if section.settings.feature_image  %}
+          {% render 'responsive-image' with
+            image: feature_image,
+            max_width: 2000,
+            max_height: 2000,
+            section_color: section_color,
+          %}
+        {% else %}
+          <div class="image-with-text__placeholder full bg--{{ section_color }}-placeholder p1 lg--up--p3">
+            <div class="image-with-text__placeholder-svg">
+              {{ 'lifestyle-1' | placeholder_svg_tag }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="image-with-text__content lg--up--absolute lg--up--full lg--up--top--0 lg--up--left--0 lg--up--p4 wd--p5 z1">
+        {% assign content_position = content_position | split: ' ' %}
+        <div class="lg--up--table lg--up--full">
+          <div class="lg--up--table-cell lg--up--{{ content_position[0] }} lg--up--{{ content_position[1] }}">
+            <div class="inline-block lg--up--{{ text_align }} lg--up--one-third">
+              <div class="mt3 four-fifths lg--up--m0 lg--up--one-whole">
+                {% if heading != blank %}
+                  <h2 class="f--heading font-size__heading m0">{{ heading }}</h2>
+                {% endif %}
+                {% if text != blank %}
+                  <div class="richtext font-size__basic mt2">
+                    {{ text }}
+                  </div>
+                {% endif %}
+
+                {% if cta_url != blank %}
+                  <a class="mt1 inline-block font-size__basic f--accent link-underline--{{ section_color }} hover-underline--{{ section_color }} lg--up--link-underline--{{ text_color_overlay }} lg--up--hover-underline--{{ text_color_overlay }}  lg--up--inline-block" href="{{ cta_url }}" target="_blank" >
+                    {{ cta_text }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Heading goes here"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Image with Text Overlay</p>"
+    },
+    {
+      "type":      "header",
+      "content":   "Call to action"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type":      "header",
+      "content":   "Text overlay"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        {
+          "value": "text-align--left align--top",
+          "label": "Top Left"
+        },
+        {
+          "value": "text-align--center align--top",
+          "label": "Top Center"
+        },
+        {
+          "value": "text-align--right align--top",
+          "label": "Top Right"
+        },
+        {
+          "value": "text-align--left align--middle",
+          "label": "Middle Left"
+        },
+        {
+          "value": "text-align--center align--middle",
+          "label": "Middle Center"
+        },
+        {
+          "value": "text-align--right align--middle",
+          "label": "Middle Right"
+        },
+        {
+          "value": "text-align--left align--bottom",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "text-align--center align--bottom",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "text-align--right align--bottom",
+          "label": "Bottom Right"
+        }
+      ],
+      "default":   "text-align--left align--middle"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "text-align--left",
+          "label": "Left"
+        },
+        {
+          "value": "text-align--center",
+          "label": "Center"
+        },
+        {
+          "value": "text-align--right",
+          "label": "Right"
+        }
+      ],
+      "default":   "text-align--left"
+    },
+    {
+       "type": "select",
+       "id": "section_color_overlay",
+       "label": "Text color",
+       "options": [
+         { "value": "primary", "label": "Primary text"},
+         { "value": "secondary", "label": "Secondary text"},
+         { "value": "tertiary", "label": "Tertiary text"},
+         { "value": "white", "label": "White"}
+       ]
+    },
+    {
+      "type":      "header",
+      "content":   "Colors"
+    },
+    {
+       "type": "select",
+       "id": "color_scheme",
+       "label": "Color scheme",
+       "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

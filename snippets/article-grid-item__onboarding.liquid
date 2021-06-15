@@ -1,0 +1,9 @@
+<a href="#">
+  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+  <div class="placeholder-img-wrapper bg--{{ section_color }}-placeholder">
+    <div style="padding-top:{% cycle '66.6', '133.33', '100' %}%;" class="relative">
+      {{ 'image' | placeholder_svg_tag }}
+    </div>
+  </div>
+  <p class="color--main m0 mt2">{{ 'homepage.onboarding.blog_title' | t }}</p>
+</a>

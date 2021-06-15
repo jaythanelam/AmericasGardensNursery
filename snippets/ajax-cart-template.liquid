@@ -1,0 +1,285 @@
+<!-- /snippets/ajax-cart-template.liquid -->
+{% comment %}
+
+  This snippet provides the default handlebars.js templates for
+  the ajax cart plugin. Use the raw liquid tags to keep the
+  handlebar.js template tags as available hooks.
+
+{% endcomment %}
+  <script id="CartTemplate" type="text/template">
+  {% raw %}
+    <form action="{% endraw %}{{ routes.cart_url }}{% raw %}" method="post" novalidate class="cart ajaxcart">
+      <div class="max-width--4 lg--up--px3 pb4 mx--auto color--active-text relative">
+
+        <div class="absolute top--0 left--0 full z1 cart__spinner hide" data-ajax-cart-spinner>
+          <div class="spinner color--active-text"></div>
+        </div>
+
+        <h2 id="AjaxCartTitle"
+            class="f--heading md--up--hide">{% endraw %}{{ 'cart.general.title' | t }}{% raw %}</h2>
+
+        <div class="cart">
+          <div class="cart__row sm--hide">
+            <div class="grid">
+              <div class="grid__item lg--up--three-fifths">
+                <h2 class="f--heading">{% endraw %}{{ 'cart.general.title' | t }}{% raw %}</h2>
+              </div>
+              <div class="grid__item lg--up--two-fifths">
+                <div class="table full--w">
+                  <div class="table-cell one-third">
+                    <div class="js-qty-wrapper color--main">
+                      {% endraw %}{{ 'cart.label.quantity' | t }}{% raw %}
+                    </div>
+                  </div>
+                  <div class="table-cell two-thirds text-align--right font-size--m">
+                    {% endraw %}{{ 'cart.label.total' | t }}{% raw %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="hr bg--active-text mt2"/>
+          </div>
+
+          {{@each(it.items) => item, index}}
+          <div class="cart__row font-size--sm mt3"
+               data-cart-item-index="{{index+1}}"
+               data-cart-item-key="{{item.key}}"
+               data-cart-row>
+            <div class="grid">
+              <div class="grid__item lg--up--three-fifths">
+                <div class="grid grid--full ">
+                  <div class="grid__item one-quarter">
+                      <a href="{{item.url}}" class="block cart__row__img-link">
+                        <img class="block cart__row__img" src="{{item.img}}" alt="{{item.img_alt}}">
+                      </a>
+                  </div>
+                  <div class="grid__item three-quarters">
+                    <div class="pl2">
+
+                      <div class="table full--w mb2">
+                        <div class="table-cell two-thirds">
+                          <a class="f--heading font-size--m md--up--font-size--l color--active-text" href="{{item.url}}">{{item.name}}</a>
+                          {{@if(item.variation)}}
+                            <p class="ajaxcart__product-meta m0">{{item.variation}}</p>
+                          {{/if}}
+
+                          {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
+                            <p class="ajaxcart__product-meta m0">{{ item.vendor }}</p>
+                          {% endraw %}{% endif %}{% raw %}
+
+                          {{@if(item.sellingPlanName)}}
+                            <p class="ajaxcart__product-meta m0">{{item.sellingPlanName}}</p>
+                          {{/if}}
+
+                          {{@if(item.properties)}}
+                            {{@foreach(item.properties) => key, property}}
+                              {{@if(property)}}
+                                <p class="ajaxcart__product-meta m0">{{key}}: {{property}}</p>
+                              {{/if}}
+                            {{/foreach}}
+                          {{/if}}
+
+                          {{@if(item.discountsApplied)}}
+                            <ul class="list--reset m0 order-discount font-size--xs color--active-accent order-discount--list order-discount--title order-discount--ajax-cart order-discount--ajax-cart-list md--up--hide" aria-label="{% endraw %}{{ 'customer.order.discount' | t }}{% raw %}">
+                              {{@each(item.discounts) => discount, index}}
+                                <li class="order-discount__item">
+                                  {{ discount.discount_application.title }} (-{{ discount.formattedAmount }})
+                                </li>
+                              {{/each}}
+                            </ul>
+                          {{/if}}
+
+                        </div>
+                        <div class="table-cell text-align--right font-size--m one-third md--up--hide">
+                          {{@if(item.discountsApplied)}}
+                            <del class="ajaxcart__price--strikethrough block">{{item.price}}</del>
+                            <span class="ajaxcart__price color--active-accent">
+                              {{item.discountedPrice}}
+                            </span>
+                          {{#else}}
+                            <span class="ajaxcart__price">
+                              {{item.price}}
+                            </span>
+                          {{/if}}
+
+                          {{@if(item.unitPriceMeasurement)}}
+                          <div class="ajaxcart__unit-price font-size--xs{{@if(item.discountsApplied)}} color--active-accent{{#else}} color--active-meta{{/if}}">{{item.unitPrice}} / {{ item.unitPriceMeasurementReferenceValue }}{{ item.unitPriceMeasurementReferenceUnit }}</div>
+                          {{/if}}
+                        </div>
+                      </div>
+
+                      <div class="ajax-qty-wrapper color--main three-fifths pm--one-half md--up--hide">
+                        <div class="ajax-qty mxn1">
+                          <div class="flex font-size--s">
+                            <button type="button" id="qty_adjust_minus_{{item.key}}_mobile" class="ajaxcart__qty-adjust ajaxcart__qty--minus bg--transparent border--transparent font-size--xs color--active-text" data-id="{{item.key}}" data-qty="{{item.itemMinus}}" data-line="{{item.line}}" aria-label="&minus;">
+                              {% endraw %}{% render 'icon-minus' %}{% raw %}
+                            </button>
+                            <input id="{{item.inputId}}_mobile" type="text" name="updates[]" class="ajaxcart__qty-num border--transparent bg--transparent text-align--center full--w font-size--m color--active-text" value="{{item.itemQty}}" min="1" data-id="{{item.key}}" data-line="{{item.line}}" aria-label="quantity" pattern="[0-9]*" name="{{item.inputName}}">
+                            <button type="button" id="qty_adjust_plus_{{item.key}}_mobile" class="ajaxcart__qty-adjust ajaxcart__qty--plus  bg--transparent border--transparent  font-size--xs color--active-text" data-id="{{item.key}}" data-qty="{{item.itemAdd}}" data-line="{{item.line}}" aria-label="&plus;">
+                              {% endraw %}{% render 'icon-plus' %}{% raw %}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button id="remove_{{item.inputId}}" type="button" class="inline-block mt1 color--active-text ajaxcart__qty-adjust ajaxcart__qty--remove pointer btn--plain font-size--s color--active-text hv--active-accent" data-line="{{item.line}}">
+                        <small>{% endraw %}{{ 'cart.general.remove' | t }}{% raw %}</small>
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid__item sm--hide lg--up--two-fifths">
+                <div class="table table--fixed full--w">
+                  <div class="table-cell one-third">
+                    <div class="ajax-qty-wrapper color--main">
+                      <div class="ajax-qty">
+                        <div class="flex font-size--s ">
+                          <button type="button" id="qty_adjust_minus_{{item.key}}_desktop" class="ajaxcart__qty-adjust ajaxcart__qty--minus bg--transparent border--transparent font-size--xs color--active-text" data-id="{{item.key}}" data-qty="{{item.itemMinus}}" data-line="{{item.line}}" aria-label="&minus;">
+                            {% endraw %}{% render 'icon-minus' %}{% raw %}
+                          </button>
+                          <input id="{{item.inputId}}_desktop" type="text" name="updates[]" class="ajaxcart__qty-num border--transparent bg--transparent text-align--center full--w font-size--m color--active-text" value="{{item.itemQty}}" min="1" data-id="{{item.key}}" data-line="{{item.line}}" aria-label="quantity" pattern="[0-9]*" name="{{item.inputName}}">
+                          <button type="button" id="qty_adjust_plus_{{item.key}}_desktop" class="ajaxcart__qty-adjust ajaxcart__qty--plus  bg--transparent border--transparent  font-size--xs color--active-text" data-id="{{item.key}}" data-qty="{{item.itemAdd}}" data-line="{{item.line}}" aria-label="&plus;">
+                            {% endraw %}{% render 'icon-plus' %}{% raw %}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-cell two-thirds text-align--right font-size--m">
+
+                    {{@if(item.discountsApplied)}}
+                      <del class="ajaxcart__price--strikethrough block">{{item.originalLinePrice}}</del>
+                      <span class="ajaxcart__price color--active-accent">
+                        {{item.discountedPrice}}
+                      </span>
+                    {{#else}}
+                      <span class="ajaxcart__price">
+                        {{item.originalLinePrice}}
+                      </span>
+                    {{/if}}
+
+                    {{@if(item.unitPriceMeasurement)}}
+                    <div class="ajaxcart__unit-price font-size--xs{{@if(item.discountsApplied)}} color--active-accent{{#else}} color--active-meta{{/if}}">{{item.unitPrice}} / {{ item.unitPriceMeasurementReferenceValue }}{{ item.unitPriceMeasurementReferenceUnit }}</div>
+                    {{/if}}
+
+                    {{@if(item.discountsApplied)}}
+                      <ul class="list--reset m0 mt1 order-discount font-size--sm color--active-accent order-discount--list order-discount--title order-discount--ajax-cart order-discount--ajax-cart-list" aria-label="{% endraw %}{{ 'customer.order.discount' | t }}{% raw %}">
+                        {{@each(item.discounts) => discount, index}}
+                          <li class="order-discount__item">
+                            {{ discount.discount_application.title }} (-{{ discount.formattedAmount }})
+                          </li>
+                        {{/each}}
+                      </ul>
+                    {{/if}}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+
+
+          <div class="cart__row">
+
+            <hr class="hr bg--active-text my3"/>
+
+            <div class="grid">
+
+              <div class="grid__item md--up--one-half">
+                <div class="md--up--pr4">
+                  {% endraw %}{% if settings.cart_notes_enable %}{% raw %}
+                    <label class="inline-block mb1 font-size--sm" for="CartSpecialInstructions">{% endraw %}{{ 'cart.general.note' | t }}{% raw %}</label>
+                    <textarea class="bg--transparent border--active-text color--active-text full--w" name="note" id="CartSpecialInstructions">{% endraw %}{{ cart.note }}{% raw %}</textarea>
+                  {% endraw %}{% endif %}{% raw %}
+                </div>
+              </div>
+
+              <div class="grid__item md--up--one-half md--up--text-align--right mt3 md--up--mt0 {% endraw %}{% unless settings.cart_notes_enable %}right{% endunless %}{% raw %}">
+
+                {{@if(it.cartDiscountsApplied)}}
+                  {{@each(it.cartDiscounts) => val, index}}
+                    <p class="order-discount order-discount--title order-discount--ajax-cart  color--active-accent text-align--right">
+                      <span class="visually-hidden">{% endraw %}{{ 'customer.order.discount' | t }}{% raw %}:</span>{{ val.title }}<span class="ml1 ajaxcart__price">-{{ val.formattedAmount }}</span>
+                    </p>
+                  {{/each}}
+                {{/if}}
+
+                <div class="table full--w font-size--m mt1">
+                  <div class="table-cell text-align--left md--up--text-align--right">
+                    <p>{% endraw %}{{ 'cart.general.subtotal' | t }}{% raw %}</p>
+                  </div>
+                  <div class="table-cell text-align--right">
+                    <p>{{it.totalPrice}}</p>
+                  </div>
+                </div>
+
+                {% endraw %}
+                {%- capture taxes_shipping_checkout -%}
+                  {%- if shop.taxes_included and shop.shipping_policy.body != blank -%}
+                    {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url, link_class: 'link-underline link-underline--active' }}
+                  {%- elsif shop.taxes_included -%}
+                    {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+                  {%- elsif shop.shipping_policy.body != blank -%}
+                    {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url, link_class: 'link-underline link-underline--active' }}
+                  {%- else -%}
+                    {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+                  {%- endif -%}
+                {%- endcapture -%}
+                {% raw %}
+                <p class="font-size--xs md--up--font-size--s mt1 mb3">{% endraw %}{{ taxes_shipping_checkout }}{% raw %}</p>
+                <div class="grid grid--half-gutter">
+                  <div class="grid__item text-align--right lg--up--two-thirds lg--up--push-one-third">
+                    <input type="submit" name="checkout" class="checkout btn__ajax-checkout btn border--none p1 block full--w border--active-text bg--active-text color--active-text--overlay hv--active-accent--overlay hv-bg--active-accent hv--border--active-accent" value="{% endraw %}{{ 'cart.general.checkout' | t }}{% raw %}">
+                  </div>
+                </div>
+
+                {% endraw %}{% if additional_checkout_buttons %}
+                <div class="grid grid--half-gutter mt1">
+                  <div class="grid__item text-align--right lg--up--two-thirds lg--up--push-one-third">
+                    <div class="additional_checkout_buttons">{{ content_for_additional_checkout_buttons }}</div>
+                  </div>
+                </div>
+                {% endif %}{% raw %}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  {% endraw %}
+  </script>
+  <script id="AjaxQty" type="text/template">
+  {% raw %}
+    <div class="ajaxcart__qty">
+      <div class="relative font-size--s ">
+        <button type="button" id="qty_adjust_minus_{{key}}" class="js-qty__adjust js-qty__adjust--minus bg--transparent border--transparent font-size--xs absolute top--0 left--0 full--h" data-id="{{key}}" data-qty="{{itemMinus}}" aria-label="&minus;">
+          {% endraw %}{% render 'icon-minus' %}{% raw %}
+        </button>
+        <input type="text" class="js-qty__num border--transparent bg--transparent text-align--center full--w font-size--m" value="{{itemQty}}" min="1" data-id="{{key}}" aria-label="quantity" pattern="[0-9]*" name="{{inputName}}" id="{{inputId}}">
+        <button type="button" id="qty_adjust_plus_{{key}}" class="js-qty__adjust js-qty__adjust--plus  bg--transparent border--transparent  font-size--xs absolute top--0 right--0 full--h" data-id="{{key}}" data-qty="{{itemAdd}}" aria-label="&plus;">
+          {% endraw %}{% render 'icon-plus' %}{% raw %}
+        </button>
+      </div>
+    </div>
+  {% endraw %}
+  </script>
+  <script id="JsQty" type="text/template">
+  {% raw %}
+    <div class="js-qty">
+      <div class="relative font-size--s">
+        <button type="button" id="qty_adjust_minus_{{it.key}}" class="js-qty__adjust js-qty__adjust--minus bg--transparent border--transparent font-size--xs absolute top--0 left--0 full--h" data-id="{{it.key}}" data-qty="{{it.itemMinus}}" aria-label="&minus;">
+          {% endraw %}{% render 'icon-minus' %}{% raw %}
+        </button>
+        <input type="text" class="js-qty__num border--transparent bg--transparent text-align--center full--w font-size--m" value="{{it.itemQty}}" min="1" data-id="{{it.key}}" aria-label="quantity" pattern="[0-9]*" name="{{it.inputName}}" id="{{it.inputId}}">
+        <button type="button" id="qty_adjust_plus_{{it.key}}" class="js-qty__adjust js-qty__adjust--plus  bg--transparent border--transparent  font-size--xs  absolute top--0 right--0 full--h" data-id="{{it.key}}" data-qty="{{it.itemAdd}}" aria-label="&plus;">
+          {% endraw %}{% render 'icon-plus' %}{% raw %}
+        </button>
+      </div>
+    </div>
+  {% endraw %}
+  </script>
