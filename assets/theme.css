@@ -7015,7 +7015,7 @@ Header Active (Modal)
 ========================================================================== */
 
 .site-header.active {
-  background-color: #ffffff;
+  background-color: var(--color-active-background);
   color: var(--color-active-text);
   overflow-y: auto;
   position: fixed;
@@ -7790,7 +7790,7 @@ Header
 }
 
 .site-header {
-  background-color: transparent;
+  background-color: #ffffff;
   z-index: 10;
   transition: background-color 0.2s ease-in-out;
 }
