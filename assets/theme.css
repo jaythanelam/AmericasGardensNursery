@@ -6487,13 +6487,13 @@ html {
   max-width: 1820px;
   margin-left: auto;
   margin-right: auto;
+  background: #fff;
 }
 
 .max-site-width::after {
   content: '';
   display: table;
   clear: both;
-  background: #fff;
 }
 
 /* =======================================================================
