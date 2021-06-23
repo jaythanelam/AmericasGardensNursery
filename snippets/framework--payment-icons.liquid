@@ -1,0 +1,9 @@
+<div class="payment-icons--root">
+  <ul class="payment-icons--list">
+    {% for type in shop.enabled_payment_types %}
+      <li class="payment-icons--item">
+        {{ type | payment_type_svg_tag }}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

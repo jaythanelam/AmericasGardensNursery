@@ -1,0 +1,104 @@
+{%- liquid
+  if settings.typography--heading--size == 'x-large'
+    assign font--featured-heading--size = '64px'
+    assign font--section-heading--size = '32px'
+    assign font--block-heading--size = '24px'
+  elsif settings.typography--heading--size == 'large'
+    assign font--featured-heading--size = '38px'
+    assign font--section-heading--size = '28px'
+    assign font--block-heading--size = '20px'
+  elsif settings.typography--heading--size == 'medium'
+    assign font--featured-heading--size = '30px'
+    assign font--section-heading--size = '24px'
+    assign font--block-heading--size = '18px'
+  elsif settings.typography--heading--size == 'small'
+    assign font--featured-heading--size = '24px'
+    assign font--section-heading--size = '20px'
+    assign font--block-heading--size = '16px'
+  endif
+
+  if settings.typography--heading--uppercase
+    assign font--heading--uppercase = 'uppercase'
+  else
+    assign font--heading--uppercase = 'normal'
+  endif
+
+  if settings.typography--paragraph--size == 'large'
+    assign font--paragraph--size = '18px'
+    assign font--accent--size = '14px'
+  elsif settings.typography--paragraph--size == 'medium'
+    assign font--paragraph--size = '16px'
+    assign font--accent--size = '13px'
+  elsif settings.typography--paragraph--size == 'small'
+    assign font--paragraph--size = '14px'
+    assign font--accent--size = '12px'
+  endif
+
+  assign font--heading = settings.typography--heading
+  assign font--heading--normal = font--heading | font_modify: 'weight', 'normal'
+  assign font--accent = settings.typography--accent
+  assign font--accent--bold = font--accent | font_modify: 'weight', 'bolder'
+  assign font--paragraph = settings.typography--paragraph
+  assign font--paragraph--bold = font--paragraph | font_modify: 'weight', 'bolder'
+  assign font--paragraph--italic = font--paragraph | font_modify: 'style', 'italic'
+  assign font--paragraph--bold-italic = font--paragraph--bold | font_modify: 'style', 'italic'
+-%}
+
+<link rel="preload" as="font" href="{{ font--heading | font_url }}" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="{{ font--accent | font_url }}" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="{{ font--paragraph | font_url }}" type="font/woff2" crossorigin>
+
+<style>
+  {%- liquid
+    echo font--heading | font_face: font_display: 'swap'
+
+    if font--heading--normal
+      echo font--heading--normal | font_face: font_display: 'swap'
+    endif
+
+    echo font--accent | font_face: font_display: 'swap'
+
+    if font--accent--bold
+      echo font--accent--bold | font_face: font_display: 'swap'
+    endif
+
+    echo font--paragraph | font_face: font_display: 'swap'
+
+    if font--paragraph--bold
+      echo font--paragraph--bold | font_face: font_display: 'swap'
+    endif
+
+    if font--paragraph--italic
+      echo font--paragraph--italic | font_face: font_display: 'swap'
+    endif
+
+    if font--paragraph--bold-italic
+      echo font--paragraph--bold-italic | font_face: font_display: 'swap'
+    endif
+  -%}
+</style>
+
+<style>
+  :root {
+    --font--featured-heading--size: {{ font--featured-heading--size }};
+    --font--section-heading--size: {{ font--section-heading--size }};
+    --font--block-heading--size: {{ font--block-heading--size }};
+    --font--heading--uppercase: {{ font--heading--uppercase }};
+    --font--paragraph--size: {{ font--paragraph--size }};
+
+    --font--heading--family: {{ font--heading.family }}, {{ font--heading.fallback_families }};
+    --font--heading--weight: {{ font--heading.weight | default: 400 }};
+    --font--heading--normal-weight: {{ font--heading--normal.weight | default: 400 }};
+    --font--heading--style: {{ font--heading.style }};
+
+    --font--accent--family: {{ font--accent.family }}, {{ font--accent.fallback_families }};
+    --font--accent--weight: {{ font--accent.weight | default: 400 }};
+    --font--accent--style: {{ font--accent.style }};
+    --font--accent--size: {{ font--accent--size }};
+
+    --font--paragraph--family: {{ font--paragraph.family }}, {{ font--paragraph.fallback_families }};
+    --font--paragraph--weight: {{ font--paragraph.weight | default: 400 }};
+    --font--paragraph--style: {{ font--paragraph.style }};
+    --font--bolder-paragraph--weight: {{ font--paragraph--bold.weight | default: 700 }};
+  }
+</style>

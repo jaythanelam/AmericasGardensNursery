@@ -1,0 +1,105 @@
+{%- liquid
+  unless image_url
+    assign image_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
+    assign aspect_ratio = image.aspect_ratio
+  else
+    assign aspect_ratio = 1
+  endunless
+
+  unless preload
+    assign preload = false
+  endunless
+
+  unless widths
+    assign widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400'
+  endunless
+
+  assign widths = widths | split: ','
+
+  unless max_height
+    assign max_height = 0
+  endunless
+
+  unless full_width
+    assign full_width = false
+  endunless
+-%}
+
+{% capture bgset %}
+  {% for width in widths %}
+    {% assign image_width = width | append: 'x' %}
+    {% assign width_int = width | plus: 0 %}
+    {% if image.width >= width_int %}
+      {{ image | img_url: image_width }} {{ width }}w,
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+{% assign bgset = bgset | strip_newlines | remove: '  ' %}
+
+{%- liquid
+  capture valid_widths
+    for width in widths
+      assign width_int = width | plus: 0
+      if image.width >= width_int
+        echo width_int | append: ","
+      endif
+    endfor
+    echo image.width
+  endcapture
+
+  assign widths = valid_widths | strip_newlines | remove: ' '
+
+  assign lazy_classes = 'lazyload'
+  if preload
+    assign lazy_classes = lazy_classes | append: ' lazypreload'
+  endif
+
+  assign width = image.width | append: "px"
+  if max_height > 0
+    assign width = max_height | times: aspect_ratio | round: 2 | append: 'px'
+  elsif full_width
+    assign width = "100%"
+  endif
+-%}
+
+<div
+  class="image--root"
+  data-parallax="{{ parallax }}"
+  data-cover="{{ cover }}"
+  data-cover-mobile="{{ cover_mobile }}"
+  data-darken="{{ darken }}"
+  data-darken-mobile="{{ darken_mobile }}"
+  style="width: {{ width }};"
+  {{ custom_attributes }}
+>
+  {% if parallax %}
+    <div
+      class="lazyload image--parallax"
+      style="padding-top:{{ 1 | divided_by: aspect_ratio | times: 100 }}%;"
+      data-expand="-150"
+      data-sizes="auto"
+      data-bgset="{{ bgset }}"
+    >
+    </div>
+  {% endif %}
+    <div
+      class="image--container"
+      style="padding-top:{{ 1 | divided_by: aspect_ratio | times: 100 }}%;"
+    >
+      <img
+        class="{{ lazy_classes }}"
+        data-src="{{ image_url }}"
+        data-sizes="auto"
+        data-widths="[{{ widths }}]"
+        alt="{{ image.alt | escape }}"
+      >
+    </div>
+
+
+  <noscript>
+    <img
+      src="{{ image | img_url: '1024x1024' }}"
+      alt="{{ image.alt | escape }}"
+    >
+  </noscript>
+</div>

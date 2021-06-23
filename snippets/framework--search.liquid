@@ -1,0 +1,231 @@
+{%- liquid
+  assign articles_t = 'general.search.articles' | t
+  assign no_results_t = 'general.search.no_results' | t
+  assign placeholder_t = 'general.search.placeholder' | t
+  assign products_t = 'general.search.products' | t
+  assign results_for_t = 'general.search.results_for' | t
+  assign search_again_t = 'general.search.search_again' | t
+  assign view_all_t = 'general.search.view_all' | t
+
+  assign show_articles = settings.search--show-articles
+  assign show_pages = settings.search--show-pages
+
+  unless show_pages or show_articles
+    assign grid_columns = 4
+  else
+    assign grid_columns = 3
+  endunless
+-%}
+
+{% case view %}
+  {% comment %} Template {% endcomment %}
+  {% when 'template' %}
+    {% paginate search.results by 60 %}
+
+      {% assign type = '' %}
+      {% for item in search.results limit: 1 %}
+        {% if item.object_type == 'product' %}
+          {% assign type = 'product' %}
+        {% else %}
+          {% assign type = 'article' %}
+        {% endif %}
+      {% endfor %}
+
+      <div class="search--root" data-js-class="FrameworkSearch" data-view="{{ view }}">
+        <div class="search--header">
+          <div class="search--results-summary" data-item="paragraph">
+            {{ search.results_count }} {{ results_for_t }} "{{ search.terms | replace: '*', '' }}"
+          </div>
+        </div>
+
+        <section class="search--body">
+          {% if type == 'product' %}
+            <div class="search--products">
+              <div
+                class="search--products-container"
+                data-container="panel"
+                data-columns="4"
+                data-mobile-columns="1"
+              >
+                {% for product in search.results %}
+                  <div class="search--product">
+                    {%
+                      render 'framework--product--item',
+                      product: product,
+                      unique_handle: 'search-template',
+                      section_id: section_id
+                    %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <div class="search--articles">
+              <div class="search--articles-container">
+                {% for item in search.results %}
+                  <div class="search--article">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </section>
+
+        <div class="search--footer">
+          {% if paginate.pages > 1 %}
+            {% render 'framework--pagination', paginate: paginate %}
+          {% endif %}
+          <div class="search--again-button" data-item="block-link">
+            <a href="{{ routes.search_url }}">{{ search_again_t }}</a>
+          </div>
+        </div>
+      </div>
+
+    {% endpaginate %}
+
+  {% comment %} Modal {% endcomment %}
+  {% when 'modal' %}
+    <div
+      class="modal--root"
+      data-js-class="FrameworkModal"
+      data-modal-fullscreen="true"
+      data-view="{{ view }}"
+      data-modal-view="search"
+    >
+    {% comment %} Any {{ routes.search_url }} link will trigger this {% endcomment %}
+    <div class="modal--link" data-trigger="search-modal"></div>
+    <div class="modal--content">
+      <div
+        class="search--root"
+        data-js-class="FrameworkSearch"
+        data-view="{{ view }}"
+        data-show-articles="{{ show_articles }}"
+        data-show-pages="{{ show_pages }}"
+      >
+        <div class="search--bar">
+          <div class="search--loading">
+            {% render 'framework--loading-spinner', size: '35px' %}
+          </div>
+          <input
+            class="search--textbox"
+            data-item="lowercase-accent-text"
+            name="q"
+            type="text"
+            value="{{ search.terms | replace: '*', '' }}"
+            placeholder="{{ placeholder_t }}"
+          >
+        </div>
+
+        <div class="search--results">
+          <div class="search--products"></div>
+          {% if show_articles or show_pages %}
+            <div class="search--articles"></div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} Ajax - Article, Page {% endcomment %}
+  {% when 'ajax--article-page' %}
+    {% paginate search.results by 20 %}
+
+      {% assign article_page_combination = '' %}
+      {% if show_articles %}
+        {% assign article_page_combination = 'article,' %}
+      {% endif %}
+      {% if show_pages %}
+        {% assign article_page_combination = article_page_combination | append: 'page' %}
+      {% endif %}
+
+      {% capture count_string %}
+        {% if search.results_count > 0 %}
+          ({{ search.results_count }})
+        {% endif %}
+      {% endcapture %}
+
+      <div class="search--info" data-item="block-heading">
+        <div class="search--count">
+          <a href="{{ routes.search_url }}?type={{ article_page_combination }}&q={{ search.terms }}">
+            {{ articles_t }} {{ count_string }}
+          </a>
+        </div>
+
+        {% if search.results_count > 0 %}
+          <div class="search--view-more" data-item="block-link">
+            <a href="{{ routes.search_url }}?type={{ article_page_combination }}&q={{ search.terms }}">
+              {{ view_all_t }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="search--articles-container" data-item="paragraph">
+        {% for item in search.results %}
+          <div class="search--article">
+            <a href="{{ item.url }}">{{ item.title }}</a>
+          </div>
+        {% endfor %}
+
+        {% if search.results_count == 0 %}
+          <div class="search--no-articles" data-item="paragraph">
+            {{ no_results_t }}
+          </div>
+        {% endif %}
+      </div>
+
+    {% endpaginate %}
+
+  {% comment %} Ajax - Product {% endcomment %}
+  {% when 'ajax--product' %}
+    {% paginate search.results by 12 %}
+
+      {% capture count_string %}
+        {% if search.results_count > 0 %}
+          ({{ search.results_count }})
+        {% endif %}
+      {% endcapture %}
+
+      <div class="search--info" data-item="block-heading">
+        <div class="search--count">
+          <a href="{{ routes.search_url }}?type=product&q={{ search.terms }}">
+            {{ products_t }} {{ count_string }}
+          </a>
+        </div>
+        {% if search.results_count > 0 %}
+          <div class="search--view-more" data-item="block-link">
+            <a href="{{ routes.search_url }}?type=product&q={{ search.terms }}">
+              {{ view_all_t }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div
+        class="search--products-container"
+        data-container="panel"
+        data-columns="{{ grid_columns }}"
+        data-mobile-columns="1"
+      >
+        {% for product in search.results %}
+          <div class="search--product">
+            {%
+              render 'framework--product--item',
+              product: product,
+              unique_handle: 'search-ajax',
+              section_id: section_id
+            %}
+          </div>
+        {% endfor %}
+
+        {% if search.results_count == 0 %}
+          <div class="search--no-products" data-item="paragraph">
+            {{ no_results_t }}
+          </div>
+        {% endif %}
+      </div>
+
+    {% endpaginate %}
+
+{% endcase %}

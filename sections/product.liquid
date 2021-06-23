@@ -1,237 +1,326 @@
-{%- assign section_color = section.settings.color_scheme -%}
+{%- liquid
+  comment
+    Translations
+  endcomment
 
-<div class="product" data-section-id="{{ section.id }}" data-product-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" data-enable-product-zoom="{{ section.settings.enable_image_zoom }}">
+  assign image_modal_t = 'products.image_modal' | t
 
-  <section class="color--{{ section_color }}-text bg--{{ section_color }}-background section-with-padding">
-    {%- liquid
-      assign current_variant = product.selected_or_first_available_variant
-      assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-      assign hide_drop_down_labels = section.settings.hide_drop_down_labels
-      assign show_quantity = section.settings.show_quantity
-      assign enable_payment_button = section.settings.enable_payment_button
-      assign show_share_links = section.settings.show_share_buttons
-      assign section_id = section.id
-      assign description_under_add_to_cart = section.settings.description_under_add_to_cart
-      assign enable_video_looping = section.settings.enable_video_looping
-      assign enable_image_zoom = section.settings.enable_image_zoom
-      assign show_pickup_availability = section.settings.show_pickup_availability
-    -%}
+  comment
+    Variables
+  endcomment
 
-    {% assign image_index = 0 %}
+  assign description = product.description | strip_html
+  assign description_under_form = section.settings.description-under-form
+  assign image_zoom_enabled = section.settings.image-zoom-enabled
+  assign low_stock_amount = section.settings.low-in-stock-amount
+  assign modal_enabled = section.settings.product-modal-enabled
+  assign pickup_enabled = section.settings.product-pickup-enabled
+  assign share_enabled = section.settings.share
+  assign size_chart_enabled = section.settings.product-size-chart-enabled
+  assign smart_payment_enabled = section.settings.smart_payment_button
+  assign swatches_enabled = section.settings.swatches-enabled
+  assign show_unavailable_form = section.settings.product-sold-out-form-show
+  assign show_vendor = section.settings.vendor-name-show
+  assign size_chart_content = section.settings.product-size-chart-page-content
+  assign size_chart_option = section.settings.product-size-chart-option
+  assign variant_style = section.settings.variant-style
+  assign video_looping_enabled = section.settings.loop-enabled
 
-    <div class="max-site-width md--up--px2 lg--up--px3">
-      {% assign feature_product = false %}
-      {%- render 'product__top-section',
+  assign has_media = false
+  assign onboarding = true
+  if product.media.size > 0
+    assign has_media = true
+    assign onboarding = false
+  endif
+
+  assign column_count = 2
+  if product.media.size == 1
+    assign column_count = 1
+  endif
+-%}
+
+{% comment %} View {% endcomment %}
+<div
+  class="product-page--root"
+  data-js-class="Product"
+  data-section-id="{{ section.id }}"
+  data-section-type="product_page"
+  data-media-length="{{ product.media.size }}"
+  {% if description_under_form %}
+    data-form-view="below"
+  {% else %}
+    data-form-view="above"
+  {% endif %}
+  itemscope
+  itemtype="https://schema.org/Product"
+>
+
+  <div class="product-page--left-column">
+    {% if modal_enabled and has_media %}
+      <div
+        class="modal"
+        data-js-class="FrameworkModal"
+        data-modal-view="product-media"
+      >
+    {% endif %}
+
+    <div
+      class="product-page--grid"
+      data-container="panel"
+      data-columns="{{ column_count }}"
+      data-mobile-columns="{{ column_count }}"
+    >
+      {% if has_media %}
+        {% for media in product.media %}
+          {% if modal_enabled and media.media_type == 'image' %}
+            <a class="modal--link" href="#" aria-label="{{ image_modal_t }}">
+          {% endif %}
+
+          <div
+            class="product-media--wrapper"
+            data-zoom-enabled="{{ image_zoom_enabled }}"
+            data-media-type="{{ media.media_type }}"
+          >
+            {%
+              render "framework--product--media",
+              media_view: "featured",
+              product: product,
+              in_slider: false,
+              product_media: media,
+              video_looping_enabled: video_looping_enabled,
+              image_zoom_enabled: image_zoom_enabled,
+              max_height: 'none'
+            %}
+          </div>
+
+          {% if modal_enabled and media.media_type == 'image' %}
+            </a>
+          {% endif %}
+        {% endfor %}
+
+        {%
+          render "framework--product--media",
+          media_view: "media-dependencies",
           product: product,
-          feature_product: feature_product,
-          current_variant: current_variant,
-          featured_media: featured_media,
-          hide_drop_down_labels: hide_drop_down_labels,
-          show_quantity: show_quantity,
-          enable_payment_button: enable_payment_button,
-          show_share_links: show_share_links,
-          enable_image_zoom: enable_image_zoom,
-          enable_video_looping: enable_video_looping,
-          section_id: section_id,
-          section_color: section_color,
-          description_under_add_to_cart: description_under_add_to_cart,
-          section_page_links: section.blocks | where: 'type', 'supporting_page_link',
-          show_pickup_availability: show_pickup_availability,
-      -%}
+          max_height: 'none'
+        %}
+
+      {% else %}
+        {% for i in (1..4) %}
+          {% render "framework--placeholder", type: "image" %}
+        {% endfor %}
+
+      {% endif %}
     </div>
 
-    {% unless product == empty %}
-      <script type="application/json" data-product-json>
-        {{ product | json }}
-      </script>
-      <script type="application/json" id="ModelJson-{{ section_id }}">
-        {{ product.media | where: 'media_type', 'model' | json }}
-      </script>
-      <script type="application/ld+json">
-      {
-        "@context": "http://schema.org/",
-        "@type": "Product",
-        "name": {{ product.title | json }},
-        "url": {{ shop.url | append: product.url | json }},
-        {%- if product.featured_media -%}
-          {%- assign media_size = product.featured_media.preview_image.width | append: 'x' -%}
-          "image": [
-            {{ product.featured_media | img_url: media_size | prepend: "https:" | json }}
-          ],
-        {%- endif -%}
-        "description": {{ product.description | strip_html | json }},
-        {%- if current_variant.sku != blank -%}
-          "sku": {{ current_variant.sku | json }},
-        {%- endif -%}
-        "brand": {
-          "@type": "Thing",
-          "name": {{ product.vendor | json }}
-        },
-        "offers": [
-          {%- for variant in product.variants -%}
-            {
-              "@type" : "Offer",
-              {%- if variant.sku != blank -%}
-                "sku": {{ variant.sku | json }},
-              {%- endif -%}
-              "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
-              "price" : {{ variant.price | divided_by: 100.00 | json }},
-              "priceCurrency" : {{ cart.currency.iso_code | json }},
-              "url" : {{ shop.url | append: variant.url | json }}
-            }{% unless forloop.last %},{% endunless %}
-          {%- endfor -%}
-        ]
-      }
-      </script>
-    {% endunless %}
-
-  </section>
-
-  {% if section_color ==  section.settings.description_color_scheme %}
-    {% assign description_padding = 'pb4 lg-up--pb5 lg-up--pt3' %}
-  {% else %}
-    {% assign description_padding = 'section-with-padding' %}
-  {% endif %}
-
-  {% unless description_under_add_to_cart %}
-    {% if product.description != empty or product.description != '' %}
-      {% assign section_color = section.settings.description_color_scheme %}
-
-      <div class="product__description {{ description_padding }} color--{{ section_color }}-text bg--{{ section_color }}-background">
-        <div class="max-site-width px2 lg--up--px3">
-          <div class="rte mx--auto font-size__basic {% unless section.settings.enable_split_description %}max-width--3{% endunless %}" id="productDescription" {% if section.settings.enable_split_description %}data-split="true"{% endif %} {% if settings.fade_in_items %}data-fade-in="true"{% endif %} data-product-description>
-            {{ product.description }}
-          </div>
+    {% if modal_enabled and has_media %}
+        <div class="product-page--modal-media">
+          {% for media in product.media %}
+            {% if media.media_type == "image" %}
+              <div class="modal--content">
+                {% render "framework--image", image: media %}
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
+
       </div>
     {% endif %}
-  {% endunless %}
+
+  </div>
+
+  <div class="product-page--carousel">
+    {% render
+      'framework--carousel',
+      view: 'product-page',
+      section_id: section.id,
+      onboarding: onboarding,
+      product: product,
+      video_looping_enabled: video_looping_enabled,
+      blocks: product.media,
+      dot_nav_enabled: true,
+      media_size: 'mobile',
+      blocks_per_slide: 1,
+      blocks_per_slide_mobile: 1,
+      total_blocks: product.media.size,
+      total_slides: product.media.size,
+      spacing_around_blocks: true,
+      transition_type: 'slide'
+    %}
+  </div>
+
+  <div class="product-page--right-column">
+    <div class="product-page--right-column--container">
+      <h2 class="product-page--title" data-item="section-heading">
+        {{ product.title }}
+      </h2>
+
+      {% if show_vendor %}
+        <div class="product-page--vendor" data-item="accent-text">
+          <a
+            href="{{ product.vendor | url_for_vendor }}"
+            itemprop="brand"
+            content="{{ product.vendor }}"
+          >
+            {{ product.vendor }}
+          </a>
+        </div>
+      {% endif %}
+
+      {% unless product.description == blank %}
+        <div class="product-page--description" data-view="above" data-item="rte-content">
+          {{ product.description }}
+        </div>
+      {% endunless %}
+
+      {%
+        render "framework--product--form",
+        product: product,
+        callback_enabled: true,
+        low_stock_amount: low_stock_amount,
+        pickup_enabled: pickup_enabled,
+        show_unavailable_form: show_unavailable_form,
+        size_chart_enabled: size_chart_enabled,
+        size_chart_content: size_chart_content,
+        size_chart_option: size_chart_option,
+        smart_payment_enabled: smart_payment_enabled,
+        swatches_enabled: swatches_enabled,
+        variant_style: variant_style
+      %}
+
+      {% unless product.description == blank %}
+        <div class="product-page--description" data-view="below" data-item="rte-content">
+          {{ product.description }}
+        </div>
+      {% endunless %}
+
+      {% if share_enabled %}
+        <div class="product-page--social-media">
+          {% render 'partial--social-share', position: 'product' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
 </div>
-{% if section.settings.enable_image_zoom %}
-  {% render 'photoswipe' %}
-{% endif %}
+
 {% schema %}
-  {
-    "name": "Product pages",
-    "settings": [
-      {
-         "type": "select",
-         "id": "color_scheme",
-         "label": "Color scheme",
-         "options": [
-            { "value": "primary", "label": "Primary"},
-            { "value": "secondary", "label": "Secondary"},
-            { "value": "tertiary", "label": "Tertiary"}
-         ]
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_payment_button",
-        "label": "Show dynamic checkout button",
-        "info": "Each customer will see their preferred payment method from those available on your store, such as PayPal or Apple Pay. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_quantity",
-        "label": "Show quantity option"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_vendor",
-        "label": "Show vendor"
-      },
-      {
-        "type": "checkbox",
-        "id": "hide_drop_down_labels",
-        "label": "Hide label on selects"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_share_buttons",
-        "label": "Show social media sharing buttons",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "Media",
-        "info": "Learn more about [media types](https://help.shopify.com/manual/products/product-media)"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_image_zoom",
-        "label": "Enable image zoom"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_video_looping",
-        "label":  "Enable video looping",
-        "default": false
-      },
-      {
-        "type":      "header",
-        "content":   "Pickup Availability"
-       },
-      {
-        "type": "checkbox",
-        "id": "show_pickup_availability",
-        "label":  "Show pickup availability [Learn more](https://help.shopify.com/en/manual/sell-in-person/pos-classic/shopify-pos-from-admin/buy-online-pickup-in-store#show-pickup-availability-to-your-customers)",
-        "default": true
-      },
-      {
-       "type":      "header",
-       "content":   "Product description"
-      },
-      {
-         "type":      "paragraph",
-         "content":   "Automatically split your product description into separate blocks based on images."
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_split_description",
-        "label": "Enable split product description",
-        "default": true
-      },
-      {
-         "type":      "paragraph",
-         "content":   "[Learn more about this feature](https://support.switchthemes.co/article/91-product-page-descriptions)."
-      },
-      {
-         "type": "select",
-         "id": "description_color_scheme",
-         "label": "Color scheme",
-         "options": [
-            { "value": "primary", "label": "Primary"},
-            { "value": "secondary", "label": "Secondary"},
-            { "value": "tertiary", "label": "Tertiary"}
-         ]
-      },
-      {
-        "type": "checkbox",
-        "id": "description_under_add_to_cart",
-        "label": "Move product description to underneath add to cart",
-        "default": false,
-        "info": "If enabled, split product description and color scheme won't apply."
-      }
-    ],
-    "blocks": [
-      {
-        "type": "supporting_page_link",
-        "name": "Supporting page (Link)",
-        "limit": 6,
-        "settings": [
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Title"
-          },
-          {
-            "type": "page",
-            "id": "page",
-            "label": "Page"
-          }
-        ]
-      }
-    ]
-  }
+{
+  "name": "Product page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "vendor-name-show",
+      "label": "Show vendor name",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "description-under-form",
+      "label": "Show description below buttons",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "variant-style",
+      "label": "Product variant style",
+      "options": [
+        { "label": "Dropdowns", "value": "dropdowns" },
+        { "label": "Buttons", "value": "buttons" }
+      ],
+      "default": "dropdowns"
+    },
+    {
+      "type": "checkbox",
+      "id": "swatches-enabled",
+      "label": "Enable color swatches",
+      "default": false,
+      "info": "Automatically turn color options into swatches. [Learn more](https://support.troopthemes.com/guide/color-swatch-guide)"
+    },
+    {
+      "type": "checkbox",
+      "id": "smart_payment_button",
+      "label": "Show dynamic checkout button",
+      "info": "Lets customers check out directly using a familiar payment method. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product-sold-out-form-show",
+      "label": "Show notification form when product is sold out"
+    },
+    {
+      "label": "Show low in stock notice when quantity is",
+      "id": "low-in-stock-amount",
+      "type": "range",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "info": "Set to 0 to disable this feature. Updated for each variant."
+    },
+    {
+      "type": "checkbox",
+      "id": "product-pickup-enabled",
+      "label": "Enable product pickup",
+      "default": true,
+      "info": "Learn more about [local pickup](https://help.shopify.com/en/manual/sell-in-person/pos-classic/shopify-pos-from-admin/buy-online-pickup-in-store)."
+    },
+    {
+      "type": "checkbox",
+      "id": "share",
+      "label": "Enable social sharing",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "paragraph",
+      "content": "Learn more about [media types](https://help.shopify.com/en/manual/products/product-media)."
+    },
+    {
+      "type": "checkbox",
+      "id": "product-modal-enabled",
+      "label": "Enable modal popup",
+      "default": true,
+      "info": "Opens when clicking featured product image"
+    },
+    {
+      "type": "checkbox",
+      "id": "image-zoom-enabled",
+      "label": "Enable image zoom",
+      "default": true,
+      "info": "Triggers when you roll your mouse over an image"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop-enabled",
+      "label": "Enable video looping",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Size chart"
+    },
+    {
+      "type": "checkbox",
+      "id": "product-size-chart-enabled",
+      "label": "Enable",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "product-size-chart-option",
+      "label": "Link from option",
+      "default": "size"
+    },
+    {
+      "type": "page",
+      "id": "product-size-chart-page-content",
+      "label": "Page content"
+    }
+  ]
+}
 {% endschema %}

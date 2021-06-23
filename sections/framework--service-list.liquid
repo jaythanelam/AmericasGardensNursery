@@ -1,0 +1,168 @@
+{%- liquid
+  assign bg_color = section.settings.background-color
+  assign show_description = section.settings.show-description
+  assign title = section.settings.section--title
+-%}
+
+<div
+  class="service-list"
+  style="{% render 'framework--background-colors', bg_color: bg_color %}"
+  data-js-class="ServiceList"
+  data-section-id="{{ section.id }}"
+  data-section-type="service_list"
+  data-service-list--show-descriptions="{{ show_description }}"
+>
+  {% if title.size > 0 %}
+    <h2 class="service-list--title" data-item="section-heading">
+      {{ title | escape }}
+    </h2>
+  {% endif %}
+
+  <div class="service-list--container">
+    {% if section.blocks.size > 0 %}
+      <div class="service-list--single-column">
+        <ul class="service-list--blocks">
+
+          {% for block in section.blocks %}
+            {% if block.type == "header" %}
+
+              {% unless forloop.first %}
+                </ul><ul class="service-list--blocks">
+              {% endunless %}
+
+              <li class="service-list--block-header" {{ block.shopify_attributes }}>
+                <h3 class="service-list--block-header--text" data-item="block-heading">
+                  {{ block.settings.title | escape }}
+                </h3>
+              </li>
+            {% else %}
+              <li class="service-list--block" {{ block.shopify_attributes }}>
+                <div class="service-list--info">
+                  {% if block.settings.title.size > 0 %}
+                    <div class="service-list--block-title">
+                      <p class="service-list--block-title-text" data-item="paragraph">
+                        {{ block.settings.title | escape }}
+                      </p>
+                    </div>
+                  {% endif %}
+                  {% if block.settings.price.size > 0 %}
+                    <div class="service-list--price" data-item="accent-text">
+                      {{ block.settings.price | escape }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                {% if show_description %}
+                  {% if block.settings.description != blank %}
+                    <div class="service-list--description" data-item="rte-content">
+                      {{ block.settings.description }}
+                    </div>
+                  {% endif %}
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="service-list--left-column"></div>
+      <div class="service-list--right-column"></div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Service list",
+  "settings": [
+    {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Accent", "value": "accent" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "text",
+      "id": "section--title",
+      "label": "Title",
+      "default": "Add title here"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-description",
+      "label": "Show descriptions",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Header",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Header",
+          "default": "Add header here"
+        }
+      ]
+    },
+    {
+      "type": "item",
+      "name": "List item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Add service title here"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$10"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Add service description here</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Service list",
+    "category": "Text",
+    "settings": {
+      "section--title": "Add title here",
+      "show-description": true
+    },
+    "blocks": [
+      {
+        "type": "header"
+      },
+      {
+        "type": "item"
+      },
+      {
+        "type": "item"
+      },
+      {
+        "type": "header"
+      },
+      {
+        "type": "item"
+      },
+      {
+        "type": "item"
+      }
+    ]
+  }]
+}
+{% endschema %}

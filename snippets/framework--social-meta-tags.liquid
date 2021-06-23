@@ -1,0 +1,120 @@
+{% comment %}
+  Add Facebook and Pinterest Open Graph meta tags to product pages
+  for friendly Facebook sharing and Pinterest pinning.
+
+  More info Open Graph meta tags
+    - https://developers.facebook.com/docs/opengraph/using-objects/
+    - https://developers.pinterest.com/rich_pins/
+
+  Use the Facebook Open Graph Debugger for validation (and cache clearing)
+    - https://developers.facebook.com/tools/debug
+
+  Validate your Pinterest rich pins
+    - https://developers.pinterest.com/rich_pins/validator/
+{% endcomment %}
+
+{% if request.page_type == 'product' %}
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="{{ product.title | strip_html | escape }}">
+
+  {% for media in product.media limit: 3 %}
+    <meta property="og:image" content="http:{{ media | img_url: '1200x' }}">
+    <meta property="og:image:secure_url" content="https:{{ media | img_url: '1200x' }}">
+    <meta property="og:image:width" content="{{ media.width }}">
+    <meta property="og:image:height" content="{{ media.height }}">
+  {% endfor %}
+
+  <meta
+    property="og:price:amount"
+    content="{{ product.price | money_without_currency | strip_html | escape }}"
+  >
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+  <meta itemprop="name" content="{{ product.title }}" />
+  <meta itemprop="image" content="https:{{ product.featured_media | img_url: '1000x' }}" />
+  <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}" />
+  {% if product.available %}
+    <link itemprop="availability" href="https://schema.org/InStock" />
+  {% else %}
+    <link itemprop="availability" href="https://schema.org/OutOfStock" />
+  {% endif %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+  {% assign price_meta = current_variant.price | divided_by: 100.00 %}
+  <meta itemprop="price" content="{{ price_meta }}">
+
+{% elsif request.page_type == 'article' %}
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ article.title | strip_html | escape }}">
+
+  {% if article.image %}
+    <meta property="og:image" content="http:{{ article.image | img_url: '1200x' }}">
+    <meta property="og:image:secure_url" content="https:{{ article.image | img_url: '1200x' }}">
+    <meta property="og:image:width" content="{{ article.image.width }}">
+    <meta property="og:image:height" content="{{ article.image.height }}">
+  {% endif %}
+
+{% elsif request.page_type == 'password' %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ shop.name }}">
+
+{% else %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title | escape }}">
+
+{% endif %}
+
+{% if request.page_type == 'article' %}
+  {% assign share_description = article.excerpt_or_content | strip_html %}
+{% elsif page_description %}
+  {% assign share_description = page_description | escape %}
+{% else %}
+  {% assign share_description = shop.description | default: shop.name %}
+{% endif %}
+
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:description" content="{{ share_description }}">
+
+{% comment %}
+  This snippet renders meta data needed to create a Twitter card
+  for products and articles.
+
+  Your cards must be approved by Twitter to be activated
+    - https://dev.twitter.com/docs/cards/validation/validator
+
+  More information:
+   - https://dev.twitter.com/cards/types/summary
+{% endcomment %}
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="{{ share_description }}">
+
+{% if request.page_type == 'product' %}
+  <meta name="twitter:title" content="{{ product.title }}">
+
+  {% if product.featured_media %}
+    <meta
+      name="twitter:image"
+      content="https:{{ product.featured_media | img_url: '480x' }}"
+    >
+  {% endif %}
+
+{% elsif request.page_type == 'article' %}
+  <meta name="twitter:title" content="{{ article.title }}">
+
+  {% if article.image %}
+    <meta property="twitter:image" content="https:{{ article.image | img_url: '480x' }}">
+  {% endif %}
+
+{% else %}
+  <meta name="twitter:title" content="{{ page_title }}">
+
+  {% if page_image %}
+    <meta
+      property="twitter:image"
+      content="https:{{ page_image | img_url: '480x' }}"
+    >
+  {% endif %}
+
+{% endif %}

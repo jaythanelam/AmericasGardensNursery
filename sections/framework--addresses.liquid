@@ -1,0 +1,484 @@
+{% paginate customer.addresses by 5 %}
+
+  <div class="customer--root">
+    <div id="customer-addresses">
+
+      <h1 data-item="section-heading">
+        {{ 'customer.addresses.page_title' | t }}
+      </h1>
+      <div class="account--breadcrumb-container">
+        {% render 'framework--breadcrumbs' %}
+      </div>
+
+      <div class="address--container">
+        {% for address in customer.addresses %}
+          <div class="address--table">
+            <div id="view_address_{{ address.id }}" class="address--customer">
+              <h4 data-item="block-heading">
+                {{ address.street }}
+
+                {% if address == customer.default_address %}
+                  <span data-item="paragraph">
+                    {{ 'customer.addresses.default' | t }}
+                  </span>
+                {% endif %}
+              </h4>
+
+              <p class="address--actions">
+                <span class="address--actions-edit" data-item="block-link">
+                  {{ 'customer.addresses.edit' | t | edit_customer_address_link: address.id }}
+                </span>
+                <span data-item="block-link">
+                  {{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}
+                </span>
+              </p>
+
+              <div class="address--view" data-item="paragraph">
+                <p>{{ address.first_name }} {{ address.last_name }}</p>
+                <p>{{ address.company }}</p>
+                <p>{{ address.street }}</p>
+                <p>
+                  {{ address.city }}{% if address.province_code %}, {{ address.province_code }}{% endif %}
+                </p>
+                <p>{{ address.country }} {{ address.zip }}</p>
+                <p>{{ address.phone }}</p>
+              </div>
+            </div>
+
+            <div class="address--edit" id="edit_address_{{ address.id }}" style="display:none;">
+              {% form 'customer_address', address %}
+                <table class="address--customer-table">
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_first_name_{{ address.id }}">
+                        {{ 'customer.addresses.first_name' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_first_name_{{ address.id }}"
+                        name="address[first_name]"
+                        value="{{ form.first_name }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_last_name_{{ address.id }}">
+                        {{ 'customer.addresses.last_name' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_last_name_{{ address.id }}"
+                        name="address[last_name]"
+                        value="{{ form.last_name }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_company_{{ address.id }}">
+                        {{ 'customer.addresses.company' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_company_{{ address.id }}"
+                        name="address[company]"
+                        value="{{ form.company }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_address1_{{ address.id }}">
+                        {{ 'customer.addresses.address1' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_address1_{{ address.id }}"
+                        name="address[address1]"
+                        value="{{ form.address1 }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_address2_{{ address.id }}">
+                        {{ 'customer.addresses.address2' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_address2_{{ address.id }}"
+                        name="address[address2]"
+                        value="{{ form.address2 }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_city_{{ address.id }}">
+                        {{ 'customer.addresses.city' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_city_{{ address.id }}"
+                        name="address[city]"
+                        value="{{ form.city }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_country_{{ address.id }}">
+                        {{ 'customer.addresses.country' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <select
+                        id="address_country_{{ address.id }}"
+                        name="address[country]"
+                        data-default="{{ form.country }}"
+                      >
+                        {{ all_country_option_tags }}
+                      </select>
+                    </td>
+                  </tr>
+                  <tr id="address_province_container_{{ address.id }}" style="display:none;">
+                    <td>
+                      <label data-item="accent-text" for="address_province_{{ address.id }}">
+                        {{ 'customer.addresses.province' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <select
+                        class="address_form"
+                        id="address_province_{{ address.id }}"
+                        name="address[province]"
+                        data-default="{{ form.province }}"
+                      >
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_zip_{{ address.id }}">
+                        {{ 'customer.addresses.zip' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_zip_{{ address.id }}"
+                        name="address[zip]"
+                        value="{{ form.zip }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label data-item="accent-text" for="address_phone_{{ address.id }}">
+                        {{ 'customer.addresses.phone' | t }}
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        class="address_form"
+                        type="text"
+                        id="address_phone_{{ address.id }}"
+                        name="address[phone]"
+                        value="{{ form.phone }}"
+                        size="40"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="address--checkbox-container" data-item="paragraph">
+                      {{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}
+                    </td>
+                  </tr>
+                </table>
+
+                <div class="address--button-container">
+                  <div data-item='button'>
+                    <button type="submit" value="{{ 'customer.addresses.update' | t }}">
+                      {{ 'customer.addresses.update' | t }}
+                    </button>
+                  </div>
+                  <span data-item="block-link">
+                    <a
+                      href="#"
+                      onclick="Shopify.CustomerAddress.toggleForm({{ form.id }}); return false;"
+                    >
+                      {{ 'customer.addresses.cancel' | t }}
+                    </a>
+                  </span>
+                </div>
+              {% endform %}
+            </div>
+          </div>
+        {% endfor %}
+
+        <div data-item="block-link">
+          <a
+            class="add-new-address"
+            href="#"
+            onclick="Shopify.CustomerAddress.toggleNewForm(); return false;"
+          >
+            {{ 'customer.addresses.add_new' | t }}
+          </a>
+        </div>
+        <div class="edit_address" id="add_address" style="display:none;">
+          {% form 'customer_address', customer.new_address %}
+
+          {{ form.errors | default_errors }}
+
+          <table class="address--customer-table">
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_first_name_new">
+                  {{ 'customer.addresses.first_name' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_first_name_new"
+                  name="address[first_name]"
+                  value="{{ form.first_name }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_last_name_new">
+                  {{ 'customer.addresses.last_name' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_last_name_new"
+                  name="address[last_name]"
+                  value="{{ form.last_name }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_company_new">
+                  {{ 'customer.addresses.company' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  for="address_company_new"
+                  name="address[company]"
+                  value="{{ form.company }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_address1_new">
+                  {{ 'customer.addresses.address1' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_address1_new"
+                  name="address[address1]"
+                  value="{{ form.address1 }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_address2_new">
+                  {{ 'customer.addresses.address2' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_address2_new"
+                  name="address[address2]"
+                  value="{{ form.address2 }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_city_new">
+                  {{ 'customer.addresses.city' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_city_new"
+                  name="address[city]"
+                  value="{{ form.city }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_country_new">
+                  {{ 'customer.addresses.country' | t }}
+                </label>
+              </td>
+              <td>
+                <select
+                  id="address_country_new"
+                  name="address[country]"
+                  data-default="{{ form.country }}"
+                >
+                  {{ country_option_tags }}
+                </select>
+              </td>
+            </tr>
+            <tr id="address_province_container_new" style="display:none;">
+              <td>
+                <label data-item="accent-text" for="address_province_new">
+                  {{ 'customer.addresses.province' | t }}
+                </label>
+              </td>
+              <td>
+                <select
+                  class="address_form"
+                  id="address_province_new"
+                  name="address[province]"
+                  data-default="{{ form.province }}"
+                >
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_zip_new">
+                  {{ 'customer.addresses.zip' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_zip_new"
+                  name="address[zip]"
+                  value="{{ form.zip }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label data-item="accent-text" for="address_phone_new">
+                  {{ 'customer.addresses.phone' | t }}
+                </label>
+              </td>
+              <td>
+                <input
+                  class="address_form"
+                  type="text"
+                  id="address_phone_new"
+                  name="address[phone]"
+                  value="{{ form.phone }}"
+                  size="40"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="address--checkbox-container" data-item="paragraph">
+                {{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}
+              </td>
+            </tr>
+          </table>
+
+          <div class="address--button-container">
+            <div data-item='button'>
+              <button type="submit" value="{{ 'customer.addresses.update' | t }}">
+                {{ 'customer.addresses.update' | t }}
+              </button>
+            </div>
+            <span data-item="block-link">
+              <a  href="#" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">
+                {{ 'customer.addresses.cancel' | t }}
+              </a>
+            </span>
+          </div>
+        {% endform %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <div class="address--pagination">
+          {% render 'framework--pagination', paginate: paginate %}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <script type="text/javascript" charset="utf-8">
+    // initialize observers on address selectors
+    function onAddressLoad() {
+      new Shopify.CountryProvinceSelector(
+        'address_country_new', 'address_province_new',
+        { hideElement: 'address_province_container_new' }
+      );
+
+      {% for address in customer.addresses %}
+        new Shopify.CountryProvinceSelector(
+          'address_country_{{ address.id }}', 'address_province_{{ address.id }}',
+          { hideElement: 'address_province_container_{{ address.id }}' }
+        );
+      {% endfor %}
+    }
+  </script>
+  <script
+    src="{{ 'theme-addresses.min.js' | asset_url }}"
+    defer="defer"
+    onload="onAddressLoad()"
+  ></script>
+
+{% endpaginate %}

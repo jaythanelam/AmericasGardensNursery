@@ -1,0 +1,234 @@
+<div
+  class="slideshow--root"
+  data-section-id="{{ section.id }}"
+>
+  {% render
+    'framework--carousel',
+    section_id: section.id,
+    view: 'featured-content',
+    blocks_per_slide: section.settings.blocks_per_slide,
+    blocks_per_slide_mobile: section.settings.blocks_per_slide_mobile,
+    blocks: section.blocks,
+    dot_nav_enabled: true,
+    total_blocks: section.blocks.size,
+    bg_color: section.settings.background-color,
+    spacing_above: section.settings.spacing-above,
+    spacing_below: section.settings.spacing-below,
+    image_height: section.settings.image-height,
+    darken_image: section.settings.darken-image,
+    box_around_text: section.settings.box-around-text,
+    alt_color: section.settings.alternative-color,
+    mobile_overlay: section.settings.mobile-overlay,
+    auto_rotate: section.settings.auto-rotate,
+    rotate_frequency: section.settings.rotate-frequency,
+    transition_type: section.settings.transition_type,
+    spacing_around_blocks: section.settings.spacing-around-blocks
+  %}
+</div>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "class": "section--slideshow",
+  "settings": [
+    {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Dark", "value": "dark" },
+        { "label": "Accent", "value": "accent" }
+      ],
+      "default": "none"
+    },
+    {
+      "id": "spacing-above",
+      "label": "Spacing above",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "spacing-below",
+      "label": "Spacing below",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "spacing-around-blocks",
+      "label": "Spacing around blocks",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "image-height",
+      "label": "Image height",
+      "type": "range",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "info": "Select 0 for original image dimensions. The image height may not shrink if the text is filling up too much vertical space"
+    },
+    {
+      "id": "darken-image",
+      "label": "Darken images",
+      "type": "checkbox",
+      "default": true,
+      "info": "Can enhance text visibility"
+    },
+    {
+      "id": "blocks_per_slide",
+      "label": "Blocks per slide for desktop",
+      "type": "range",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "id": "blocks_per_slide_mobile",
+      "label": "Blocks per slide for mobile",
+      "type": "radio",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    {
+      "id": "box-around-text",
+      "label": "Show box around text",
+      "type": "checkbox",
+      "default": false,
+      "info": "If text disappears then disable the alternative text setting below"
+    },
+    {
+      "id": "alternative-color",
+      "label": "Use alternative text color",
+      "type": "checkbox",
+      "default": true,
+      "info": "This can found under theme settings below"
+    },
+    {
+      "id": "mobile-overlay",
+      "label": "Overlay text on small devices",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto-rotate",
+      "label": "Auto-rotate slides",
+      "default": false
+    },
+    {
+      "label": "Rotate frequency (seconds)",
+      "id": "rotate-frequency",
+      "type": "range",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "type": "radio",
+      "id": "transition_type",
+      "label": "Transition style",
+      "options": [
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        }
+      ],
+      "default": "slide"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Slide",
+      "settings": [
+        {
+          "id": "image",
+          "label": "Image",
+          "type": "image_picker"
+        },
+        {
+          "id": "text-position",
+          "label": "Text Position",
+          "type": "select",
+          "options": [
+            { "label": "Center", "value": "center" },
+            { "label": "Bottom left", "value": "bottom-left" }
+          ],
+          "default": "bottom-left"
+        },
+        {
+          "id": "text-width",
+          "label": "Text width",
+          "type": "select",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+        "default": "medium"
+        },
+        {
+          "id": "overline",
+          "label": "Overline",
+          "type": "text",
+          "default": "Overline text"
+        },
+        {
+          "id": "title",
+          "label": "Heading",
+          "type": "text",
+          "default": "Slide heading"
+        },
+        {
+          "id": "description",
+          "label": "Text",
+          "type": "richtext",
+          "default": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.</p>"
+        },
+        {
+          "id": "link-url",
+          "label": "Link",
+          "type": "url",
+          "default": "/"
+        },
+        {
+          "id": "link-text",
+          "label": "Link text",
+          "type": "text",
+          "default": "View more"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Slideshow",
+    "category": "Image",
+    "blocks": [
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      }
+    ]
+  }]
+}
+{% endschema %}

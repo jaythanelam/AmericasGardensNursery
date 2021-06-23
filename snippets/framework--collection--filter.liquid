@@ -1,0 +1,229 @@
+{%- liquid
+  assign apply_t = 'collections.apply' | t
+  assign collection_t = 'collections.collection' | t
+  assign no_filters_t = 'collections.no_filters' | t
+  assign other_t = 'collections.other' | t
+  assign refine_t = 'collections.refine' | t
+  assign reset_t = 'collections.reset' | t
+  assign search_text_t = 'collections.search_by_name' | t
+  assign sort_by_t = 'collections.sort_by' | t
+
+  if custom_collection_list == empty
+    assign collections_list = collections
+  else
+    assign collections_list = linklists[custom_collection_list].links
+  endif
+-%}
+
+<div class="collection--filter--root">
+
+  <div class="collection--filter--container">
+
+    {% if show_collection_list or show_sort_by_list or show_refine_list %}
+      <div class="collection--filter--main">
+
+        {% if show_collection_list %}
+          <div class="collection--filter--browse">
+
+            <div
+              class="collection--filter--browse-toggle"
+              tabindex="0"
+              data-item="nav-text"
+              aria-expanded="false"
+              aria-controls="browse-filter"
+            >
+              {{ collection_t }}
+              {% render 'framework--icons', icon: 'chevron-up' %}
+              {% render 'framework--icons', icon: 'chevron-down' %}
+            </div>
+
+            <ul
+              class="collection--filter--browse-menu"
+              id="browse-filter"
+              data-item="nav-text--sub"
+              data-transition="fade-out"
+            >
+              {%- for collection_item in collections_list -%}
+                <li
+                  class="collection--filter--browse-link"
+                  tabindex="0"
+                  data-value="{{ collection_item.url }}"
+                  {% if collection_item.url == collection.url %}
+                    data-active="true"
+                  {% else %}
+                    data-active="false"
+                  {% endif %}
+                >
+                  {{- collection_item.title -}}
+                  {%- render 'framework--icons', icon: 'cross' -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+
+          </div>
+        {% endif %}
+
+        {% if show_sort_by_list %}
+          <div class="collection--filter--sort-by">
+            <div
+              class="collection--filter--sort-by-toggle"
+              tabindex="0"
+              data-item="nav-text"
+              aria-expanded="false"
+              aria-controls="sort-by-filter"
+            >
+              {{ sort_by_t }}
+              {% render 'framework--icons', icon: 'chevron-up' %}
+              {% render 'framework--icons', icon: 'chevron-down' %}
+            </div>
+
+            <ul
+              class="collection--filter--sort-by-menu"
+              id="sort-by-filter"
+              data-item="nav-text--sub"
+              data-transition="fade-out"
+            >
+              {%- for option in collection.sort_options -%}
+                <li
+                  class="collection--filter--sort-by-link"
+                  tabindex="0"
+                  data-value="{{ option.value }}"
+                  data-name="{{ option.name }}"
+                  {% if option.value == collection.sort_by %}
+                    data-active="true"
+                  {% else %}
+                    data-active="false"
+                  {% endif %}
+                >
+                  {{- option.name -}}
+                  {%- render 'framework--icons', icon: 'cross' -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if show_refine_list %}
+          <div class="collection--filter--refine">
+            <div
+              class="collection--filter--refine-toggle"
+              tabindex="0"
+              data-item="nav-text"
+              aria-expanded="false"
+              aria-controls="refine-filter"
+            >
+              {{ refine_t }}
+              {% render 'framework--icons', icon: 'chevron-up' %}
+              {% render 'framework--icons', icon: 'chevron-down' %}
+            </div>
+
+            {% if collection.all_tags.size > 0 %}
+              {% if tag_groups_enabled %}
+                <div
+                  class="collection--filter--refine-mainmenu"
+                  id="refine-filter"
+                  data-transition="fade-out"
+                >
+                  {%- for block in blocks -%}
+                    {% assign filter_tags = block.settings.filter-tags | replace: '</p><p>', ',' | strip_html | split: ',' %}
+
+                    <div class="collection--filter--sub-category" data-item="nav-text">
+                      {{ block.settings.filter-title }}
+                    </div>
+
+                    <ul class="collection--filter--refine-submenu" data-item="nav-text--sub">
+
+                      {% for tag in filter_tags %}
+                        {% assign tag = tag | strip %}
+                        <li
+                          class="collection--filter--refine-link"
+                          {% if current_tags contains tag %}
+                            data-active="true"
+                          {% else %}
+                            data-active="false"
+                          {% endif %}
+                          data-handle="{{ tag | handle }}"
+                          tabindex="0"
+                        >
+                          {{- tag -}}
+                          {%- render 'framework--icons', icon: 'cross' -%}
+                        </li>
+                      {% endfor %}
+
+                    </ul>
+                  {%- endfor -%}
+                </div>
+
+              {% else %}
+                <ul
+                  class="collection--filter--refine-menu"
+                  id="refine-filter"
+                  data-item="nav-text--sub"
+                  data-transition="fade-out"
+                >
+                  {%- for tag in collection.all_tags -%}
+                    <li
+                      class="collection--filter--refine-link"
+                      {% if current_tags contains tag %}
+                        data-active="true"
+                      {% else %}
+                        data-active="false"
+                      {% endif %}
+                      data-handle="{{ tag | handle }}"
+                      tabindex="0"
+                    >
+                      {{- tag -}}
+                      {%- render 'framework--icons', icon: 'cross' -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {% endif %}
+
+            {% else %}
+              <div class="collection--filter--no-filters" data-item="caption">
+                {{ no_filters_t }}
+              </div>
+
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
+    {% if show_search_link %}
+      <div class="collection--filter--search">
+        <a
+          class="collection--filter--search-link"
+          href="{{ routes.search_url }}"
+          aria-label="{{ search_text_t }}"
+          aria-haspopup="true"
+        >
+          <div class="collection--filter--search-icon">
+            {% render 'framework--icons', icon: 'search' %}
+          </div>
+
+          <div class="collection--filter--search-text" data-item="nav-text--sub">
+            {{ search_text_t }}
+          </div>
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="collection--filter--button-container">
+    <div
+      class="collection--filter--apply"
+      data-item="button"
+      data-off-canvas--close
+      tabindex="0"
+    >
+      <span>{{ apply_t }}</span>
+    </div>
+    <div class="collection--filter--reset" data-item="secondary-button" tabindex="0">
+      <span>{{ reset_t }}</span>
+    </div>
+  </div>
+
+</div>

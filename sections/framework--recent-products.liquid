@@ -1,0 +1,52 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign section_enabled = section.settings.enable
+-%}
+
+{% if section_enabled %}
+  <div
+    class="collection--recent-products--root"
+    data-section-id="{{ section.id }}"
+    data-js-class="RecentProducts"
+    data-container="section"
+  >
+    {% if heading != blank %}
+      <div class="collection--recent-products--title" data-container="block">
+        <h2 data-item="section-heading">
+          {{ heading | escape }}
+        </h2>
+      </div>
+    {% endif %}
+
+    <div
+      class="collection--recent-products--grid"
+      data-container="panel"
+      data-columns="4"
+      data-mobile-columns="2"
+      style="display:none;"
+    ></div>
+    <div class="collection--recent-products--spinner">
+      {% render 'framework--loading-spinner' %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Recent products",
+  "settings": [
+    {
+      "label": "Enable",
+      "id": "enable",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "label": "Heading",
+      "id": "heading",
+      "type": "text",
+      "default": "Recently viewed"
+    }
+  ]
+}
+{% endschema %}

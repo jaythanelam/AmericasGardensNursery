@@ -1,0 +1,27 @@
+<div
+  class="custom-content--root"
+  data-item="rte-content"
+  data-section-id="{{ section.id }}"
+>
+  {{ section.settings.custom_html }}
+</div>
+
+{% schema %}
+  {
+    "name": "Custom content",
+    "settings": [
+      {
+        "id": "custom_html",
+        "label": "HTML",
+        "type": "html",
+        "default":"<div><p>Some HTML content</p></div>"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom content",
+        "category": "Advanced layout"
+      }
+    ]
+  }
+{% endschema %}

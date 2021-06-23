@@ -1,0 +1,79 @@
+{%- liquid
+	assign featured_blog_item_title_t = 'home.featured_blog.item_title' | t
+	assign featured_blog_date_t = 'home.featured_blog.date' | t
+	assign featured_blog_excerpt_t = 'home.featured_blog.excerpt' | t
+	assign featured_blog_continue_reading_t = 'home.featured_blog.continue_reading' | t
+-%}
+
+<div class="featured-blog--item">
+
+	{% case type %}
+		{% when 'full_article' %}
+
+			{% if featured_article.image %}
+				<div class="featured-blog--item--image">
+					{%
+						render "framework--image",
+						image: featured_article.image,
+						full_width: true
+					%}
+				</div>
+			{% endif %}
+
+			<h3 class="featured-blog--item--heading" data-item="block-heading">
+				<a href="{{ featured_article.url }}">{{ featured_article.title }}</a>
+			</h3>
+
+			{% if show_date %}
+				<div class="featured-blog--item--date" data-item="light-accent-text">
+					{% comment %} 'timesince' requires passing 'created_at' {% endcomment %}
+					{%
+						render "framework--utils",
+						utility: "timesince",
+						created_at: featured_article.published_at
+					%}
+				</div>
+			{% endif %}
+
+			{% if show_excerpt %}
+				<div class="featured-blog--item--excerpt" data-item="paragraph">
+					{% if featured_article.excerpt == blank %}
+						{{ featured_article.content | strip_html | truncate: 100 }}
+					{% else %}
+						{{ featured_article.excerpt }}
+					{% endif %}
+				</div>
+			{% endif %}
+
+			<div class="featured-blog--item--read-more" data-item="block-link">
+				<a href="{{ featured_article.url }}">{{ featured_blog_continue_reading_t }}</a>
+			</div>
+
+		{% when 'placeholder' %}
+
+			<div class="featured-blog--item--image">
+				{% render "framework--placeholder", type: "image" %}
+			</div>
+
+			<h3 class="featured-blog--item--heading" data-item="block-heading">
+				{{ featured_blog_item_title_t }}
+			</h3>
+
+			{% if show_date %}
+				<div class="featured-blog--item--date" data-item="light-accent-text">
+					{{ featured_blog_date_t }}
+				</div>
+			{% endif %}
+
+			{% if show_excerpt %}
+				<div class="featured-blog--item--excerpt" data-item="paragraph">
+					{{ featured_blog_excerpt_t }}
+				</div>
+			{% endif %}
+
+			<div class="featured-blog--item--read-more" data-item="block-link">
+				<a>{{ featured_blog_continue_reading_t }}</a>
+			</div>
+	{% endcase %}
+
+</div>

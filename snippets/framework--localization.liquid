@@ -1,0 +1,65 @@
+{% assign form_id = id | append: '--localization' %}
+{% assign locale_id = id | append: '--locale' %}
+{% assign currency_id = id | append: '--currency' %}
+
+{% form 'localization', id: form_id %}
+
+  {% if locale_enable %}
+    {%- capture locale_values -%}
+      {%- for locale in form.available_locales -%}
+        {{ locale.iso_code }},
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {% assign locale_values = locale_values | split: "," %}
+
+    {%- capture locale_names -%}
+      {%- for locale in form.available_locales -%}
+        {{ locale.endonym_name }},
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {% assign locale_names = locale_names | split: "," %}
+
+    {%
+      render 'framework--disclosure',
+      label_name: locale_label_t,
+      option_names: locale_names,
+      option_values: locale_values,
+      current_value: form.current_locale.iso_code,
+      id: locale_id,
+      input_name: 'locale_code',
+      type: 'localization'
+    %}
+  {% endif %}
+
+  {% if currency_enable %}
+    {%- capture currency_values -%}
+      {%- for currency in form.available_currencies -%}
+        {{ currency.iso_code }},
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {% assign currency_values = currency_values | split: "," %}
+
+    {%- capture currency_names -%}
+      {%- for currency in form.available_currencies -%}
+        {{ currency.iso_code }} {%- if currency.symbol -%}{{ currency.symbol }}{%- endif -%},
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {% assign currency_names = currency_names | split: "," %}
+
+    {%
+      render 'framework--disclosure',
+      label_name: currency_label_t,
+      option_names: currency_names,
+      option_values: currency_values,
+      current_value: form.current_currency.iso_code,
+      id: currency_id,
+      input_name: 'currency_code',
+      type: 'localization'
+    %}
+  {% endif %}
+
+{% endform %}

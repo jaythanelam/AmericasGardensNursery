@@ -1,0 +1,88 @@
+{% comment %} Usage:
+  - if option_values != option_names, arrays should have matched indices
+  - current_value and input_name are needed for some forms (ie. localization)
+  - current_value should exist within option_values
+{% endcomment %}
+
+{% unless option_values %}
+  {% assign option_values = option_names %}
+{% endunless %}
+
+{%- capture disclosure_name -%}
+  {{- id | downcase }}-{{ label_name | downcase | remove: ' ' -}}
+{%- endcapture -%}
+
+<div
+  class="disclosure--root"
+  data-js-class="Disclosure"
+  data-id="{{ id | downcase }}"
+  {% if type != blank %}
+    data-type={{ type }}
+  {% endif %}
+>
+  <label
+    class="disclosure--label"
+    {% unless display_label %}
+      data-item="hidden-text"
+    {% else %}
+      data-item="accent-text"
+    {% endunless %}
+    id="{{ disclosure_name }}-toggle"
+  >
+    {% comment %} label_name needed for a11y {% endcomment %}
+    {{ label_name | escape }}
+  </label>
+
+  <div class="disclosure--main" data-item="nav-text">
+    <div
+      class="disclosure--toggle"
+      tabindex="0"
+      aria-expanded="false"
+      aria-controls="{{ disclosure_name }}"
+      aria-describedby="{{ disclosure_name }}-toggle"
+    >
+      <span class="disclosure--current-option">
+        {%- if current_value -%}
+          {%- for value in option_values -%}
+            {%- if value == current_value -%}
+              {{ option_names[forloop.index0] | escape }}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </span>
+
+      {% render 'framework--icons', icon: 'chevron-up' %}
+      {% render 'framework--icons', icon: 'chevron-down' %}
+    </div>
+    <ul class="disclosure--form" id="{{ disclosure_name }}">
+      {%- for name in option_names -%}
+        <li class="disclosure--option">
+          <div
+            class="disclosure--option-link"
+            tabindex="0"
+            data-value="{{ option_values[forloop.index0] | escape }}"
+            {% if option_values[forloop.index0] == current_value %}
+              aria-current="true"
+            {% else %}
+              aria-current="false"
+            {% endif %}
+          >
+            {{ name }}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <input
+      class="disclosure--input"
+      type="hidden"
+      {% if input_name %}
+        name="{{ input_name }}"
+      {% endif %}
+      {% if current_value %}
+        value="{{ current_value | escape }}"
+      {% endif %}
+      data-item="disclosure"
+    />
+  </div>
+
+</div>

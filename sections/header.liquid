@@ -1,748 +1,344 @@
-{%- assign section_color = 'primary' -%}
+{%- liquid
+  assign account_t = 'layout.header.account' | t
+  assign cart_title_t = 'cart.title' | t
+  assign currency_label_t = 'general.currency.dropdown_label' | t
+  assign locale_label_t = 'general.language.dropdown_label' | t
+  assign search_t = 'layout.header.search' | t
 
-{%- assign feature_image_placeholder = false -%}
-{% assign banner_enabled = false %}
-{% assign banner_alternate_logo_enabled = false %}
-{% for block in section.blocks %}
-  {% if block.type == 'banner' and template.name == 'index' %}
-    {% assign banner_enabled = true %}
-    {% assign section_color = block.settings.overlay_text_color %}
-    {% if block.settings.logo_alternate %}
-      {% assign banner_alternate_logo_enabled = true %}
-      {% assign banner_alternate_logo = block.settings.logo_alternate %}
-    {% endif %}
+  assign account_icon = section.settings.account-icon
+  assign search_icon = section.settings.search-icon
+  assign cart_icon = section.settings.cart-icon
+  assign logo_image = section.settings.logo
+  assign logo_alt = section.settings.logo.alt
+  assign logo_height = section.settings.logo-height
+  assign fix_enabled = section.settings.fix-enabled
+  assign fixed_logo_height = section.settings.fixed-logo-height
+  assign logo_position = section.settings.logo-position
+  assign menu = section.settings.menu
+  assign show_account = section.settings.header-account-show
+  assign transparent_menu = section.settings.transparent-menu
+  assign locale_enable = false
+  assign currency_enable = false
+  if section.settings.show-currency-selector and shop.enabled_currencies.size > 1
+    assign currency_enable = true
+  endif
+  if section.settings.show-locale-selector and shop.published_locales.size > 1
+    assign locale_enable = true
+  endif
+-%}
+
+{% capture logo_html %}
+  {%
+    render 'framework--logo',
+    logo: logo_image,
+    height_range: logo_height
+  %}
+{% endcapture %}
+
+{% capture menu_icon_html %}
+  <div class="x-menu--overlap-icon">
+    <div
+      tabindex="0"
+      data-off-canvas--open="left-sidebar"
+      data-off-canvas--view="menu"
+      aria-haspopup="menu"
+    >
+      {% render 'framework--icons', icon: 'menu' %}
+    </div>
+  </div>
+{% endcapture %}
+
+{% capture x_menu_html %}
+  {%
+    render 'framework--x-menu',
+    overlap_parent: 2,
+    js_class: 'XMenu',
+    handle: menu,
+    use_external_icon: true
+  %}
+{% endcapture %}
+
+{% capture account_html %}
+  {% render 'layout--login', account_icon: account_icon %}
+{% endcapture %}
+
+{% capture search_html %}
+  {% if search_icon == 'icon' %}
+    {% render 'framework--icons', icon: 'search' %}
+  {% elsif search_icon == 'text' %}
+    {{ search_t }}
   {% endif %}
-{% endfor %}
+{% endcapture %}
 
-{% capture header_underline_link %}header-border-link color--{{ section_color }}-text hv--div--border-bottom--{{ section_color }}-text color--header-active{% endcapture %}
+{% capture cart_html %}
+  {% render 'partial--cart', cart_icon: cart_icon %}
+{% endcapture %}
 
-<style>
-  {%- if section.settings.logo != blank -%}
-    .site-header__logo-image {
-      max-width: {{ section.settings.logo_max_width }}px;
+{% if logo_image %}
+  {% capture logo_height_css = logo_height %}
+    max-height: {{ logo_height }}px;
+  {% endcapture %}
+
+  {% capture fixed_logo_height_css = fixed_logo_height %}
+    max-height: {{ fixed_logo_height }}px;
+  {% endcapture %}
+  <style>
+    .header--logo img {
+      {{ logo_height_css }}
     }
-  {%- endif -%}
-</style>
 
-{%- if banner_enabled -%}
-  {%- for block in section.blocks -%}
-    {%- if block.type == 'banner' and template.name == 'index' -%}
-      {% comment %}
-      Add class to body to fix section padding for first section
-      {% endcomment %}
-      <script>
-        document.body.classList.add("banner-image");
-      </script>
-    {%- endif -%}
-  {%- endfor -%}
-{%- endif -%}
+    .header--root[data-fixed="true"] .header--logo img {
+      {{ fixed_logo_height_css }}
+    }
 
-{% if template.name == 'index'  %}
-  {%- if section.settings.sticky_header %}
-    {% capture sticky_data %}data-sticky-header="true" {% if section.settings.show_announcement %}{% if section.settings.home_page_only == false or template.name == 'index' %}data-announcement="true"{% endif %}{% endif %}{% endcapture %}
-  {% endif %}
-  {% if banner_enabled and section.settings.sticky_header and section.settings.show_announcement %}
-    {% capture sticky_header_banner %}data-sticky-header-with-banner-and-announcement="true"{% endcapture %}
-  {% endif %}
-  {% if banner_enabled and section.settings.sticky_header and section.settings.show_announcement == false %}
-    {% capture sticky_header_banner %}data-sticky-header-with-banner-and-no-announcement="true"{% endcapture %}
-  {% endif %}
-{% else %}
-  {%- if section.settings.sticky_header %}
-    {% capture sticky_data %}data-sticky-header="true" {% if section.settings.show_announcement %}{% if section.settings.home_page_only == false or template.name == 'index' %}data-announcement="true"{% endif %}{% endif %}{% endcapture %}
-  {% endif %}
+    @media only screen and (max-width: 767px) {
+      .header--logo img {
+        {{ fixed_logo_height_css }}
+      }
+    }
+  </style>
 {% endif %}
 
-{% if section.settings.sticky_header %}
-<script>
-  document.body.classList.add("sticky-header");
-</script>
-{% endif %}
+<header
+  class="header--root"
+  data-section-id="{{ section.id }}"
+  data-js-class="Header"
+  data-logo-position="{{ logo_position }}"
+  data-fixed="false"
+  data-fixed-enabled="{{ fix_enabled }}"
+>
+  {% if locale_enable or currency_enable %}
+    <div class="header--localization-for-off-canvas" style="display:none;">
+      {% render
+        'framework--localization',
+        locale_enable: locale_enable,
+        currency_enable: currency_enable,
+        id: 'off-canvas'
+      %}
+    </div>
+  {% endif %}
+  <div class="header--y-menu-for-off-canvas" style="display:none;">
+    {% render 'framework--y-menu', handle: menu %}
+  </div>
+  <div class="header--top-row">
+    <div class="header--left-column">
+      <div class="header--menu-icon">
+        {{ menu_icon_html }}
+      </div>
 
-<div data-section-id="{{ section.id }}" data-section-type="header"  data-template="{{ template.name }}" {{ sticky_data }} {{ sticky_header_banner }} {% if banner_alternate_logo_enabled %}data-banner-logo-image-enabled="true"{% endif %}>
-
-  {% unless banner_enabled  %}
-  <div class="header-placeholder full--w hide" data-header-placeholder></div>
-  {% endunless %}
-
-  <header class="site-header {% if banner_enabled  %}{% if section.settings.sticky_header and section.settings.show_announcement == false %}md--dn--absolute lg--up--fixed{% else %}absolute{% endif %} top--0 left--0{% endif %} full--w {% if section.settings.show_announcement %}{% if section.settings.home_page_only == false or template.name == 'index' %}has-announcement{% endif %}{% endif %}"  data-site-header >
-
-    <div class="header__main">
-      {% if section.settings.show_announcement %}
-        {% capture class %}block full--w bg--{{ section.settings.announcement_color }}-background color--{{ section.settings.announcement_color }}-text px2 py1  font-size--sm text-align--center {% endcapture %}
-        {% if section.settings.home_page_only == false or template.name == 'index' %}
-          {% if section.settings.link == blank %}
-            <div class="announcement-bar {{ class }}">
-          {% else %}
-            <a href="{{ section.settings.link }}" class="announcement-bar announcement-bar--link  {{ class }} hv--{{ section.settings.announcement_color }}-accent">
-          {% endif %}
-            <p class="m0 announcement-bar__message">{{ section.settings.text | escape }}</p>
-          {% if section.settings.link == blank %}
-            </div>
-          {% else %}
-            </a>
-          {% endif %}
-        {% endif %}
+      {% if logo_position == 'left' %}
+        <div class="header--logo" data-position="left">
+          {{ logo_html }}
+        </div>
       {% endif %}
 
-      <div class="header__shifter full--w"></div>
-
-        <div class="header-table color--{{ section_color }}-text flex items--center justify--between full--w px2 py3 max-site-width lg--up--px3  lg--up--relative">
-          <div class="header-table__bookend align--middle text-align--left lg--up--hide md--dn--flex--1-basis-0">
-            <div class="js">
-              {% if section.settings.show_menu_icon == false and linklists[section.settings.main_linklist].links != blank and linklists[section.settings.main_linklist].links.size == 1 %}
-                {% assign single_link = linklists[section.settings.main_linklist].links[0] %}
-                {% assign single_link_handle = single_link.title | handleize %}
-                <a href="{{ single_link.url }}"
-                   class="t--header-navigation {{ header_underline_link }} font-size--m bg--transparent inline-block pointer"
-                   {% if linklists[single_link_handle].links != blank %}
-                   aria-controls="MobileNav"
-                   aria-expanded="false"
-                   data-active-header-trigger
-                   data-active-target="navigation"
-                   data-first-level-link="mobile"
-                   data-first-level-single-link="true"
-                   data-key="{{ single_link_handle }}--1"
-                   aria-haspopup="true"
-                   {% endif %}
-                   tabindex="0">
-                    <div class="header__link-wrapper">{{ single_link.title }}</div>
-                </a>
-              {% else %}
-                {% if section.settings.show_menu_icon %}
-                  <button type="button" class="t--header-navigation color--{{ section_color }}-text site-header__menu-btn btn border--none font-size--m bg--transparent" aria-controls="MobileNav" aria-expanded="false" data-active-header-trigger data-active-target="navigation">
-                    <div class="left">{% render 'icon-menu' %}</div>
-                  </button>
-                {% else %}
-                  <a class="t--header-navigation {{ header_underline_link }} font-size--m bg--transparent inline-block pointer" aria-controls="MobileNav" aria-expanded="false" data-active-header-trigger data-active-target="navigation"  tabindex="0">
-                    <div class="header__link-wrapper">{{ 'general.navigation.menu' | t }}</div>
-                  </a>
-                {% endif %}
-              {% endif %}
-            </div>
-            {%- render 'no-js__mobile-menu' -%}
-          </div>
-          <div class="nav__container align--middle text-align--left md--dn--hide lg--up--flex--1 overflow--x-hidden">
-            <div data-desktop-navigation-container>
-              <nav role="navigation">
-                <ul class="t--header-navigation site-nav list--reset m0 p0 font-size--m mxn1 no-wrap inline-block fit overflow--x-hidden" data-desktop-navigation-list>
-                  {% for link in linklists[section.settings.main_linklist].links %}
-                    {%- assign child_list_handle = link.title | handleize -%}
-                    {% if linklists[child_list_handle].links != blank %}
-                      <li class="nav__item site-nav--has-submenu{% if link.active %} site-nav--active{% endif %}  inline-block">
-                        <button class="site-nav__link border--none bg--transparent py0 {{ header_underline_link }} px1 block header__link no-wrap pointer {% if forloop.last %}site-nav__link--last{% endif %}"
-                                data-active-header-trigger
-                                data-active-target="navigation"
-                                data-first-level-link="desktop"
-                                data-key="{{ child_list_handle }}--{{ forloop.index }}"
-                                data-top-level-item
-                                {% if forloop.first %}
-                                data-first-nav-link
-                                {% endif %}
-                                aria-expanded="false">
-                          <div class="header__link-wrapper">
-                            {{ link.title }}
-                            <span class="site-nav__chevron-down font-size--xxs align--middle inline-block site-nav__svg">{% render 'icon-chevron-down' %}</span>
-                            <span class="site-nav__chevron-up font-size--xxs  align--middle inline-block site-nav__svg hide">{% render 'icon-chevron-up' %}</span>
-                          </div>
-                        </button>
-                        {% assign link_handle = link.title | handleize %}
-                        {%- render 'no-js__submenu',
-                            link_handle: link_handle,
-                        -%}
-                      </li>
-                    {% else %}
-                      <li class="nav__item inline-block {% if link.active %}site-nav--active{% endif %}" >
-                        <a href="{{ link.url }}"
-                           class="site-nav__link {{ header_underline_link }} px1 align--top header__link inline-block no-wrap"
-                           {% if forloop.first %}
-                           data-first-nav-link
-                           {% endif %}
-                           data-top-level-item>
-                          <div class="header__link-wrapper">{{ link.title }}</div>
-                        </a>
-                      </li>
-                    {% endif %}
-                  {% endfor %}
-                  <li class="site-nav--has-submenu inline-block hide" data-desktop-navigation-more-link>
-                    <button class="site-nav__link border--none bg--transparent py0 {{ header_underline_link }} px1 inline-block header__link no-wrap pointer" data-desktop-navigation-more-link-trigger data-top-level-item>
-                      <div class="header__link-wrapper">
-                        {{ 'general.navigation.more' | t }}
-                      </div>
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-          <div class="header-table__center align--middle text-align--center flex--grow--1  md--dn--flex--1-basis-auto lg--up--flex--grow--0 lg--justify--center lg--items--center">
-            {% if template.name == 'index' %}
-              <h1 class="header__logo m0 lg--up--px3 {% if section.settings.logo != blank %}font-size--0{% endif %} md--dn--px1">
-            {% else %}
-              <div class="header__logo {% unless section.settings.logo != blank %}h1{% else %}font-size--0{% endunless %} m0  lg--up--px3 md--dn--px1">
-            {% endif %}
-                <a href="{{ routes.root_url }}" class="font-size--xl line-height--4 color--{{ section_color }}-text color--header-active f--heading site-logo mx--auto{% if section.settings.logo != blank %} site-header__logo-image{% endif %}">
-                  {% if section.settings.logo != blank %}
-
-                    {% assign logo = section.settings.logo %}
-                    {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
-
-
-                    <img src="{{ logo | img_url: image_size }}"
-                         srcset="{{ logo| img_url: image_size }} 1x, {{ logo| img_url: image_size, scale: 2 }} 2x"
-                         alt="{{ logo.alt | default: shop.name }}"
-                         class="logo-default {% if banner_alternate_logo_enabled %}md--dn--hide lg--up--hide{% endif %}"
-                         data-logo-default>
-
-                    {% if banner_alternate_logo_enabled %}
-                      {% assign logo = banner_alternate_logo %}
-                      {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
-                      <img src="{{ logo | img_url: image_size }}"
-                          srcset="{{ logo| img_url: image_size }} 1x, {{ logo| img_url: image_size, scale: 2 }} 2x"
-                          alt="{{ logo.alt | default: shop.name }}"
-                          class="logo-alternate"
-                          data-logo-alternate>
-                    {% endif %}
-
-
-                  {% else %}
-                    {{ shop.name }}
-                  {% endif %}
-                </a>
-            {% if template.name == 'index' %}
-              </h1>
-            {% else %}
-              </div>
-            {% endif %}
-          </div>
-          <div class="header__meta header-table__bookend align--middle text-align--right lg--up--flex--1 md--dn--flex--1-basis-0 lg--up--justify--end no-wrap">
-            <div class="mxn1 flex items--center justify--end">
-
-              {% if shop.customer_accounts_enabled %}
-                {% if customer %}
-                <a href="{{ routes.account_url }}" class="t--header-navigation header__link {{ header_underline_link }}  font-size--m bg--transparent inline-block pointer align--middle px1 md--dn--hide" data-top-level-item>
-                  <div class="header__link-wrapper">
-                    {{ 'layout.customer.account' | t }}
-                  </div>
-                </a>
-                {% else %}
-                <a href="{{ routes.account_login_url }}" class="t--header-navigation header__link {{ header_underline_link }}  font-size--m bg--transparent inline-block pointer align--middle px1 md--dn--hide" data-top-level-item>
-                  <div class="header__link-wrapper">
-                    {{ 'layout.customer.log_in' | t }}
-                  </div>
-                </a>
-                {% endif %}
-              {% endif %}
-
-              {% if section.settings.show_search %}
-              <a href="{{ routes.search_url }}"
-                 class="t--header-navigation header__link {{ header_underline_link }} font-size--m bg--transparent inline-block pointer align--middle px1 md--dn--hide"
-                 data-active-header-trigger
-                 data-active-target="search"
-                 data-search-button
-                 tabindex="0"
-                 role="button"
-                 data-top-level-item
-                 aria-haspopup="true"
-                 data-search-button>
-                <div class="header__link-wrapper">
-                  {{ 'general.search.submit' | t }}
-                </div>
-              </a>
-              {% endif %}
-
-              <a href="{{ routes.cart_url }}"
-                 id="CartLink"
-                 class="t--header-navigation header__link {% unless section.settings.show_cart_icon %}{{ header_underline_link }}{% else %}cart-icon color--{{ section_color }}-text hv--div--border-bottom--transparent color--header-active{% endunless %} font-size--m bg--transparent inline-block pointer m0 px1"
-                 {% if settings.ajax_cart_method=="modal" %}
-                 role="button"
-                 data-active-header-trigger
-                 data-active-target="cart"
-                 aria-haspopup="true"
-                 {% endif %}
-                 tabindex="0"
-                 data-top-level-item>
-                <div class="header__link-wrapper">
-                  {% if section.settings.show_cart_icon %}
-                    <span class="cart__icon">{% render 'icon-cart' %}</span>
-                  {% else %}
-                    {{ 'layout.cart.title' | t }}
-                  {% endif %}
-                  {% unless section.settings.show_cart_icon %}({% endunless %}<span id="CartCount" {% if section.settings.show_cart_icon %}class="cart-icon-span"{% endif %}>{{ cart.item_count }}</span>{% unless section.settings.show_cart_icon %}){% endunless %}
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
+      <div class="header--x-menu" data-position="left">
+        {% if logo_position != 'above' %}
+          {{ x_menu_html }}
+        {% endif %}
+      </div>
     </div>
 
-    {% comment %}
-    Active Header State
-    {% endcomment %}
-    {%- assign section_color = 'active' -%}
-    <div class="header__active lg--up--relative color--{{ section_color }}-text" data-header-active>
-
-      <div class="max-site-width px2 pt3 lg--up--px3 lg--up--pt3">
-
-        {% comment %}
-        Navigation
-        {% endcomment %}
-        <div class="hide" data-active-name="navigation" data-active-section>
-          <div class="lg--up--hide">
-            {%- render 'navigation__mobile',
-                section_color: section_color,
-            -%}
-          </div>
-          <div class="md--dn--hide">
-            {%- render 'navigation__desktop',
-                section_color: section_color,
-            -%}
-          </div>
-        </div>
-
-        {% comment %}
-        Cart
-        {% endcomment %}
-        <script type="text/html" id="spinner">
-          <div class="mt5 relative">
-            <div class="spinner color--{{ section_color }}-text"></div>
-          </div>
-        </script>
-        <div class="hide px2" data-active-name="cart" data-active-section>
-          <div id="CartContainer"
-               aria-modal="true"
-               aria-labelledby="AjaxCartTitle"
-               class="font-size__basic">
-            <div class="mt5 relative">
-              <div class="spinner color--{{ section_color }}-text"></div>
-            </div>
-            {% if additional_checkout_buttons %}
-            <div class="hide">
-              {{ content_for_additional_checkout_buttons }}
-            </div>
-            {% endif %}
-          </div>
-          {% comment %}
-            Polite live region, for updating screen readers on cart changes
-          {% endcomment %}
-
-          <p class="visually-hidden"
-             aria-live="polite"
-             role="status"
-             data-cart-status></p>
-        </div>
-
-        {% comment %}
-        Search
-        {% endcomment %}
-        <div class="hide" data-active-name="search" data-active-section>
-          <div class="mx--auto lg--up--one-half">
-            <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
-              {% comment %}<input type="hidden" name="type" value="product">{% endcomment %}
-              <label for="search" class="hide">{{ 'general.search.submit' | t }}</label>
-              <input id="search" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="py1 search__input input-group-field border--none bg--transparent border-bottom--{{ section_color }}-text font-size--xl color--active-text" aria-label="{{ 'general.search.placeholder' | t }}" data-search-input data-desktop-active-first-item>
-              <span class="input-group-btn search-btn">
-                <button type="submit" class="block font-size--xl bg--transparent color--{{ section_color }}-text border--none" aria-label="{{ 'general.search.submit' | t }}" data-desktop-active-last-item>
-                  {% render 'icon-search' %}
-                </button>
-              </span>
-            </form>
-          </div>
-        </div>
-
+    <div class="header--middle-column">
+      <div class="header--logo" data-position="center">
+        {{ logo_html }}
       </div>
-      <div class="max-site-width px2 lg--up--px3">
-        <div class="relative">
-          <a class="header__close fixed lg-up--full--w text-align--right top--0 right--0 p2 font-size--m pointer color--active-text hv--active-accent" data-close-header tabindex="0">
-            {% render 'icon-close' %}
+    </div>
+
+    <div class="header--right-column" data-item="nav-text">
+      <div class="header--localization">
+        {% render
+          'framework--localization',
+          locale_enable: locale_enable,
+          currency_enable: currency_enable,
+          id: 'header'
+        %}
+      </div>
+
+      {% if shop.customer_accounts_enabled and show_account %}
+        <div class="header--account">
+          {{ account_html }}
+        </div>
+
+        <div class="mobile-nav--login--for-off-canvas" style="display:none;">
+          {{ account_html }}
+        </div>
+      {% endif %}
+
+      {% if settings.search--show-in-header %}
+        <div class="header--search">
+          <a
+            href="{{ routes.search_url }}"
+            aria-label="{{ search_t }}"
+          >
+            {{ search_html }}
           </a>
+        </div>
+        <div class="mobile-nav--search--for-off-canvas" style="display:none;">
+          <a
+            href="{{ routes.search_url }}"
+            aria-label="{{ search_t }}"
+          >
+            {{ search_html }}
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="header--cart">
+        <div class="header--cart-button">
+          {{ cart_html }}
         </div>
       </div>
     </div>
-    {% comment %}
-    End Active Header State
-    {% endcomment %}
-    <div class="header__active-overlay" data-header-overlay></div>
-    {%- assign section_color = 'active' -%}
+  </div>
 
-  </header>
-
-  {% if banner_enabled %}
-    {% for block in section.blocks %}
-      {% if block.type == 'banner' and template.name == 'index' %}
-
-        {% assign section_color = block.settings.overlay_text_color %}
-        {% if block.settings.image %}
-        <div class="banner  relative {% unless block.settings.image_style == 'fit_content' %}full--vh full--w{% endunless %} js banner_image full--w" data-banner-image>
-
-          {% assign feature_image = block.settings.image %}
-          {% assign feature_image_mobile = block.settings.image_mobile %}
-          {% if block.settings.image_style == 'fit_content' %}
-            <div {% if feature_image_mobile %}class="md--dn--hide"{% endif %}>
-            {% render 'responsive-image' with
-              image: feature_image,
-              max_width: 2000,
-              max_height: 2000,
-              section_color: section_color,
-            %}
-            </div>
-            {% if feature_image_mobile %}
-            <div class="lg--up--hide">
-            {% render 'responsive-image' with
-              image: feature_image_mobile,
-              max_width: 2000,
-              max_height: 2000,
-              section_color: section_color,
-            %}
-            </div>
-            {% endif %}
-          {% else %}
-            <div class="lazyload bg-cover absolute top--0 right--0 bottom--0 left--0 {% if feature_image_mobile %}md--dn--hide{% endif %}"
-                data-bgset="{% render 'bgset', image: feature_image %}"
-                data-sizes="auto"
-                data-parent-fit="cover"
-                >
-            </div>
-            {% if feature_image_mobile %}
-            <div class="lazyload bg-cover absolute top--0 right--0 bottom--0 left--0 lg--up--hide"
-                data-bgset="{% render 'bgset', image: feature_image_mobile %}"
-                data-sizes="auto"
-                data-parent-fit="cover"
-                >
-            </div>
-            {% endif %}
-          {% endif %}
-
-          {%- assign heading = block.settings.heading -%}
-          {%- assign cta_text = block.settings.cta_text -%}
-          {%- assign cta_url = block.settings.cta_url -%}
-          {%- assign content_position = block.settings.content_position -%}
-          {%- assign text_align = block.settings.text_align -%}
-          {% if cta_url != blank or heading != blank %}
-          <div class="absolute top--0 right--0  bottom--0 left--0  px2 py4 lg--up--px3 wd--p5 z1">
-            {% assign content_position = content_position | split: ' ' %}
-            <div class="table full {% if section.settings.show_announcement %}{% if section.settings.home_page_only == false or template.name == 'index' %}pt3{% endif %}{% endif %}">
-              <div class="table-cell {{ content_position[0] }} {{ content_position[1] }}">
-                <div class="inline-block {{ text_align }} three-quarters lg--up--two-thirds">
-                  <div class="one-whole">
-                    {% if heading != blank %}
-                      <h2 class="color--{{ section_color }}-text f--heading font-size--xxxl line-height--8 pm--font-size--xxxxxl pm--line-height--11 wd--font-size--xxxxxxl wd--line-height--13">{{ heading }}</h2>
-                    {% endif %}
-                    {% if cta_url != blank %}
-                      <a class="mt2 btn border--none relative border--none bg--{{ section_color }}-text color--{{ section_color }}-text--overlay {% if section_color == 'white' or section_color == 'black' %}hover-bg--primary{% else %}hover-bg--{{ section_color }}{% endif %} p1 px2 inline-block" href="{{ cta_url }}" target="_blank" >
-                        {{ cta_text }}
-                      </a>
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endif %}
-          <div class="absolute bottom--0 left--0 right--0 flex items--center justify--center p2 z3">
-            <button aria-label="{{ 'general.accessibility.skip_to_first_section' | t }}"
-                    class="btn border--none border--none bg--transparent color--{{ section_color }}-text hv--primary-accent font-size--l pointer"
-                    data-banner-scroll>
-                    {% render 'icon-arrow-down' %}
-            </button>
-
-          </div>
+  {% if logo_position == 'above' %}
+    <div class="header--bottom-row">
+      <div class="header--bottom-row--container">
+        <div class="header--x-menu" data-position="below">
+          {{ x_menu_html }}
         </div>
-        {% else %}
-        <div class="banner__placeholder  relative {% unless block.settings.image_style == 'fit_content' %}full--vh full--w{% endunless %} bg--placeholder-dark js banner_image full--w"
-          data-banner-image>
-
-          <div class="banner__placeholder-svg full--w full--h color--{{ section_color }}-text {% if block.settings.image_style == 'full_screen' %}flex items--center justify--center{% endif %}" {% if block.settings.image_style == 'fit_content' %}style="padding-bottom: 40%;"{% endif %}>
-            <div class="full {% if block.settings.image_style == 'fit_content' %}absolute top--0 left--0 right--0 bottom--0{% endif %}">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
-          </div>
-          <a class="absolute pointer full top--0 left--0 flex items--end justify--center pb2"  data-banner-scroll>
-            <button class="btn border--none border--none bg--transparent color--{{ section_color }}-text hv--{{ section_color }}-accent font-size--l">{% render 'icon-arrow-down' %}</button>
-          </a>
-        </div>
-        {% endif %}
-
-      {% endif %}
-    {% endfor %}
+      </div>
+      <div class="header--bottom-row--edge-detector"></div>
+    </div>
   {% endif %}
+</header>
 
-</div>
-
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "Organization",
-  "name": {{ shop.name | json }},
-  {% if section.settings.logo %}
-    {% assign image_size = section.settings.logo.width | append:'x' %}
-    "logo": {{ section.settings.logo | img_url: image_size | prepend: "https:" | json }},
-  {% endif %}
-  "sameAs": [
-    {{ settings.social_twitter_link | json }},
-    {{ settings.social_facebook_link | json }},
-    {{ settings.social_pinterest_link | json }},
-    {{ settings.social_instagram_link | json }},
-    {{ settings.social_snapchat_link | json }},
-    {{ settings.social_tumblr_link | json }},
-    {{ settings.social_youtube_link | json }},
-    {{ settings.social_vimeo_link | json }}
-  ],
-  "url": {{ shop.url | append: page.url | json }}
-}
-</script>
-
-{% if request.page_type == 'index' %}
-  {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": {{ shop.name | json }},
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {{ potential_action_target | json }},
-        "query-input": "required name=search_term_string"
-      },
-      "url": {{ shop.url | append: page.url | json }}
-    }
-  </script>
-{% endif %}
 
 {% schema %}
-  {
-    "name": "Header",
-    "settings": [
-      {
-        "type": "checkbox",
-        "id": "show_cart_icon",
-        "label": "Show cart icon",
-        "info": "If disabled text will be shown instead of icon"
-      },
-      {
-        "type": "image_picker",
-        "id": "logo",
-        "label": "Logo image"
-      },
-      {
-        "type": "range",
-        "id": "logo_max_width",
-        "min": 50,
-        "max": 450,
-        "step": 10,
-        "unit": "px",
-        "label": "Custom logo width",
-        "default": 250
-      },
-      {
-        "type": "checkbox",
-        "id": "sticky_header",
-        "label": "Sticky header on desktop",
-        "default": false
-      },
-      {
-        "type": "header",
-        "content": "Navigation"
-      },
-      {
-        "type": "link_list",
-        "id": "main_linklist",
-        "label": "Menu",
-        "default": "main-menu"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_all_navigation_links",
-        "label": "Enable links to drop-down link headings"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_search",
-        "label": "Show search"
-      },
-      {
-        "type": "header",
-        "content": "Mobile menu"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_menu_icon",
-        "label": "Show menu icon",
-        "info": "If disabled text will be shown instead of icon"
-      },
-      {
-        "type": "link_list",
-        "id": "secondary_linklist",
-        "label": "Secondary menu"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_search_sidebar",
-        "label": "Show search"
-      },
-      {
-        "type": "header",
-        "content": "Announcement bar"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_announcement",
-        "label": "Show announcement",
-        "default": false
-      },
-      {
-        "type": "checkbox",
-        "id": "home_page_only",
-        "label": "Home page only",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "text",
-        "label": "Text",
-        "default": "Announce something here"
-      },
-      {
-         "type": "select",
-         "id": "announcement_color",
-         "options": [
-            { "value": "primary", "label": "Primary"},
-            { "value": "secondary", "label": "Secondary"},
-            { "value": "tertiary", "label": "Tertiary"}
-         ],
-         "label": "Announcement color combination"
-      },
-      {
-        "type": "url",
-        "id": "link",
-        "label": "Link"
-      }
-    ],
-    "blocks": [
-      {
-        "type": "banner",
-        "name": "Banner image",
-        "limit": 1,
-        "settings": [
-          {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image",
-            "info": "1250x1400px recommended"
-          },
-          {
-            "type": "image_picker",
-            "id": "image_mobile",
-            "label": "Image - mobile (optional)",
-            "info": "800x1000px recommended."
-          },
-          {
-            "type": "select",
-            "id": "image_style",
-            "label": "Image style:",
-            "options": [
-              {
-                "value": "full_screen",
-                "label": "Full Screen"
-              },
-              {
-                "value": "fit_content",
-                "label": "Content"
-              }
-            ],
-            "info": "Use \'Content\' style to avoid image cropping."
-          },
-          {
-            "type": "select",
-            "id": "overlay_text_color",
-            "label": "Text color",
-            "info": "Override header text color for the home page when banner image is enabled.",
-            "options": [
-              { "value": "primary", "label": "Primary text"},
-              { "value": "secondary", "label": "Secondary text"},
-              { "value": "tertiary", "label": "Tertiary text"},
-              { "value": "white", "label": "White"},
-              { "value": "black", "label": "Black"}
-            ]
-          },
-          {
-            "type": "image_picker",
-            "id": "logo_alternate",
-            "label": "Logo image",
-            "info": "Alternate logo for the banner image"
-          },
-          {
-            "type": "header",
-            "content": "Content"
-          },
-          {
-            "type": "text",
-            "id": "heading",
-            "label": "Heading"
-          },
-          {
-            "type": "url",
-            "id": "cta_url",
-            "label": "Button link"
-          },
-          {
-            "type": "text",
-            "id": "cta_text",
-            "label": "Button text",
-            "default": "Shop Now"
-          },
-          {
-            "type": "select",
-            "id": "content_position",
-            "label": "Content position",
-            "options": [
-              {
-                "value": "text-align--left align--middle",
-                "label": "Middle Left"
-              },
-              {
-                "value": "text-align--center align--middle",
-                "label": "Middle Center"
-              },
-              {
-                "value": "text-align--right align--middle",
-                "label": "Middle Right"
-              },
-              {
-                "value": "text-align--left align--bottom",
-                "label": "Bottom Left"
-              },
-              {
-                "value": "text-align--center align--bottom",
-                "label": "Bottom Center"
-              },
-              {
-                "value": "text-align--right align--bottom",
-                "label": "Bottom Right"
-              }
-            ],
-            "default":   "text-align--center align--middle"
-          },
-          {
-            "type": "select",
-            "id": "text_align",
-            "label": "Text alignment",
-            "options": [
-              {
-                "value": "text-align--left",
-                "label": "Left"
-              },
-              {
-                "value": "text-align--center",
-                "label": "Center"
-              },
-              {
-                "value": "text-align--right",
-                "label": "Right"
-              }
-            ],
-            "default":   "text-align--left"
-          }
-        ]
-      }
-    ]
-  }
+{
+  "name": "Header",
+  "class": "section--header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Image",
+      "info": "1600 x 200px max"
+    },
+    {
+      "label": "Position",
+      "id": "logo-position",
+      "type": "select",
+      "options": [
+        { "label": "Above menu", "value": "above" },
+        { "label": "Left", "value": "left" },
+        { "label": "Center", "value": "center" }
+      ],
+      "default":   "left",
+      "info": "Position may change on smaller screens or when menu is overlapping"
+    },
+    {
+      "label": "Image height",
+      "id": "logo-height",
+      "type": "range",
+      "min": 15,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "info": "This is referring to the natural height and should be half the height of the image you uploaded to ensure it stays sharp on retina screens."
+    },
+    {
+      "type": "header",
+      "content": "Sticky and mobile header"
+    },
+    {
+      "label": "Stick to top of screen when scrolling",
+      "id": "fix-enabled",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "label": "Image height",
+      "id": "fixed-logo-height",
+      "type": "range",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "checkbox",
+      "id": "header-account-show",
+      "label": "Enable customer account links",
+      "default": true,
+      "info": "[You will also need to enable customer accounts in your store settings](https:\/\/docs.shopify.com\/manual\/your-store\/customers\/customer-accounts)"
+    },
+    {
+      "type": "select",
+      "id": "account-icon",
+      "label": "Account button",
+      "options": [
+        { "label": "Icon", "value": "icon" },
+        { "label": "Text", "value": "text" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "select",
+      "id": "search-icon",
+      "label": "Search button",
+      "options": [
+        { "label": "Icon", "value": "icon" },
+        { "label": "Text", "value": "text" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "select",
+      "id": "cart-icon",
+      "label": "Cart button",
+      "options": [
+        { "label": "Text", "value": "text" },
+        { "label": "Bag", "value": "bag" },
+        { "label": "Cart", "value": "cart" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "header",
+      "content": "Currency Selector",
+      "info": "To add a currency, go to your [payment settings](/admin/settings/payments)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show-currency-selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "To offer multiple currencies on your online store, you must first [edit your store's currency formatting](https://docs.shopify.com/support/settings/general/tell-my-script-where-to-find-money-formats)."
+    },
+    {
+      "type": "header",
+      "content": "Language Selector",
+      "info": "To add a language, go to your [language settings](/admin/settings/languages)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show-locale-selector",
+      "label": "Show language selector",
+      "default": true
+    }
+  ]
+}
 {% endschema %}

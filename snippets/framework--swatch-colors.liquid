@@ -1,0 +1,40 @@
+{% comment %} Usage:
+  - add custom colors inside the 'capture' tags
+  - color name should include no seperators (spaces, dashes, etc.)
+  - color values can be in rgb() or hex format
+  - image filenames (including extension) should match names uploaded to Admin > Settings > Files
+  - color name and value/filename should be seperated by a single space
+  - each entry should be on a new line
+
+  eg.
+    {% capture swatch_colors %}
+      yellowgreen #9acd32
+      Red rgb(139,0,0)
+      orange orange.PNG
+      StealthGrey stealth-grey.jpg
+    {% endcapture %}
+
+  For more info see: https://support.troopthemes.com/guide/color-swatch-guide
+{% endcomment %}
+
+
+{% capture swatch_color_list %}
+  {% comment %} remove this line and add your first color here {% endcomment %}
+{% endcapture %}
+
+
+{%- assign swatch_colors = swatch_color_list | newline_to_br | split: '<br />' -%}
+
+{%- for color in swatch_colors -%}
+  {%- unless color == blank -%}
+    {% assign key = color | downcase | split: ' ' | first %}
+    {% assign value = color | downcase | split: ' ' | last %}
+
+    {% if value contains '.png' or value contains '.jp' or value contains '.gif' %}
+      theme.swatches['{{ key }}'] = '{{ value | file_img_url: "100x" }}';
+    {% else %}
+      theme.swatches['{{ key }}'] = '{{ value }}';
+    {% endif %}
+
+  {%- endunless -%}
+{%- endfor -%}

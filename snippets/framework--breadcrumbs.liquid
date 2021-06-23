@@ -1,0 +1,86 @@
+<ul class="breadcrumbs--root">
+   <li data-item="block-link">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+   </li>
+
+   {% if request.page_type == "product" %}
+      {% if collection %}
+         <li data-item="block-link">
+            <a href="{{ routes.collections_url }}">
+               {{ 'general.breadcrumbs.collections' | t }}
+            </a>
+         </li>
+         <li data-item="block-link">
+            <a href="{{ collection.url }}">{{ collection.title }}</a>
+         </li>
+      {% else %}
+         <li data-item="block-link">
+            <a href="{{ routes.all_products_collection_url }}">
+               {{ 'general.breadcrumbs.products' | t }}
+            </a>
+         </li>
+      {% endif %}
+
+      <li data-item="accent-text">{{ product.title }}</li>
+
+   {% elsif request.page_type == "collection" %}
+      {% assign collection_title = collection.title %}
+      {% if collection.handle == 'all' %}
+        {% assign collection_title = 'general.breadcrumbs.products' | t %}
+      {% endif %}
+
+      <li data-item="block-link">
+         <a href="{{ routes.collections_url }}">
+            {{ 'general.breadcrumbs.collections' | t }}
+         </a>
+      </li>
+      <li data-item="accent-text">
+         {% if current_tags %}
+            {{ collection_title | link_to_remove_tag: current_tags.first }}
+         {% else %}
+            {{ collection_title }}
+         {% endif %}
+      </li>
+      {% if current_tags %}
+         <li data-item="accent-text">{{ current_tags.first }}</li>
+      {% endif %}
+
+   {% elsif request.page_type == "blog" %}
+      <li data-item="accent-text">{{ blog.title }}</li>
+   {% elsif request.page_type == "page" %}
+      <li data-item="accent-text">{{ page.title }}</li>
+   {% elsif request.page_type == "article" %}
+      <li data-item="block-link">{{ blog.title | link_to: blog.url }}</li>
+      <li data-item="accent-text">{{ article.title }}</li>
+   {% elsif request.page_type == "404" %}
+      <li data-item="accent-text">404</li>
+   {% elsif request.page_type == "customers/login" %}
+      <li data-item="accent-text">{{ 'general.breadcrumbs.account' | t }}</li>
+   {% elsif request.page_type == "customers/register" %}
+      <li data-item="accent-text">{{ 'general.breadcrumbs.register' | t }}</li>
+
+   {% elsif request.page_type == "customers/account" %}
+      <li data-item="accent-text">{{ 'general.breadcrumbs.account' | t }}</li>
+   {% elsif request.page_type == "customers/addresses" %}
+      <li data-item="block-link">
+         <a href="{{ routes.account_url }}">{{ 'general.breadcrumbs.account' | t }}</a>
+      </li>
+      <li data-item="accent-text">{{ 'general.breadcrumbs.addresses' | t }}</li>
+   {% elsif request.page_type == "customers/order" %}
+      <li data-item="block-link">
+         <a href="{{ routes.account_url }}">{{ 'general.breadcrumbs.account' | t }}</a>
+      </li>
+      <li data-item="accent-text">{{ page_title }}</li>
+   {% elsif request.page_type == "customers/activate_account" %}
+      <li data-item="accent-text">{{ 'general.breadcrumbs.activate_account' | t }}</li>
+
+   {% elsif request.page_type == "customers/reset_password" %}
+      <li data-item="accent-text">{{ page_title }}</li>
+   {% elsif request.page_type == "search" %}
+      <li data-item="accent-text">{{ page_title }}</li>
+   {% elsif request.page_type == "list-collections" %}
+      <li data-item="accent-text">{{ page_title }}</li>
+   {% elsif request.page_type == "cart" %}
+      <li data-item="accent-text">{{ page_title }}</li>
+   {% endif %}
+</ul>

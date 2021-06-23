@@ -1,0 +1,253 @@
+{%- liquid
+  assign add_to_cart_t = 'products.add_to_cart' | t
+  assign price_t = 'home.onboarding.price' | t
+  assign vendor_t = 'home.onboarding.vendor' | t
+
+  assign smart_payment_enabled = section.settings.smart_payment_button
+  assign size_chart_enabled = section.settings.product-size-chart-enabled
+  assign swatches_enabled = section.settings.swatches-enabled
+  assign video_looping_enabled = section.settings.loop-enabled
+  assign low_stock_amount = section.settings.low-in-stock-amount
+  assign overline = section.settings.overline
+  assign show_vendor = section.settings.show_vendor
+  assign show_unavailable_form = section.settings.product-sold-out-form-show
+  assign size_chart_content = section.settings.product-size-chart-page-content
+  assign size_chart_option = section.settings.product-size-chart-option
+  assign variant_style = section.settings.variant-style
+  assign product = all_products[section.settings.featured_product]
+  assign link = product.url
+  assign title = product.title
+  assign vendor = product.vendor
+  assign vendor_url = product.vendor | url_for_vendor
+  assign unique_handle = 'featured--' | append: section.id
+
+  assign onboarding = true
+  if section.settings.featured_product != blank
+    assign onboarding = false
+  endif
+
+  if onboarding
+    assign title = 'home.onboarding.product_title' | t
+    assign vendor = 'home.onboarding.vendor' | t
+  endif
+-%}
+
+{% comment %} View {% endcomment %}
+<div
+  class="featured-product--root"
+  style="{% render 'framework--background-colors', bg_color: section.settings.background-color %}"
+  data-js-class="FrameworkProduct"
+  data-section-id="{{ section.id }}"
+>
+  <div class="featured-product--container">
+    <div class="featured-product--body">
+      {% if onboarding %}
+        <div class="featured-product--placeholder" data-active="true">
+          {%
+            render "framework--placeholder",
+            type: "product",
+            aspect_ratio: 0.75,
+            placeholder_index: 1
+          %}
+        </div>
+
+      {% else %}
+        <div class="featured-product--wrapper">
+          {% for media in product.media %}
+            {%
+              render "framework--product--media",
+              media_view: "featured",
+              product: product,
+              in_slider: false,
+              product_media: media,
+              video_looping_enabled: video_looping_enabled
+            %}
+          {% endfor %}
+
+          {%
+            render "framework--product--media",
+            media_view: "media-dependencies",
+            product: product
+          %}
+
+          {% if product.media.size > 1 %}
+            {%
+              render "framework--product--media",
+              media_view: "thumbs",
+              product: product
+            %}
+          {% endif %}
+        </div>
+
+      {% endif %}
+
+      <div class="featured-product--info">
+        <div class="featured-product--info--container">
+          {% if overline != blank %}
+            <div class="featured-product--overline" data-item="overline">
+              {{ overline }}
+            </div>
+          {% endif %}
+
+          <h2 data-item="section-heading">
+            <a href="{{ link }}">{{ title }}</a>
+          </h2>
+
+          {% if show_vendor %}
+            <div class="featured-product--vendor" data-item="accent-text">
+              <a href="{{ vendor_url }}">{{ vendor }}</a>
+            </div>
+          {% endif %}
+
+          {% if onboarding %}
+            <div class="product-form--price-wrapper">
+              <span class="product-form--price" data-item='accent-text'>
+                {{- price_t -}}
+              </span>
+            </div>
+
+            <a class="featured-product--add-to-cart" data-item="button">
+              <div>
+                {{ add_to_cart_t }}
+              </div>
+            </a>
+          {% else %}
+            {%
+              render "framework--product--form",
+              product: product,
+              unique_handle: unique_handle,
+              smart_payment_enabled: smart_payment_enabled,
+              swatches_enabled: swatches_enabled,
+              variant_style: variant_style,
+              low_stock_amount: low_stock_amount,
+              section_id: section.id,
+              size_chart_enabled: size_chart_enabled,
+              size_chart_content: size_chart_content,
+              size_chart_option: size_chart_option,
+              show_unavailable_form: show_unavailable_form
+            %}
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Featured product",
+    "settings": [
+      {
+        "id": "background-color",
+        "label": "Background color",
+        "type": "select",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Light grey", "value": "light" },
+          { "label": "Accent", "value": "accent" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "checkbox",
+        "id": "smart_payment_button",
+        "label": "Show dynamic checkout button",
+        "info": "Lets customers check out directly using a familiar payment method. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+        "default": true
+      },
+      {
+        "id": "overline",
+        "label": "Overline",
+        "type": "text",
+        "default": "Overline text"
+      },
+      {
+        "type": "product",
+        "id": "featured_product",
+        "label": "Product"
+      },
+      {
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "type": "checkbox",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "variant-style",
+        "label": "Product variant style",
+        "options": [
+          { "label": "Dropdowns", "value": "dropdowns" },
+          { "label": "Buttons", "value": "buttons" }
+        ],
+        "default": "dropdowns"
+      },
+      {
+        "type": "checkbox",
+        "id": "swatches-enabled",
+        "label": "Enable color swatches",
+        "default": false,
+        "info": "Automatically turn color options into swatches. [Learn more](https://support.troopthemes.com/guide/color-swatch-guide)"
+      },
+      {
+        "type": "checkbox",
+        "id": "product-sold-out-form-show",
+        "label": "Show notification form when product is sold out"
+      },
+      {
+        "label": "Show low in stock notice when quantity is",
+        "id": "low-in-stock-amount",
+        "type": "range",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 0,
+        "info": "Set to 0 to disable this feature. Updated for each variant."
+      },
+      {
+        "type": "header",
+        "content": "Media"
+      },
+      {
+        "type": "paragraph",
+        "content": "Learn more about [media types](https://help.shopify.com/en/manual/products/product-media)."
+      },
+      {
+        "type": "checkbox",
+        "id": "loop-enabled",
+        "label": "Enable video looping",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Size chart"
+      },
+      {
+        "type": "checkbox",
+        "id": "product-size-chart-enabled",
+        "label": "Enable",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "product-size-chart-option",
+        "label": "Link from option",
+        "default": "size"
+      },
+      {
+        "type": "page",
+        "id": "product-size-chart-page-content",
+        "label": "Page content"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured product",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

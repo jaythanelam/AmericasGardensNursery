@@ -1,0 +1,187 @@
+{%- liquid
+  assign api_key = section.settings.api-key
+  assign theme = section.settings.theme
+  assign heading = section.settings.heading | escape
+  assign address = section.settings.address
+  assign hours = section.settings.hours
+  assign map_address = section.settings.map-address
+  assign map_link = "https://www.google.com/maps/place/" | append: map_address
+  assign open_map_t = 'home.map.open_in_maps' | t
+-%}
+
+{% if section.settings.image != blank %}
+  {% capture image %}
+    {%
+      render "framework--image",
+      image: section.settings.image,
+      full_width: true
+    %}
+  {% endcapture %}
+{% endif %}
+
+{% comment %} Onboarding {% endcomment %}
+{% if section.settings.image == blank %}
+  {% capture image %}
+    {%
+      render "framework--placeholder",
+      type: "lifestyle",
+      aspect_ratio: 1.5,
+      placeholder_index: 2
+    %}
+  {% endcapture %}
+{% endif %}
+
+{% comment %} View {% endcomment %}
+<div
+  class="map--root"
+  style="{% render 'framework--background-colors', bg_color: section.settings.background-color %}"
+  data-js-class="Map"
+  data-section-id="{{ section.id }}"
+  data-api-key="{{ api_key }}"
+  data-address="{{ map_address }}"
+  data-theme="{{ theme }}"
+>
+  <div class="map--container">
+    <div class="map--body">
+      <div class="map--info">
+        {% if heading != blank %}
+          <h2 class="map--heading" data-item="section-heading">{{ heading }}</h2>
+        {% endif %}
+
+        {% if address != blank %}
+          <div class="map--address">
+            <div class="map--address-content" data-item="rte-content">
+              {{ address }}
+            </div>
+
+            {% if map_address != blank %}
+              <div class="map--open-maps-link" data-item="block-link">
+                <a
+                  href="{{ map_link }}"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="{{ open_map_t }}"
+                >
+                  {{ open_map_t }}
+                </a>
+              </div>
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+        {% if hours != blank %}
+          <div class="map--hours" data-item="rte-content">{{ hours }}</div>
+        {% endif %}
+
+      </div>
+
+      <div class="map--media">
+        {% if api_key != blank %}
+          <div class="map--google-maps"></div>
+        {% endif %}
+
+        {% if section.settings.api-key == blank %}
+          {% if map_address != blank %}
+            <a
+              href="{{ map_link }}"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="{{ open_map_t }}"
+            >
+          {% endif %}
+
+            <div class="map--image">{{ image }}</div>
+
+          {% if map_address != blank %}
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Map",
+    "settings": [
+      {
+        "id": "api-key",
+        "type": "text",
+        "label": "Google Maps API key",
+        "info": "You’ll need to register a [Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map."
+      },
+      {
+        "id": "map-address",
+        "label": "Map Address",
+        "type": "text",
+        "placeholder": "391 Sutter St, San Francisco",
+        "default": "391 Sutter St, San Francisco",
+        "info": "Google Maps will find the exact location"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "id": "background-color",
+        "label": "Background color",
+        "type": "select",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Light grey", "value": "light" },
+          { "label": "Accent", "value": "accent" }
+        ],
+        "default": "none"
+      },
+      {
+        "label": "Google maps style",
+        "type": "radio",
+        "id": "theme",
+        "options": [
+          { "value": "standard", "label": "Standard" },
+          { "value": "dark", "label": "Dark" },
+          { "value": "grayscale", "label": "Grayscale" }
+        ],
+        "default": "grayscale"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Our store"
+      },
+      {
+        "id": "address",
+        "type": "richtext",
+        "label": "Address",
+        "default": "<p>391 Sunrise Blvd,<br>Los Angeles<br>CA 94108, USA</p>"
+      },
+      {
+        "type": "richtext",
+        "id": "hours",
+        "label": "Hours",
+        "default": "<p>Monday - Friday<br>10am - 6pm<br><br>Saturday - Sunday<br>12pm - 5pm</p>"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "Displayed if the map isn’t loaded"
+      }
+
+    ],
+    "presets": [
+      {
+        "name": "Map",
+        "category": "Store information"
+      }
+    ]
+  }
+{% endschema %}

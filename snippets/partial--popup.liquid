@@ -1,0 +1,144 @@
+{%- liquid
+  assign email_t = 'general.mailing_list.email' | t
+  assign placeholder_t = 'general.mailing_list.placeholder' | t
+  assign button_t = 'general.mailing_list.button' | t
+  assign shopify_disclaimer_t = 'shopify.online_store.spam_detection.disclaimer_html' | t
+  assign close_t = 'general.close' | t
+  assign alt_color = settings.popup--alternative-color
+  assign bg_color = settings.popup--background-color
+  assign days_range = settings.popup--days-range
+  assign enabled = settings.popup--enabled
+  assign popup_image = settings.popup--image
+  assign mode = settings.popup--mode
+  assign newsletter_title = settings.popup--newsletter-title--rt
+  assign show_image = settings.popup--show-image
+  assign social_enabled = settings.popup--social-enabled
+  assign social_title = settings.popup--social-title | escape
+-%}
+
+{% unless request.page_type == 'password' %}
+
+  {% if enabled %}
+
+    <div
+      class="popup--root"
+      data-js-class="Popup"
+      data-show-again-after="{{ days_range }}"
+      data-mode="{{ mode }}"
+      data-popup--image="{{ show_image }}"
+      data-alternative-color="{{ alt_color }}"
+    >
+
+      <div
+        class="popup--container"
+        data-js-class="Transition"
+        data-transition="at_start"
+        style="{% render 'framework--background-colors', bg_color: bg_color %}"
+        aria-hidden="true"
+      >
+        <div class="popup--wrapper">
+
+          {% if show_image %}
+            <div class="popup--left-column">
+              {% if popup_image %}
+                <img
+                  class="popup--image"
+                  src="{{ popup_image | img_url: 'x450'  }}"
+                  alt="{{ popup_image.alt }}"
+                >
+              {% else %}
+                {%
+                  render "framework--placeholder",
+                  type: "image",
+                  aspect_ratio: 1.3333
+                %}
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="popup--center-column">
+            {% if newsletter_title.size > 0 %}
+              <div class="popup--newsletter-title" data-item="rte-content">
+                {{ newsletter_title }}
+              </div>
+            {% endif %}
+
+            <div class="popup--newsletter-form">
+
+                {% form 'customer' %}
+                  <input
+                    type="hidden"
+                    id="contact_tags"
+                    name="contact[tags]"
+                    value="{{ source }}"
+                  />
+                  <input
+                    type="hidden"
+                    id="newsletter-first-name"
+                    name="contact[first_name]"
+                    value="Subscriber"
+                  />
+                  <input
+                    type="hidden"
+                    id="newsletter-last-name"
+                    name="contact[last_name]"
+                    value="Newsletter"
+                  />
+
+                  <label for="popup-email" data-item="hidden-text">
+                    {{ email_t }}:
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="{{ placeholder_t }}"
+                    name="contact[email]"
+                    id="popup-email"
+                    required
+                  />
+
+                  <div
+                    {% if settings.popup--alternative-color %}
+                      data-item='inverted-secondary-button'
+                    {% else %}
+                      data-item='button'
+                    {% endif %}
+                  >
+                    <button type="submit" value="{{ button_t }}">
+                      {{ button_t }}
+                    </button>
+                  </div>
+
+                  {% if form.posted_successfully? or form.errors %}
+                    <script>window.location.hash = '#newsletter';</script>
+                  {% endif %}
+
+                  <div data-item="hidden-text">
+                    {% comment %} remove the below line to display reCAPTCHA badge {% endcomment %}
+                    {{ shopify_disclaimer_t }}
+                  </div>
+                {% endform %}
+              </div>
+          </div>
+
+          {% if social_enabled %}
+            <div class="popup--right-column">
+              {% if newsletter_title.size > 0 %}
+                <h3 data-item="accent-text">{{ social_title }}</h3>
+              {% endif %}
+
+                <div class="popup--social-icons">
+                  {% render 'partial--social-share', position: 'modal' %}
+                </div>
+            </div>
+          {% endif %}
+
+          <div aria-label="{{ close_t }}" class="popup--close" tabindex="0">
+            {% render 'framework--icons', icon: 'cross' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% endif %}
+
+{% endunless %}

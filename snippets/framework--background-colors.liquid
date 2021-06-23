@@ -1,0 +1,12 @@
+{%- liquid
+  case bg_color
+    when 'light'
+      echo 'background-color: #f7f7f7;'
+    when 'dark'
+      echo 'background-color: #222222;'
+    when 'accent'
+      echo 'background-color:' | append: settings.color--accent | append: ';'
+    else
+      break
+  endcase
+-%}

@@ -1,0 +1,211 @@
+{%- liquid
+  assign only_on_collection = collections[section.settings.only-on-collection]
+  assign show_section = section.settings.show
+
+  assign section_enabled = false
+  if show_section
+    if only_on_collection == blank or collection.id == only_on_collection.id
+      assign section_enabled = true
+    endif
+  endif
+-%}
+
+{%- if section_enabled -%}
+  <div
+    class="collection--footer-promotion--root"
+    data-section-id="{{ section.id }}"
+    data-container-width="{{ section.settings.container-width }}"
+  >
+    {% render 'framework--featured-content',
+      alt_color: section.settings.alternative-color,
+      bg_color: section.settings.background-color,
+      box_around_text: section.settings.box-around-text,
+      container_width: section.settings.container-width,
+      darken_image: section.settings.darken-image,
+      description: section.settings.description,
+      image: section.settings.image,
+      image_height: section.settings.image-height,
+      link_text: section.settings.link-text,
+      link_url: section.settings.link-url,
+      mobile_overlay: section.settings.mobile-overlay,
+      overlap: section.settings.overlap,
+      overline: section.settings.overline,
+      parallax_enabled: section.settings.parallax-enabled,
+      spacing_above: section.settings.spacing-above,
+      spacing_below: section.settings.spacing-below,
+      text_position: section.settings.text-position,
+      text_width: section.settings.text-width,
+      title: section.settings.title
+    %}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Footer promotion",
+  "settings": [
+    {
+      "label": "Show",
+      "id": "show",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "only-on-collection",
+      "label": "Only display for",
+      "type": "collection",
+      "info": "Leave blank to show on all"
+    },
+    {
+      "type": "header",
+      "content": "Layout and Color"
+    },
+    {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Dark", "value": "dark" },
+        { "label": "Accent", "value": "accent" }
+      ],
+      "default": "light"
+    },
+    {
+      "id": "container-width",
+      "label": "Width of container",
+      "type": "range",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "id": "spacing-above",
+      "label": "Spacing above",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "spacing-below",
+      "label": "Spacing below",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "image-height",
+      "label": "Image height",
+      "type": "range",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "info": "Set to 0 to preserve the natural image dimensions"
+    },
+    {
+      "id": "darken-image",
+      "label": "Darken image",
+      "type": "checkbox",
+      "default": true,
+      "info": "Can enhance text visibility"
+    },
+    {
+      "id": "parallax-enabled",
+      "label": "Enable parallax",
+      "type": "checkbox",
+      "default": false,
+      "info": "Fixes image position when you scroll"
+    },
+    {
+      "id": "text-position",
+      "label": "Text Position",
+      "type": "select",
+      "options": [
+        { "label": "Top", "value": "top" },
+        { "label": "Bottom", "value": "bottom" },
+        { "label": "Left", "value": "left" },
+        { "label": "Center", "value": "center" },
+        { "label": "Right", "value": "right" },
+        { "label": "Bottom left", "value": "bottom-left" }
+      ],
+      "default": "center"
+    },
+    {
+      "id": "text-width",
+      "label": "Text width",
+      "type": "select",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "id": "overlap",
+      "label": "Overlap text",
+      "type": "checkbox",
+      "default": false,
+      "info": "Not applicable for centered or bottom left text"
+    },
+    {
+      "id": "box-around-text",
+      "label": "Show box around text",
+      "type": "checkbox",
+      "default": false,
+      "info": "If text disappears then disable the alternative text setting below"
+    },
+    {
+      "id": "alternative-color",
+      "label": "Use alternative text color",
+      "type": "checkbox",
+      "default": true,
+      "info": "This can found under theme settings below"
+    },
+    {
+      "id": "mobile-overlay",
+      "label": "Overlay text on small devices",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "id": "image",
+      "label": "Image",
+      "type": "image_picker"
+    },
+    {
+      "id": "overline",
+      "label": "Overline",
+      "type": "text",
+      "default": "Overline text"
+    },
+    {
+      "id": "title",
+      "label": "Heading",
+      "type": "text",
+      "default": "Collection Promotion"
+    },
+    {
+      "id": "description",
+      "label": "Text",
+      "type": "richtext",
+      "default": "<p>A collection-wide promotion for sales, product announcements and more.</p>"
+    },
+    {
+      "id": "link-url",
+      "label": "Link",
+      "type": "url"
+    },
+    {
+      "id": "link-text",
+      "label": "Link text",
+      "type": "text"
+    }
+  ]
+}
+{% endschema %}

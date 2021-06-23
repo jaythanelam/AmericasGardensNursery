@@ -1,0 +1,145 @@
+{% liquid
+  assign dark_background = false
+  if bg_color == 'dark'
+    assign dark_background = true
+  endif
+
+  assign cover_link = false
+  if link_text == blank and link_url != blank and description == blank
+    assign cover_link = true
+  endif
+
+  assign cover_image_mobile = false
+  assign mobile_heading_type = 'section-heading'
+  if mobile_overlay
+    assign cover_image_mobile = true
+    assign mobile_heading_type = 'featured-heading'
+  endif
+
+  assign cover_image = true
+  if image_height == 0
+    assign cover_image = false
+    assign cover_image_mobile = false
+  endif
+
+  assign darken_image_mobile = false
+  if darken_image
+    assign darken_image = true
+    if mobile_overlay
+      assign darken_image_mobile = true
+    endif
+  endif
+
+  assign show_placeholder_image = false
+  unless image
+    assign show_placeholder_image = true
+  endunless
+
+  assign heading_type = 'section-heading'
+  if box_around_text == false and text_position == 'center' or text_position == 'bottom-left'
+    assign heading_type = 'featured-heading'
+  endif
+
+  assign text_exists = false
+  if overline != blank or title != blank or description != blank or link_text != blank
+    assign text_exists = true
+  endif
+%}
+
+<div
+  class="featured-content--root"
+  style="{% render 'framework--background-colors', bg_color: bg_color %}"
+  data-alternative-color="{{ alt_color }}"
+  data-box-around-text="{{ box_around_text }}"
+  data-container-width="{{ container_width }}"
+  data-cover-image="{{ cover_image }}"
+  data-cover-image-mobile="{{ cover_image_mobile }}"
+  data-dark-background="{{ dark_background }}"
+  data-darken-image="{{ darken_image }}"
+  data-image-height="{{ image_height }}"
+  data-mobile-overlay="{{ mobile_overlay }}"
+  data-overlap="{{ overlap }}"
+  data-spacing-above="{{ spacing_above }}"
+  data-spacing-below="{{ spacing_below }}"
+  data-text-exists="{{ text_exists }}"
+  data-text-position="{{ text_position }}"
+  data-text-width="{{ text_width }}"
+  data-placeholder-image="{{ show_placeholder_image }}"
+>
+  {% if cover_link %}
+    <a href="{{ link_url }}">
+  {% endif %}
+
+  {% comment %}Add bg color here as well so that you can set the outer div to transparent for
+  container width 5 and left and right positions {% endcomment %}
+  <div
+    class="featured-content--container"
+    style="{% render 'framework--background-colors', bg_color: bg_color %}"
+  >
+    <div class="featured-content--image">
+      {% if image %}
+        {%
+          render "framework--image",
+          image: image,
+          full_width: true,
+          parallax: parallax_enabled,
+          cover: cover_image,
+          cover_mobile: cover_image_mobile,
+          darken: darken_image,
+          darken_mobile: darken_image_mobile
+        %}
+      {% else %}
+        {%
+          render "framework--placeholder",
+          type: "lifestyle",
+          aspect_ratio: 2.4,
+          placeholder_index: 2,
+          cover: cover_image,
+          cover_mobile: cover_image_mobile,
+          darken: darken_image,
+          darken_mobile: darken_image_mobile
+        %}
+      {% endif %}
+    </div>
+
+    {% if text_exists %}
+      <div class="featured-content--text">
+        <div class="featured-content--text-container">
+          {% if overline != blank %}
+            <h2 class="featured-content--overline" data-item="overline">
+              {{ overline | escape }}
+            </h2>
+          {% endif %}
+          {% if title != blank %}
+            <h3 class="featured-content--title" data-view="desktop" data-item="{{ heading_type }}">
+              {{ title | escape }}
+            </h3>
+            <h3 class="featured-content--title" data-view="mobile" data-item="{{ mobile_heading_type }}">
+              {{ title | escape }}
+            </h3>
+          {% endif %}
+
+          {% if description != blank %}
+            <div class="featured-content--description" data-item="rte-content">
+              {{ description }}
+            </div>
+          {% endif %}
+
+          {% if link_text != blank %}
+            <div class="featured-content--link" data-item="block-link">
+              <a href="{{ link_url }}">
+                {{ link_text }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    </div>
+
+  {% if cover_link %}
+    </a>
+  {% endif %}
+
+</div>

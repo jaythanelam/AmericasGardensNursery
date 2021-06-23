@@ -1,0 +1,67 @@
+{%- liquid
+  assign previous_t = 'general.pagination.previous' | t
+  assign next_t = 'general.pagination.next' | t
+
+  if view == 'blog-comments'
+    assign hash = '#comments'
+  elsif view == 'collection'
+    assign hash = '#collection-root'
+  else
+    assign hash = ''
+  endif
+-%}
+
+<div class="pagination--root" data-item="accent-text">
+
+  <div
+    class="pagination--left-arrow"
+    {% unless paginate.previous %}
+      aria-hidden="true"
+    {% endunless %}
+  >
+    {%- if paginate.previous -%}
+      <a
+        class="pagination--link"
+        href="{{ paginate.previous.url }}{{ hash }}"
+        aria-label="{{ previous_t }}"
+      >
+        {%- render 'framework--icons', icon: 'chevron-left' -%}
+      </a>
+    {%- endif -%}
+  </div>
+
+  <ul class="pagination--numbers">
+    {% for part in paginate.parts %}
+      {% if part.is_link %}
+        <li class="pagination--number">
+          <a class="pagination--link" href="{{ part.url }}{{ hash }}">
+            {{ part.title }}
+          </a>
+        </li>
+      {% else %}
+        {% if part.title == '&hellip;' %}
+          <li class="pagination--ellipsis">&hellip;</li>
+        {% else %}
+          <li class="pagination--number" data-active="true">{{ part.title }}</li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+  <div
+    class="pagination--right-arrow"
+    {% unless paginate.next %}
+      aria-hidden="true"
+    {% endunless %}
+  >
+    {%- if paginate.next -%}
+      <a
+        class="pagination--link"
+        href="{{ paginate.next.url }}{{ hash }}"
+        aria-label="{{ next_t }}"
+      >
+        {%- render 'framework--icons', icon: 'chevron-right' -%}
+      </a>
+    {%- endif -%}
+  </div>
+</div>

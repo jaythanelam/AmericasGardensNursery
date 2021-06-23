@@ -1,0 +1,44 @@
+{%- liquid
+  if settings.announcement--alternative-text
+    assign color--announcement = settings.color--alternative
+  else
+    assign color--announcement = settings.color--body
+  endif
+
+  if settings.popup--alternative-text
+    assign color--popup = settings.color--alternative
+  else
+    assign color--popup = settings.color--body
+  endif
+-%}
+
+<style>
+  :root {
+    --color--accent: {{ settings.color--accent }};
+    --bdr-color--badge: {{ settings.color--body | color_modify: 'alpha', 0.07 }};
+    --bg-color--body: {{ settings.bg-color--body }};
+    --bdr-color--general: #eaeaea;
+    --bg-color--panel: {{ settings.bg-color--panel }};
+    --bg-color--textbox: #fff;
+    --color--body: {{ settings.color--body }};
+    --color--body--light: {{ settings.color--body | color_lighten: 19 }};
+    --color--alternative: {{ settings.color--alternative }};
+    --color--button: {{ settings.color--button }};
+    --bdr-color--button: {{ settings.color--button }};
+    --bg-color--button: {{ settings.bg-color--button }};
+    --bg-color--button--hover: {{ settings.bg-color--button }};
+    --color-theme--modal: {{ settings.color-theme--modal }};
+    --color--header: {{ settings.color--header }};
+    --bg-color--header: {{ settings.bg-color--header }};
+    --bdr-color--header: {{ settings.color--header | color_modify: 'alpha', 0.07 }};
+    --color--footer: {{ settings.color--footer }};
+    --bg-color--footer: {{ settings.bg-color--footer }};
+    --color--announcement: {{ color--announcement }};
+    --bg-color--announcement: {{ settings.bg-color--announcement }};
+    --color--popup: {{ color--popup }};
+    --bg-color--popup: {{ settings.bg-color--popup }};
+
+    /* shop pay */
+    --payment-terms-background-color: {{ settings.bg-color--body }};
+  }
+</style>

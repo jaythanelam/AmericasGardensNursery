@@ -1,0 +1,14 @@
+<div class="mobile-nav">
+  <div class="mobile-nav--header">
+    {% if settings.search--show-in-header %}
+      <div class="mobile-nav--search" data-item="nav-text"></div>
+    {% endif %}
+
+    {% if shop.customer_accounts_enabled %}
+      <div class="mobile-nav--login" data-item="nav-text"></div>
+    {% endif %}
+  </div>
+
+  <div class="mobile-nav--menu"></div>
+  <div class="mobile-nav--localization"></div>
+</div>

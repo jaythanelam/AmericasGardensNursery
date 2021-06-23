@@ -1,0 +1,97 @@
+{% comment %} Usage:
+- Place inside loop of 'option' objects
+- If more than one product is included on one page, include a unique 'id'
+- If swatches are desired, set 'is_swatches' to true
+- display_swatches_only is used when no functionality is desired
+{% endcomment %}
+
+{%- liquid
+  unless is_swatches
+    assign is_swatches = false
+  endunless
+
+  capture radios_name
+    assign option_name = option.name | downcase | remove: ' '
+    echo id | append: '-' | append: option_name
+  endcapture
+
+  unless display_swatches_only
+    assign display_swatches_only = false
+  else
+    assign radios_name = radios_name | prepend: 'display-'
+    assign is_swatches = true
+  endunless
+-%}
+
+<div
+  class="radios--root"
+  data-js-class="Radios"
+  data-is-swatches="{{ is_swatches }}"
+  data-display-only="{{ display_swatches_only }}"
+>
+  <div class="radios--header">
+    <label
+      class="radios--option-label"
+      id="{{ radios_name }}"
+      {% if display_swatches_only %}
+        data-item="hidden-text"
+      {% else %}
+        data-item="accent-text"
+      {% endif %}
+    >
+      {{ option.name | escape }}
+    </label>
+
+    {% if is_swatches and display_swatches_only == false %}
+      <span class="radios--option-current" data-item="light-accent-text">
+        {% for value in option.values %}
+          {% if value == option.selected_value %}
+            {{ value | escape }}
+          {% endif %}
+        {% endfor %}
+      </span>
+    {% endif %}
+  </div>
+
+  <div
+    class="radios--container"
+    role="radiogroup"
+    aria-labelledby="{{ radios_name }}"
+  >
+    {% for value in option.values %}
+      <div class="radios--main">
+        <input
+          class="radios--input"
+          type="radio"
+          id="{{ radios_name }}-{{ value | downcase | remove: ' ' }}"
+          name="{{ radios_name }}"
+          value="{{ value | escape }}"
+          data-item="radio"
+          {% if display_swatches_only %}
+            disabled
+          {% elsif value == option.selected_value %}
+            checked
+          {% endif %}
+        />
+
+        {% if is_swatches %}
+          <label
+            class="radios--swatch-button"
+            for="{{ radios_name }}-{{ value | downcase | remove: ' ' }}"
+            aria-label="{{ value | escape }}"
+          ></label>
+
+        {% else %}
+          <label
+            class="radios--value-button"
+            data-item="button"
+            for="{{ radios_name }}-{{ value | downcase | remove: ' ' }}"
+          >
+            <div>{{ value | escape }}</div>
+          </label>
+        {% endif %}
+
+      </div>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,216 @@
+{%- liquid
+  assign video_url = section.settings.video-url
+  if video_url.id
+    assign video_id = video_url.id
+  else
+    assign video_id = '_9VUPq3SxOc'
+  endif
+  assign thumbnail = section.settings.image
+  assign full_width = section.settings.full-width
+  assign section_height = section.settings.section-height
+  assign darken_video = section.settings.darken-video
+  assign alt_text = section.settings.alt-text
+  assign heading = section.settings.heading  | escape
+  assign sub_heading = section.settings.sub-heading  | escape
+  assign button_text = section.settings.button-text  | escape | truncate: 30
+  assign button_url = section.settings.button-url | url_escape
+-%}
+
+{% comment %} View {% endcomment %}
+<div
+  class="feature-video--root"
+  style="{% render 'framework--background-colors', bg_color: section.settings.background-color %}"
+  data-section-id="{{ section.id }}"
+  data-js-class="FeaturedVideo"
+  data-video-type="{{ video_url.type }}"
+  data-video-id="{{ video_id }}"
+  data-thumbnail="{% if thumbnail %}{{ true }}{% else %}{{ false }}{% endif %}"
+  data-full-width="{{ full_width }}"
+  data-section-height="{{ section_height }}"
+  data-darken-video="{{ darken_video }}"
+  data-alt-text="{{ alt_text }}"
+>
+
+  <div class="feature-video--body">
+
+    <div class="feature-video--container">
+
+      {% if thumbnail %}
+        <div class="feature-video--thumbnail">
+          {%
+            render 'framework--image',
+            image: thumbnail | img_url,
+            full_width: true
+          %}
+        </div>
+
+        <div class="feature-video--play-mobile">
+          {% render 'framework--icons', icon: 'play-solid' %}
+        </div>
+      {% endif %}
+
+      <div class="feature-video--header">
+        {% if heading != blank %}
+          <div class="feature-video--heading">
+            <h2 data-item="featured-heading">{{ heading }}</h2>
+          </div>
+        {% endif %}
+
+        {% if sub_heading != blank %}
+          <div class="feature-video--sub-heading" data-item="block-heading">
+            {{ sub_heading }}
+          </div>
+        {% endif %}
+
+        {% if thumbnail %}
+          <div class="feature-video--play">
+            {% render 'framework--icons', icon: 'play-solid' %}
+          </div>
+        {% endif %}
+
+        {% if button_text != blank %}
+          <a
+            class="feature-video--button"
+            {% if alt_text %}
+              data-item="inverted-secondary-button"
+            {% else %}
+              data-item="button"
+            {% endif %}
+            href="{{ button_url }}"
+          >
+            <div>{{ button_text }}</div>
+          </a>
+        {% endif %}
+      </div>
+
+      <div id="player-{{ section.id }}"></div>
+
+    </div>
+
+  </div>
+
+  {% if heading != blank or sub_heading != blank or button_text != blank %}
+    <div class="feature-video--header-mobile">
+      {% if heading != blank %}
+        <div class="feature-video--heading-mobile">
+          <h2 data-item="section-heading">{{ heading }}</h2>
+        </div>
+      {% endif %}
+
+      {% if sub_heading != blank %}
+        <div class="feature-video--sub-heading-mobile" data-item="block-heading">
+          {{ sub_heading }}
+        </div>
+      {% endif %}
+
+      {% if button_text != blank %}
+        <a class="feature-video--button" href="{{ button_url }}" data-item="button">
+          <div>{{ button_text }}</div>
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+<script>
+  // YouTube callback
+  if (typeof onYouTubeIframeAPIReady != 'function') {
+    function onYouTubeIframeAPIReady() {
+      const yt_ready_event = new Event('theme:utils:youtubeAPIReady');
+      window.dispatchEvent(yt_ready_event);
+    }
+  }
+</script>
+
+{% schema %}
+  {
+    "name": "Video",
+    "settings": [
+      {
+        "type": "video_url",
+        "id": "video-url",
+        "label": "Video URL",
+        "accept": ["youtube", "vimeo"]
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Thumbnail",
+        "info": "1500 x 800px recommended"
+      },
+      {
+        "type": "checkbox",
+        "id": "full-width",
+        "label": "Full width",
+        "default": true,
+        "info": "Affects desktop/tablet layouts only, mobile defaults to full width"
+      },
+      {
+        "id": "background-color",
+        "label": "Background color",
+        "type": "select",
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "Light grey", "value": "light" },
+          { "label": "Accent", "value": "accent" }
+        ],
+        "default": "none"
+			},
+      {
+        "type": "select",
+        "id": "section-height",
+        "label": "Section height",
+        "options": [
+          { "value": "small", "label": "Small" },
+          { "value": "regular", "label": "Regular" },
+          { "value": "large", "label": "Large" }
+        ],
+        "default": "regular"
+      },
+      {
+        "type": "checkbox",
+        "id": "darken-video",
+        "label": "Darken Video",
+        "default": true,
+        "info": "Can enhance text visibility"
+      },
+      {
+        "type": "checkbox",
+        "id": "alt-text",
+        "label": "Use alternative text color",
+        "default": true,
+        "info": "Option to use alternative text color"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Video"
+      },
+      {
+        "type": "textarea",
+        "id": "sub-heading",
+        "label": "Subheading",
+        "default": "Add a subheading here"
+      },
+      {
+        "type": "text",
+        "id": "button-text",
+        "label": "Button text",
+        "default": "button"
+      },
+      {
+        "type": "url",
+        "id": "button-url",
+        "label": "Button URL"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Video",
+        "category": "Video"
+      }
+    ]
+  }
+{% endschema %}

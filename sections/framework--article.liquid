@@ -1,0 +1,401 @@
+{%- liquid
+  assign written_by_t = 'blog.article.written_by' | t
+  assign tagged_in_t = 'blog.article.tagged_in' | t
+  assign continue_reading_t = 'blog.article.continue_reading' | t
+  assign comments_t = 'blog.article.comments' | t
+  assign facebook_t = 'general.social.facebook.share' | t
+  assign twitter_t = 'general.social.twitter.share' | t
+  assign pinterest_t = 'general.social.pinterest.share' | t
+
+  assign show_date = section.settings.show-date
+  assign show_author = section.settings.show-author
+  assign show_share = section.settings.show-share
+  assign show_tags = section.settings.show-tags
+  assign show_recent = section.settings.show-recent
+  assign show_comments = section.settings.show-comments
+  assign enable_disqus = section.settings.enable-disqus
+  assign disqus_shortname = section.settings.disqus-shortname | downcase
+  assign show_featured = section.settings.show-featured
+  assign title_position = section.settings.title-position
+  assign apply_overlay = section.settings.apply-overlay
+  assign alt_color = section.settings.alt-color
+  assign canonical_url = shop.url | append: article.url
+  assign hidden_tags = settings.hide-tags | split: ','
+
+  comment
+    "helps style properly when only 2 recent articles are shown in desktop"
+  endcomment
+
+  unless blog.next_article and blog.previous_article
+    assign two_recents = true
+  else
+    assign two_recents = false
+  endunless
+
+  comment
+    "gets a recent article that is not the next, previous, or current article"
+  endcomment
+
+  capture get_recent_article
+	  assign recent_article = ''
+	  for a in blog.articles
+
+      if a.id == blog.previous_article.id
+        continue
+      elsif a.id == blog.next_article.id
+        continue
+      elsif a.id == article.id
+        continue
+      else
+        assign recent_article = a
+        break
+      endif
+
+	  endfor
+  endcapture
+-%}
+
+{% comment %} View {% endcomment %}
+<div
+  class="article--root"
+  data-section-id="{{ section.id }}"
+  data-js-class="Article"
+  data-title-position="{{ title_position }}"
+  data-apply-overlay="{{ apply_overlay }}"
+  data-alt-color="{{ alt_color }}"
+  data-show-featured="{{ show_featured }}"
+  data-show-author="{{ show_author }}"
+  data-show-date="{{ show_date }}"
+  data-comments-enabled="{{ blog.comments_enabled? }}"
+  data-enable-disqus="{{ enable_disqus }}"
+  data-disqus-shortname="{{ disqus_shortname }}"
+  data-two-recents="{{ two_recents }}"
+>
+  <div class="article--heading">
+    <div class="article--header--info">
+
+      <h1 class="article--title" data-item="section-heading">{{ article.title }}</h1>
+
+      {% if show_date or show_author %}
+        <div class="article--info" data-position="grouped-with-title">
+
+          {% if show_date %}
+            <div class="article--timesince" data-item="light-accent-text">
+              {%
+                render "framework--utils",
+                utility: "timesince",
+                created_at: article.published_at
+              %}
+            </div>
+          {% endif %}
+
+          {% if show_date and show_author %}
+            <span class="article--dot">&CenterDot;</span>
+          {% endif %}
+
+          {% if show_author %}
+            <div class="article--author" data-item="caption">
+              {{ written_by_t }} {{ article.author }}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+    </div>
+
+    {% if show_featured %}
+      {% if article.image %}
+        <div class="article--image">
+          {%
+            render "framework--image",
+            image: article.image,
+            full_width: true,
+            max_height: 600
+          %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if show_date or show_author %}
+      <div class="article--info" data-position="by-self">
+
+        {% if show_date %}
+          <div class="article--timesince" data-item='light-accent-text'>
+            {%
+              render "framework--utils",
+              utility: "timesince",
+              created_at: article.published_at
+            %}
+          </div>
+        {% endif %}
+
+        {% if show_date and show_author %}
+          <span class="article--dot">&CenterDot;</span>
+        {% endif %}
+
+        {% if show_author %}
+          <div class="article--author" data-item="caption">
+            {{ written_by_t }} {{ article.author }}
+          </div>
+        {% endif %}
+
+      </div>
+    {% endif %}
+  </div>
+
+  {% if article.content.size > 0 %}
+    <div class="article--content" data-item="rte-content">
+      {{ article.content }}
+    </div>
+  {% endif %}
+
+  <div class="article--navigation">
+    {% if show_tags and article.tags.size > 0 %}
+      <div class="article--tag-info">
+        <h3 class="article--tagged-in" data-item='block-heading'>
+          {{ tagged_in_t }}
+        </h3>
+
+        <ul class="article--tags" data-item="rte-content">
+          {% for tag in article.tags %}
+            {% assign temp_tag = tag | downcase | escape %}
+            {% assign skip = false %}
+
+            {% for hidden_tag in hidden_tags %}
+              {% assign formatted_hidden_tag = hidden_tag | downcase | escape | strip %}
+              {% if temp_tag == formatted_hidden_tag %}
+                {% assign skip = true %}
+              {% endif %}
+            {% endfor %}
+
+            {% if skip %}
+              {% continue %}
+            {% endif %}
+
+            <li class="article--tag">
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                {{ tag | capitalize }}
+              </a>
+            </li>
+
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if show_share %}
+      <div class="article--share">
+        <ul class="article--share--container">
+
+          <li class="article--share-icon">
+            <a
+              class="facebook"
+              href="https://www.facebook.com/sharer.php?u={{ canonical_url }}"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="{{ facebook_t }}"
+            >
+              {% render 'framework--icons', icon: 'facebook' %}
+            </a>
+          </li>
+
+          <li class="article--share-icon">
+            <a
+              class="twitter"
+              href="https://twitter.com/intent/tweet?text=Currently reading from {{ shop.name }}: '{{ article.title }}'&url={{ canonical_url }}"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="{{ twitter_t }}"
+            >
+              {% render 'framework--icons', icon: 'twitter' %}
+            </a>
+          </li>
+
+          <li class="article--share-icon">
+            <a
+              class="pinterest"
+              href="https://pinterest.com/pin/create/button/?url={{ canonical_url }}"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="{{ pinterest_t }}"
+            >
+              {% render 'framework--icons', icon: 'pinterest' %}
+            </a>
+          </li>
+        </ul>
+      </div>
+    {% endif %}
+
+  </div>
+
+  {% if show_recent %}
+    <h2 class="article--read-more" data-item='section-heading'>
+      {{ continue_reading_t }}
+    </h2>
+
+    <div class="article--recent-articles">
+      {% if blog.previous_article %}
+        <div class="article--previous">
+          <a href="{{ blog.previous_article.url }}">
+
+            {% if blog.previous_article.image %}
+              {%
+                render "framework--image",
+                image: blog.previous_article.image,
+                full_width: true
+              %}
+            {% endif %}
+
+            <h3 data-item='block-heading'>
+              {{ blog.previous_article.title }}
+            </h3>
+
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="article--recent">
+        {{ get_recent_article }}
+        <a href="{{ recent_article.url }}">
+
+          {% if recent_article.image %}
+            {%
+              render "framework--image",
+              image: recent_article.image,
+              full_width: true
+            %}
+          {% endif %}
+
+          <h3 data-item='block-heading'>
+            {{ recent_article.title }}
+          </h3>
+
+        </a>
+      </div>
+
+      {% if blog.next_article %}
+        <div class="article--next">
+          <a href="{{ blog.next_article.url }}">
+
+            {% if blog.next_article.image %}
+              {%
+                render "framework--image",
+                image: blog.next_article.image,
+                full_width: true
+              %}
+            {% endif %}
+
+            <h3 data-item='block-heading'>
+              {{ blog.next_article.title }}
+            </h3>
+
+          </a>
+        </div>
+      {% endif %}
+
+    </div>
+  {% endif %}
+
+  {% if blog.comments_enabled? %}
+    {% if enable_disqus %}
+      <h2 class="comments--heading" data-item='section-heading'>{{ comments_t }}</h2>
+      <div id="disqus_thread" class="comments--disqus"></div>
+      <script>
+        function disqus_config() {
+          this.page.identifier = '{{ article.id }}';
+          this.page.title = '{{ shop.name }} - {{ article.title }}';
+          this.page.url = '{{ canonical_url }}';
+        }
+      </script>
+    {% elsif show_comments %}
+      <h2 class="comments--heading" data-item='section-heading'>{{ comments_t }}</h2>
+      {% render "framework--comments" %}
+    {% endif %}
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Article",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Featured image"
+      },
+      {
+        "id": "show-featured",
+        "label": "Show",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "id": "title-position",
+        "label": "Position title",
+        "type": "select",
+        "options": [
+          { "value": "above", "label": "Above" },
+          { "value": "left", "label": "Left" },
+          { "value": "below", "label": "Below" }
+        ],
+        "default": "below"
+      },
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "id": "show-date",
+        "label": "Show article date",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "id": "show-author",
+        "label": "Show author",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "id": "show-share",
+        "label": "Show share",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "id": "show-tags",
+        "label": "Show article tags",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "id": "show-recent",
+        "label": "Show recent articles",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Comments"
+      },
+      {
+        "id": "show-comments",
+        "label": "Show comments",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "id": "enable-disqus",
+        "label": "Enable Disqus comments",
+        "type": "checkbox",
+        "default": false
+      },
+      {
+        "id": "disqus-shortname",
+        "label": "DISQUS shortname",
+        "type": "text"
+      }
+    ]
+  }
+{% endschema %}
+

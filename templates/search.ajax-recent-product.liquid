@@ -1,0 +1,14 @@
+{%- liquid
+  layout none
+
+  capture content_for_query_string
+    echo content_for_header
+  endcapture
+
+  assign page_url = content_for_query_string | split: '"pageurl":"' | last | split: '"' | first | split: '.myshopify.com' | last | replace: '\/', '/' | replace: '%20', ' ' | replace: '\u0026', '&'
+
+  assign page_query_string = page_url | split: '?' | last | split: '&handle=' | last | split: '&oseid=' | first | url_decode
+  assign product = all_products[page_query_string]
+
+  render 'framework--product--item', unique_handle: 'recent', section_id: section.id, product: product
+-%}

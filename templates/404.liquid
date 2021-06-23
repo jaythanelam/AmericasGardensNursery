@@ -1,11 +1,29 @@
-{%- assign section_color = 'primary' -%}
+{% comment %} Translations {% endcomment %}
+{% assign page_title_t = 'general.404.page_title' | t %}
+{% assign intro_t = 'general.404.intro' | t %}
 
+{% capture home_page_link %}
+  <a href="{{ shop.url }}">{{ 'general.404.home_page_link' | t }}</a>
+{% endcapture %}
+{%- capture products_link -%}
+  <a href="{{ routes.all_products_collection_url }}">{{ 'general.404.products_link' | t }}</a>
+{%- endcapture -%}
 
-<section class="featured-collection section-with-padding color--{{ section_color }}-text bg--{{ section_color }}-background" data-mobile-flickity="true">
-  <div class="max-site-width px2 lg--up--px3 text-align--center">
-    <h1>{{ 'general.404.title' | t }}</h1>
-    <p>{{ 'general.404.subtext_html' | t: link_url: routes.all_products_collection_url }}</p>
-  </div>
-</section>
+<div class="four-o-four--root">
+	<div class="four-o-four--container">
+		<h1 class="four-o-four--heading" data-item="section-heading">
+			{{ page_title_t }}
+		</h1>
 
+		<h3 class="four-o-four--info" data-item="block-heading">
+			{{ intro_t }}
+		</h3>
 
+		<p>
+			{{
+				'general.404.return_links_html' | t:
+				home_page_link: home_page_link, products_link: products_link
+			}}
+		</p>
+	</div>
+</div>

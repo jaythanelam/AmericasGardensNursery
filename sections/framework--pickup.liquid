@@ -1,0 +1,174 @@
+{%- liquid
+  assign other_pickup_locations_t = 'products.pickup.other_pickup_locations' | t
+  assign map_t = 'products.pickup.map' | t
+  assign pick_up_available_t = 'products.pickup.pick_up_available' | t
+  assign pick_up_unavailable_t = 'products.pickup.pick_up_unavailable' | t
+  assign return_t = 'products.pickup.return' | t
+  assign view_store_info_t = 'products.pickup.view_store_info' | t
+
+  assign store_availabilities = product_variant.store_availabilities
+  assign pick_up_availabilities = store_availabilities | where: 'pick_up_enabled', true
+  assign closest_location = pick_up_availabilities.first
+-%}
+
+{% capture location_name %}
+  <a
+    tabindex="0"
+    data-off-canvas--open="right-sidebar"
+    data-off-canvas--view="pickup"
+    aria-haspopup="menu"
+  >
+    {{ closest_location.location.name }}
+  </a>
+{% endcapture %}
+{% capture pick_up_available %}
+  {{ 'products.pickup.pick_up_available_at_html' | t: location_name: location_name }}
+{% endcapture %}
+{% capture pick_up_unavailable %}
+  {{ 'products.pickup.pick_up_unavailable_at_html' | t: location_name: location_name }}
+{% endcapture %}
+
+{% if product_variant.available and pick_up_availabilities.size > 0 %}
+  <div
+    class="pickup--root"
+    data-section-id="{{ section.id }}"
+    data-section-type="store-availability"
+  >
+    {% comment %} Product form view {% endcomment %}
+    <div class="pickup--form--container">
+
+      {%- if closest_location.available -%}
+        {% render 'framework--icons', icon: 'checkmark--small' %}
+      {%- else -%}
+        {% render 'framework--icons', icon: 'cross--small' %}
+      {%- endif -%}
+
+      <div class="pickup--form--info">
+
+        {%- if closest_location.available -%}
+          <p class="pickup--form--title" data-item="paragraph">
+            {{ pick_up_available }}
+          </p>
+          <p class="pickup--form--stock" data-item="caption">
+            {{ closest_location.pick_up_time }}
+          </p>
+          <p class="pickup--form--stores" data-item="block-link">
+            <a
+              tabindex="0"
+              data-off-canvas--open="right-sidebar"
+              data-off-canvas--view="pickup"
+              aria-haspopup="menu"
+            >
+              {%- if pick_up_availabilities.size == 1 -%}
+                {{ view_store_info_t }}
+              {%- else -%}
+                {{ other_pickup_locations_t }}
+              {%- endif -%}
+            </a>
+          </p>
+
+        {%- else -%}
+          <p class="pickup--form--title" data-item="paragraph">
+            {{ pick_up_unavailable }}
+          </p>
+          {%- if pick_up_availabilities.size > 1 -%}
+            <p class="pickup--form--stores" data-item="block-link">
+              <a
+                tabindex="0"
+                data-off-canvas--open="right-sidebar"
+                data-off-canvas--view="pickup"
+                aria-haspopup="menu"
+              >
+                {{ other_pickup_locations_t }}
+              </a>
+            </p>
+          {%- endif -%}
+
+        {%- endif -%}
+
+      </div>
+    </div>
+
+    {% comment %} Sidebar view {% endcomment %}
+    <div class="pickup--drawer--container">
+
+      <div class="pickup--drawer--header">
+        <h2 class="pickup--drawer--product-title" data-item="section-heading"></h2>
+        <p class="pickup--drawer--variant-title" data-item="accent-text">
+          {{ product_variant.title }}
+        </p>
+      </div>
+
+      <div class="pickup--drawer--list" role=”list”>
+
+        {%- for availability in pick_up_availabilities -%}
+          {%- assign address = availability.location.address | format_address -%}
+          {%- assign address_format_1 = address | replace: '<br>', ' ' | strip_html -%}
+          {%- assign address_format_2 = address_format_1 | strip | replace: ' ', '+' -%}
+          {%- assign address_url = 'https://google.com/maps/place/' | append: address_format_2 -%}
+
+          <div class="pickup--drawer--list-item">
+
+            <div class="pickup--drawer--list-location-container">
+              <h3 class="pickup--drawer--list-location-name" data-item="block-heading">
+                {{ availability.location.name }}
+              </h3>
+
+              <div class="divickup--drawer--list-location-map" data-item="block-link">
+                <a href="{{ address_url }}" target="_blank" rel="noreferrer">
+                  {{ map_t }}
+                </a>
+              </div>
+            </div>
+
+            <div class="pickup--drawer--list-stock" data-item="caption">
+              {%- if availability.available -%}
+                {% render 'framework--icons', icon: 'checkmark--small' %}
+                <div class="pickup--drawer--list-text">
+                  {{ pick_up_available_t }}, {{ availability.pick_up_time | downcase }}
+                </div>
+              {%- else -%}
+                {% render 'framework--icons', icon: 'cross--small' %}
+                <div class="pickup--drawer--list-text">
+                  {{ pick_up_unavailable_t }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <address data-item="paragraph">
+              {{ address }}
+            </address>
+
+            {%- if availability.location.phone.size > 0 -%}
+              <p class="pickup--drawer--list-phone" data-item="paragraph">
+                <a href="tel:{{ availability.location.phone }}">
+                  {{ availability.location.phone }}<br>
+                </a>
+              </p>
+            {%- endif -%}
+
+          </div>
+        {%- endfor -%}
+
+      </div>
+
+      <p class="pickup--drawer--return" data-item="block-link">
+        <a
+          tabindex="0"
+          data-off-canvas--close
+          aria-label="{{ 'general.close' | t }}"
+        >
+          {{ return_t }}
+        </a>
+      </p>
+
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": {},
+  "settings": []
+}
+{% endschema %}

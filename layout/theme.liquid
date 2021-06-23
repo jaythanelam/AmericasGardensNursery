@@ -1,184 +1,184 @@
 <!doctype html>
-<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="{{ settings.color_body_bg }}">
-  <link rel="canonical" href="{{ canonical_url }}">
+<html class="no-js" lang="{{ shop.locale }}">
+  <head>
+    <!-- Beyond Theme - Version 1.0.0 by Troop Themes - https://troopthemes.com/ -->
 
-  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
-  <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
-
-  {%- assign heading_font = settings.type_heading_font -%}
-  {%- assign main_font = settings.type_main_font -%}
-  {%- assign main_font_bold = main_font | font_modify: 'weight', 'bold' -%}
-  {%- assign accent_font = settings.type_accent_font -%}
-
-  <link rel="preload" href="{{ 'theme.min.css' | asset_url }}" as="style">
-<link rel="preload" as="font" href="{{ main_font | font_url }}" type="font/woff2" crossorigin>
-<link rel="preload" as="font" href="{{ heading_font | font_url }}" type="font/woff2" crossorigin>
-<link rel="preload" as="font" href="{{ accent_font | font_url }}" type="font/woff2" crossorigin>
-<link rel="preload" as="font" href="{{ main_font_bold | font_url }}" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ 'theme.min.js' | asset_url }}" as="script">
-
-  {% if settings.favicon != blank %}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
-  {% endif %}
-
-  {% capture seo_title %}
-    {{ page_title }}
-    {% if current_tags %}
-      {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
-    {% if current_page != 1 %}
-      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
+
+    <link rel="preload" href="{{ 'theme--critical.css' | asset_url }}" as="style">
+    <link rel="preload" href="{{ 'theme--async.css' | asset_url }}" as="style">
+    <link rel="preload" href="{{ 'lazysizes.min.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'theme.min.js' | asset_url }}" as="script">
+
+    {%- if canonical_url != blank -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
+
+    {% if settings.favicon != blank %}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x' }}" type="image/png">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | img_url: '180x' }}">
     {% endif %}
-    {% unless page_title contains shop.name %}
-      &ndash; {{ shop.name }}
-    {% endunless %}
-  {% endcapture %}
-  <title>{{ seo_title }}</title>
 
-  {% if page_description %}
-    <meta name="description" content="{{ page_description | escape }}">
-  {% endif %}
+    {% render 'framework--social-meta-tags' %}
 
-  {% render 'social-meta-tags' %}
+    {% if request.page_type == 'index' %}
+      <title>{{ page_title }}</title>
+    {% elsif request.page_type == 'password' %}
+      <title>{{ shop.name }}</title>
+    {% else %}
+      <title>{{ page_title }} | {{ shop.name }}</title>
+    {% endif %}
 
-  <!-- Start IE11 Compatibility -->
-  <script>
-    if (!!window.MSInputMethodContext && !!document.documentMode) {
-      // CSSVar Polyfill
-      document.write('<script src="https://cdn.jsdelivr.net/gh/nuxodin/ie11CustomProperties@4.1.0/ie11CustomProperties.min.js"><\x2fscript>');
-      // Other Polyfills
-      var ie11Polyfills = [
-        'Element.prototype.matches',
-        'DOMTokenList.prototype.forEach',
-        'NodeList.prototype.forEach',
-        'Element.prototype.closest',
-        'Promise',
-        'Event',
-        'CustomEvent'
-      ];
-      document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=' +
-        ie11Polyfills.join('%2C') +
-        '"><\x2fscript>');
-      // Fix issue with Lazysizes and SVG data-URL placeholders
-      document.addEventListener('DOMContentLoaded', function () {
-        var elsToLazyload = document.querySelectorAll('.lazyload');
-        for (var i = 0; i < elsToLazyload.length; i++) {
-          var elToLazyLoad = elsToLazyload[i];
-          elToLazyLoad.classList.remove('lazyload');
-          elToLazyLoad.removeAttribute('src');
-          elToLazyLoad.classList.add('lazyload');
-        }
-      });
-    }
-  </script>
-  <!-- End IE11 Compatibility -->
+    {% render 'framework--css-variables' %}
+    {% render 'partial--css-variables' %}
+    {% render 'partial--js-variables' %}
 
-
-  {% render 'css-variables' %}
-  {% render 'critical-css' %}
-  {% render 'style-tags' %}
-
-  <style>
-  {{ main_font | font_face: font_display: 'swap' }}
-  {{ heading_font | font_face: font_display: 'swap' }}
-  {{ accent_font | font_face: font_display: 'swap' }}
-  {%- assign main_font_bolder = main_font | font_modify: 'weight', 'bolder' -%}
-  {%- assign main_font_italic = main_font | font_modify: 'style', 'italic' -%}
-  {%- assign main_font_bold_italic = main_font_bold | font_modify: 'style', 'italic' -%}
-  {% if main_font_bold %}
-    {{ main_font_bold | font_face: font_display: 'swap' }}
-  {% endif %}
-  {% if main_font_italic %}
-    {{ main_font_italic | font_face: font_display: 'swap' }}
-  {% endif %}
-  {% if main_font_bold_italic %}
-    {{ main_font_bold_italic | font_face: font_display: 'swap' }}
-  {% endif %}
-  {% if main_font_bolder %}
-    {{ main_font_bolder | font_face: font_display: 'swap' }}
-  {% endif %}
-  </style>
-
-  <script>
-    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-    window.theme = {
-      data: {
-        "cartMethod": "{{ settings.ajax_cart_method }}",
-        "openModalOnAddToCart": {{ settings.open_modal_on_add_to_cart | json }}
-      },
-      strings: {
-        addToCart: {{ 'products.product.add_to_cart' | t | json }},
-        soldOut: {{ 'products.product.sold_out' | t | json }},
-        unavailable: {{ 'products.product.unavailable' | t | json }},
-        regularPrice: {{ 'products.product.regular_price' | t | json }},
-        salePrice: {{ 'products.product.sale_price' | t | json }},
-        sale: {{ 'products.product.on_sale' | t | json }},
-        unitPrice: {{ 'products.product.unit_price_label' | t | json }},
-        unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},
-        cartEmpty: {{ 'cart.general.empty' | t | json }},
-        cartCookie: {{ 'cart.general.cookies_required' | t | json }},
-        cartSavings: {{ 'cart.general.savings_html' | t: price: '[savings]' | json }},
-        update: {{ 'cart.label.update' | t | json }},
-        quantity: {{ 'cart.label.quantity' | t | json }},
-        discountedTotal: {{ 'cart.label.discounted_total' | t | json }},
-        regularTotal: {{ 'cart.label.regular_total' | t | json }},
-        priceColumn: {{ 'cart.label.price_column' | t | json }},
-        addedToCart: {{ 'products.product.added_to_cart' | t | append: '!' | json }}
-      },
-      breakpoints: {
-        lgUp: '(min-width: 990px)',
-      },
-      routes: {
-        cart_url: {{ routes.cart_url | append: '.js' | json }},
-        cart_add_url: {{ routes.cart_add_url | append: '.js' | json }},
-        cart_change_url: {{ routes.cart_change_url | append: '.js' | json }},
-        cart_clear_url: {{ routes.cart_clear_url | append: '.js' | json }},
-      },
-      moneyFormat: {{ shop.money_format | json }},
-      info: {
-        name: 'Cascade',
+    <script>
+      function onLoadStylesheet() {
+        const link = document.querySelector(`link[href="${theme.assets.stylesheet}"]`);
+        link.loaded = true;
+        link.dispatchEvent(new Event('load'));
       }
-    };
-  </script>
+    </script>
+    <noscript>
+      <style>
+        body .layout--main-content > *,
+        body .header--root,
+        body .footer--root,
+        body .popup-modal-close,
+        body .modal--root,
+        body .modal--window {
+          opacity: 1;
+        }
+      </style>
 
-  {% if template.directory == 'customers' %}
-    <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
-    <!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
-  {% endif %}
+      <link href="{{ 'theme--async.css' | asset_url }}" rel="stylesheet">
+    </noscript>
 
-  {% render 'script-tags', layout: 'theme' %}
-  {{ content_for_header }}
+    <link href="{{ 'theme--critical.css' | asset_url }}" rel="stylesheet" media="all"/>
+    <link
+      href="{{ 'theme--async.css' | asset_url }}"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all';onLoadStylesheet()"
+    >
 
-</head>
+    <style>{% render 'custom-styles' %}</style>
 
-<body id="{{ page_title | handle }}" class="template-{{ template.name | handle }} preload">
+    <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
+    <script src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script>
 
-  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+    {% if request.page_type contains 'customers' %}
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+      <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer="defer"></script>
+    {% endif %}
 
-  {% section 'header' %}
+    {{ content_for_header }}
+  </head>
 
+  <body
+    class="template--{{ template | split: '.' | first | remove: '_' | replace: '/', '--' }} page--{{ page_title | handle }}"
+    data-theme-id=""
+    data-theme-name="Beyond"
+    data-theme-version="1.0.0"
+    data-tabbing="false"
+  >
+    {% unless request.page_type == 'password' %}
+      <a data-item="a11y-button" href='#main-content'>
+        {{ 'general.skip_link' | t }}
+      </a>
 
-  <main role="main" id="MainContent">
-    {{ content_for_layout }}
-  </main>
+      <div
+        class="off-canvas--viewport"
+        data-js-class="OffCanvas"
+        data-off-canvas--state="closed"
+      >
+        <div class="off-canvas--overlay" data-js-class="Transition"></div>
+        <div
+          aria-label="{{ 'general.close' | t }}"
+          data-js-class="Transition"
+          data-off-canvas--close
+        >
+          {% render 'framework--icons', icon: 'cross' %}
+        </div>
 
+        <div class="off-canvas--main-content">
+          {% section 'announcement' %}
+          {% section 'header' %}
+    {% endunless %}
 
-  {% section 'footer' %}
-  {% section 'popup' %}
+    <main class="layout--main-content" id="main-content">
 
-  {% comment %}
-    Ajaxify your cart with this plugin.
-    Documentation:
-      - http://shopify.com/timber#ajax-cart
-  {% endcomment %}
-  {% render 'ajax-cart-template' %}
-</body>
+      {{ content_for_layout }}
+
+    </main>
+
+    {% unless request.page_type == 'password' %}
+          {% section 'framework--footer' %}
+
+          {% if settings.popup--enabled %}
+            {% render 'partial--popup' %}
+          {% endif %}
+
+          {% render 'framework--feedback-bar' %}
+        </div>
+
+        <div
+          class="off-canvas--right-sidebar"
+          data-active="cart"
+          data-js-class="Transition"
+        >
+          <div class="off-canvas--focus-trigger" tabindex="0"></div>
+
+          {% if request.page_type == 'product' %}
+            <div class="off-canvas--container" data-view="pickup"></div>
+          {% endif %}
+
+          {% if request.page_type == 'collection' %}
+            <div class="off-canvas--container" data-view="collection-filter"></div>
+          {% endif %}
+
+          {% if settings.product--quick-add-enabled %}
+            <div class="off-canvas--container" data-view="product-form"></div>
+          {% endif %}
+
+          {% if settings.cart--type == 'drawer' or settings.product--quick-add-enabled %}
+            <div class="off-canvas--container" data-view="cart">
+              {% render 'framework--cart', view: 'mobile', is_drawer: true %}
+            </div>
+          {% endif %}
+
+          <div class="off-canvas--focus-trigger" tabindex="0"></div>
+        </div>
+
+        <div
+          class="off-canvas--left-sidebar"
+          data-active="menu"
+          data-js-class="Transition"
+        >
+          <div class="off-canvas--focus-trigger" tabindex="0"></div>
+
+          <div class="off-canvas--container" data-view="menu">
+            {% render 'layout--mobile-nav' %}
+          </div>
+
+          <div class="off-canvas--focus-trigger" tabindex="0"></div>
+        </div>
+
+      </div>
+
+      {% render 'framework--search', view: 'modal' %}
+      {% render 'framework--modal' %}
+    {% endunless %}
+
+  </body>
 </html>

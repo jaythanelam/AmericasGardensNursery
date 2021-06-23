@@ -1,0 +1,145 @@
+{%- liquid
+	assign blog = blogs[section.settings.blog]
+	assign blog_heading = section.settings.blog-heading | escape
+	assign selected_tag = section.settings.tag-select | downcase | escape
+	assign show_date = section.settings.show-date
+	assign show_excerpt = section.settings.show-excerpt
+	assign view_more_text = section.settings.view-more-text | escape
+	assign tag_found = false
+-%}
+
+{% comment %} View {% endcomment %}
+<div
+  class="featured-blog--root"
+	style="{% render 'framework--background-colors', bg_color: section.settings.background-color %}"
+	data-section-id="{{ section.id }}"
+>
+
+	{% if blog_heading != blank %}
+		<h2 class="featured-blog--heading" data-item="section-heading">
+      <a href="{{ blog.url }}">{{ blog_heading }}</a>
+    </h2>
+	{% endif %}
+
+	<div class="featured-blog--body">
+		<div class="featured-blog--grid">
+			{% if blog.articles.size > 0 %}
+				{% for article in blog.articles %}
+					{% for tag in article.tags %}
+						{% assign escaped_tag = tag | downcase | escape %}
+
+						{% if escaped_tag == selected_tag %}
+							{% assign tag_found = true %}
+							{%
+								render "framework--featured-blog--item",
+								featured_article: article,
+								show_date: show_date,
+								show_excerpt: show_excerpt,
+								type: 'full_article'
+							%}
+							<!-- {% increment articles_printed_count %} -->
+							{% break %}
+						{% endif %}
+					{% endfor %}
+
+					{% if articles_printed_count == 3 %}
+						{% break %}
+					{% endif %}
+				{% endfor %}
+
+				{% if tag_found == false %}
+					{% for article in blog.articles limit: 3 %}
+						{%
+							render "framework--featured-blog--item",
+							featured_article: article,
+							show_date: show_date,
+							show_excerpt: show_excerpt,
+							type: 'full_article'
+						%}
+					{% endfor %}
+				{% endif %}
+			{% else %}
+				{% for i in (1..3) %}
+					{%
+						render "framework--featured-blog--item",
+						show_date: show_date,
+						show_excerpt: show_excerpt,
+						type: 'placeholder'
+					%}
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		{% if view_more_text != blank %}
+			<div class="featured-blog--footer">
+				<a data-item="button" href="{{ blog.url }}">
+					<div>{{ view_more_text }}</div>
+				</a>
+			</div>
+		{% endif %}
+	</div>
+</div>
+
+{% schema %}
+  {
+   "name": "Blog posts",
+   "settings":[
+      {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Accent", "value": "accent" }
+      ],
+			"default": "none"
+			},
+			{
+				"id": "blog-heading",
+				"label": "Heading",
+				"type": "text",
+				"default": "Blog posts"
+			},
+			{
+				"id": "blog",
+				"label": "Choose blog",
+				"type": "blog"
+			},
+			{
+				"id": "tag-select",
+				"label": "Filter by tag",
+				"type": "text",
+				"default": "pinned",
+				"info": "Tag articles with 'pinned' or change this to match an existing tag"
+			},
+			{
+				"id": "show-date",
+				"label": "Show date",
+				"type": "checkbox",
+				"default": true
+			},
+			{
+				"id": "show-excerpt",
+				"label": "Show excerpt",
+				"type": "checkbox",
+				"default": true
+			},
+			{
+				"id": "view-more-text",
+				"label": "View more text",
+				"type": "text",
+				"default": "View more"
+			}
+   ],
+	 "presets": [
+      {
+        "name": "Blog posts",
+        "category": "Blog",
+				"settings": {
+					"blog": "News"
+				}
+      }
+    ]
+	}
+{% endschema %}

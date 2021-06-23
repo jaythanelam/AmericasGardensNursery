@@ -1,0 +1,135 @@
+{%- liquid
+  assign alt_color = section.settings.alt-color
+  assign apply_overlay = section.settings.apply-overlay
+  assign image_height = section.settings.image-height
+  assign show_description = section.settings.show-description
+  assign show_image = section.settings.show-image
+  assign show_title = section.settings.show-title
+  assign title_alignment = section.settings.title-alignment
+  assign use_image_fallback = section.settings.use-image-fallback
+-%}
+
+{% capture header_image %}
+  <div class="collection--header--image">
+    {% if collection.image %}
+      {%
+        render "framework--image",
+        image: collection.image,
+        full_width: true
+      %}
+    {% elsif collection.products.first.featured_media.preview_image and use_image_fallback %}
+      {%
+        render "framework--image",
+        image: collection.products.first.featured_media.preview_image,
+        full_width: true
+      %}
+    {% else %}
+      {% assign show_image = false %}
+    {% endif %}
+  </div>
+{% endcapture %}
+
+{% if section.settings.enable-header %}
+  <div
+    class="collection--header--root"
+    data-alternative-color="{{ alt_color }}"
+    data-apply-overlay="{{ apply_overlay }}"
+    data-image-height="{{ image_height }}"
+    data-show-image="{{ show_image }}"
+    data-title-alignment="{{ title_alignment }}"
+  >
+    {% if show_image %}
+      {{ header_image }}
+    {% endif %}
+
+    {% if show_title or show_description %}
+      <div class="collection--header--heading">
+        {% if show_title and collection.title != blank %}
+          <h1 data-item="section-heading">
+            {{ collection.title }}
+          </h1>
+        {% endif %}
+
+        {% if show_description and collection.description != blank %}
+          <p data-item="paragraph">
+            {{ collection.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Collection header",
+  "settings": [
+    {
+      "id": "enable-header",
+      "label": "Enable",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "show-title",
+      "label": "Show collection title",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "label": "Position title",
+      "id": "title-alignment",
+      "type": "radio",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "id": "show-description",
+      "label": "Show collection description",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "show-image",
+      "label": "Show collection image",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "use-image-fallback",
+      "label": "Use a product image if no collection image found",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "image-height",
+      "label": "Height",
+      "type": "select",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "original", "label": "Natural (no cropping)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "id": "alt-color",
+      "label": "Use alternative text color",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "apply-overlay",
+      "label": "Darken image",
+      "type": "checkbox",
+      "default": true,
+      "info": "Can enhance text visibility"
+    }
+  ]
+}
+{% endschema %}

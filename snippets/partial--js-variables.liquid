@@ -1,0 +1,59 @@
+<script>
+  var theme = theme || {};
+  theme.assets = theme.assets || {};
+  theme.carousels = theme.carousels || {};
+  theme.classes = theme.classes || {};
+  theme.local_storage = theme.local_storage || {};
+  theme.partials = theme.partials || {};
+  theme.settings = theme.settings || {};
+  theme.shop = theme.shop || {};
+  theme.swatches = theme.swatches || {};
+  theme.translations = theme.translations || {};
+  theme.urls = theme.urls || {};
+
+  theme.assets.swipe = '{{ "swipe-listener.min.js" | asset_url }}';
+  theme.assets.masonry = '{{ "masonry.min.js" | asset_url }}';
+  theme.assets.stylesheet = '{{ "theme--async.css" | asset_url }}';
+
+  theme.local_storage.collection_view = 'beyond_collection_view';
+  theme.local_storage.popup = 'beyond_popup'
+  theme.local_storage.recent_products = 'beyond_recently_viewed_storage';
+
+  theme.settings.cart_type = '{{ settings.cart--type }}';
+  theme.settings.hover_image_enabled = '{{ settings.product--hover-image-enabled }}' == 'true';
+  theme.settings.quick_add = '{{ settings.product--quick-add-enabled }}' == 'true';
+
+  theme.shop.money_format = {{ shop.money_format | json }};
+
+  theme.translations.mailing_list_success_message = '{{ "general.mailing_list.success_message" | t }}';
+  theme.translations.add_to_cart = '{{ "products.add_to_cart" | t }}';
+  theme.translations.all_items_added = '{{ "products.all_items_added" | t }}';
+  theme.translations.out_of_stock = '{{ "products.out_of_stock" | t }}';
+  theme.translations.size_chart_label = '{{ "products.size_chart" | t }}';
+  theme.translations.unavailable = '{{ "products.unavailable" | t }}'
+  theme.translations.low_in_stock = {
+    one: '{{ "products.low_in_stock" | t: count: 1 }}',
+    other: '{{ "products.low_in_stock" | t: count: 2 }}'
+  };
+
+  theme.urls.all_products_collection = '{{ routes.all_products_collection_url }}';
+  theme.urls.cart = '{{ routes.cart_url }}';
+  theme.urls.cart_add = '{{ routes.cart_add_url }}';
+  theme.urls.cart_change = '{{ routes.cart_change_url }}';
+  theme.urls.product_recommendations = '{{ routes.product_recommendations_url }}';
+  theme.urls.search = '{{ routes.search_url }}';
+
+  {% if routes.root_url == '/' %}
+    theme.urls.root = '';
+  {% else %}
+    theme.urls.root = '{{ routes.root_url }}';
+  {% endif %}
+
+  {% render 'framework--swatch-colors' %}
+
+  // LazySizes
+  window.lazySizesConfig = window.lazySizesConfig || {};
+  window.lazySizesConfig.expand = 1200;
+  window.lazySizesConfig.loadMode = 3;
+  window.lazySizesConfig.ricTimeout = 50;
+</script>

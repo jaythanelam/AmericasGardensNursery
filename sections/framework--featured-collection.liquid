@@ -1,0 +1,222 @@
+{%- liquid
+  comment
+    Translations
+  endcomment
+
+  assign skip_link_t = 'home.featured_collection.skip_link' | t
+  assign view_collection_t = 'home.featured_collection.view_collection' | t
+
+  comment
+    Variables
+  endcomment
+
+  assign collection = collections[section.settings.collection]
+  assign display_type = section.settings.display-type
+  assign product_per_row_desktop = section.settings.products-per-row--desktop
+  assign product_per_row_mobile = section.settings.products-per-row--mobile
+  assign product_limit = product_per_row_desktop | times: 2
+  assign unique_handle = 'featured-collection--' | append: section.id
+
+  assign onboarding = true
+  if collection.handle.size > 0 and collection.products_count != 0
+    assign onboarding = false
+  endif
+
+  if onboarding
+    assign collection_title = 'collections.placeholder.collection_title' | t
+    if collection.handle.size > 0 and collection.products_count == 0
+      assign collection_title = collection.title
+    endif
+    if section.settings.featured-collection--description--show
+      assign collection_description = 'collections.placeholder.collection_description' | t
+    endif
+    if section.settings.featured-collection--image--show
+      capture collection_image
+        render "framework--placeholder", type: "collection", aspect_ratio: 1.45, placeholder_index: 1
+      endcapture
+    endif
+  else
+    assign collection_title = collection.title
+
+    if collection.image.size > 0 and section.settings.featured-collection--image--show
+      capture collection_image
+        render "framework--image", image: collection.image
+      endcapture
+    endif
+
+    if collection.description.size > 0 and section.settings.featured-collection--description--show
+      assign collection_description = collection.description
+    endif
+  endif
+-%}
+
+<div
+  class="featured-collection--root"
+  style="{% render 'framework--background-colors', bg_color: section.settings.background-color %}"
+  data-js-class="FeaturedCollection"
+  data-container="section"
+  data-section-id="{{ section.id }}"
+  data-section-type="index_featured_collection"
+  data-has-image="{% if collection_image.size > 0 %}true{% else %}false{% endif %}"
+  data-display-type="{{ display_type }}"
+>
+  <header class="featured-collection--header" data-container="block">
+    <div class="featured-collection--header-text">
+      <h2 class="featured-collection--title" data-item="section-heading">
+        <a href="{{ collection.url }}">{{ collection_title }}</a>
+      </h2>
+
+      {% if collection_description.size > 0 %}
+        <div class="featured-collection--description" data-item="paragraph">
+          {{ collection_description }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if collection_image.size > 0 %}
+      <div class="featured-collection--image" data-item="image">
+        {{ collection_image }}
+      </div>
+    {% endif %}
+  </header>
+
+  {% if display_type == 'slider' %}
+    <a data-item="a11y-button" href='#featured-collection-show-more'>
+      {{ skip_link_t }}
+    </a>
+
+    <div class="featured-collection--carousel" data-container="panel">
+      {% render
+        'framework--carousel',
+        view: 'product',
+        section_id: section.id,
+        onboarding: onboarding,
+        blocks: collection.products,
+        blocks_per_slide: 4,
+        blocks_per_slide_mobile: 2,
+        dot_nav_enabled: true,
+        total_blocks: collection.products.size,
+        total_slides: collection.products.size | divided_by: 2,
+        spacing_around_blocks: true,
+        transition_type: 'slide'
+      %}
+    </div>
+
+  {% else %}
+    <div
+      class="featured-collection--grid"
+      data-container="panel"
+      data-columns="{{ product_per_row_desktop }}"
+      data-mobile-columns="{{ product_per_row_mobile }}"
+    >
+      {% if onboarding %}
+        {% for i in (1..product_limit) %}
+          {%
+            render 'framework--product--item',
+            onboarding: true,
+            unique_handle: unique_handle
+          %}
+        {% endfor %}
+      {% else %}
+        {% for product in collection.products limit: product_limit %}
+          {%
+            render 'framework--product--item',
+            product: product,
+            unique_handle: unique_handle,
+            section_id: section.id
+          %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+  {% endif %}
+
+  {% if collection.products.size > 1 %}
+    <div data-container="block">
+      <div
+        id="featured-collection-show-more"
+        class="featured-collection--show-more"
+        data-item="block-link"
+      >
+        <a href="{{ collection.url }}">
+          {{ view_collection_t }}
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Accent", "value": "accent" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "featured-collection--image--show",
+      "label": "Show collection image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "featured-collection--description--show",
+      "label": "Show collection description",
+      "default": false
+    },
+    {
+      "id": "display-type",
+      "label": "Display type",
+      "type": "radio",
+      "options": [
+        { "label": "Slider", "value": "slider" },
+        { "label": "Grid", "value": "grid" }
+      ],
+      "default": "slider"
+    },
+    {
+      "label": "Products per row (desktop)",
+      "id": "products-per-row--desktop",
+      "type": "radio",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3",
+      "info": "Applies to grid display only"
+    },
+    {
+      "label": "Product per row (mobile)",
+      "id": "products-per-row--mobile",
+      "type": "radio",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1",
+      "info": "Applies to grid display only"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

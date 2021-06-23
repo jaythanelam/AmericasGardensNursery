@@ -1,0 +1,395 @@
+{%- liquid
+  assign color_t = 'products.color' | t
+  assign from_t = 'products.from' | t
+  assign new_t = 'products.new' | t
+  assign out_of_stock_t = 'products.out_of_stock' | t
+  assign sale_t = 'products.sale' | t
+  assign select_options_t = 'products.select_options' | t
+
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_tags = settings.product--featured-tags | remove: ' ' | split: ','
+  assign hover_image_enabled = settings.product--hover-image-enabled
+  assign label_color = settings.product--label-color
+  assign new_label_period = settings.product--new-label-period
+  assign product_id = product.id | append: '-' | append: section_id
+  assign show_sale_label = settings.product--show-sale-label
+  assign show_new_label = settings.product--show-new-label
+  assign smart_payment_enabled = settings.product--smart-payment-button
+  assign swatches_enabled = settings.product--swatches-enabled
+  assign text_alignment = settings.product--text-alignment
+  assign quick_add_enable = settings.product--quick-add-enabled
+  assign variant_style = settings.product--variant-style
+
+  if unique_handle == 'search-ajax'
+    assign quick_add_enable = false
+  endif
+
+  unless show_vendor
+    assign show_vendor = settings.product--show-vendor
+  endunless
+
+  unless view
+    assign view = 'grid'
+  endunless
+
+  if show_new_label
+    assign now_timestamp = 'now' | date: '%s'
+    assign new_label_period_in_seconds = new_label_period | times: 86400
+    assign valid_date = now_timestamp | minus: new_label_period_in_seconds | plus: 0
+    assign publish_date = product.published_at | date: '%s' | plus: 0
+
+    assign is_new_product = false
+    if valid_date < publish_date
+      assign is_new_product = true
+    endif
+  endif
+
+  unless onboarding
+    assign onboarding = false
+  endunless
+
+  if product.media.size > 1
+    capture hover_image
+      echo '<div class="product--hover-image" data-item="image">'
+      render 'framework--image', image: product.media[1].preview_image
+      echo '</div>'
+    endcapture
+  else
+    assign hover_image = false
+  endif
+
+  if onboarding
+    capture image
+      render "framework--placeholder", type: 'image', aspect_ratio: 1
+    endcapture
+    assign title = 'home.onboarding.product_title' | t
+    assign url = product.url | within: collection
+    assign vendor = 'home.onboarding.vendor' | t
+    assign vendor_url = "#"
+    assign price = 'home.onboarding.price' | t
+    assign compare_price = 'home.onboarding.compare_price' | t
+    assign excerpt = 'home.onboarding.description' | t
+
+  else
+    capture image
+      if product.featured_media.preview_image
+        render 'framework--image', image: product.featured_media.preview_image, full_width: true
+      else
+        render "framework--placeholder", type: 'image', aspect_ratio: 1
+      endif
+    endcapture
+
+    assign title = product.title
+    assign url = product.url | within: collection
+    assign vendor = product.vendor
+    assign vendor_url = product.vendor | url_for_vendor
+    assign price = product.price | money
+
+    if product.compare_at_price > product.price and product.available
+      assign compare_price = product.compare_at_price | money
+    else
+      assign compare_price = false
+    endif
+
+    assign excerpt = product.metafields.global.description_tag | newline_to_br
+    if excerpt == blank
+      assign excerpt = product.description | strip_html | truncate: 100 | newline_to_br
+    endif
+
+  endif
+-%}
+
+{%- capture display_labels -%}
+  <div class="product--labels-container" data-item="accent-text">
+
+    {% unless product.available or onboarding %}
+      <div class="product--out-of-stock">
+        {{ out_of_stock_t }}
+      </div>
+
+    {% elsif show_sale_label and compare_price and onboarding == false %}
+      <div class="product--sale" >
+        {{ sale_t }}
+      </div>
+
+    {% elsif show_new_label and is_new_product and onboarding == false %}
+      <div class="product--new">
+        {{ new_t }}
+      </div>
+    {% endunless %}
+
+    {% if featured_tags.size > 0 and product.available and onboarding == false %}
+      {% assign break_loop = false %}
+
+      {% for featured_tag in featured_tags %}
+        {% assign formatted_featured_tag = featured_tag | downcase %}
+
+        {% for product_tag in product.tags %}
+          {% assign formatted_product_tag = product_tag | remove: ' ' | downcase %}
+
+          {% if formatted_product_tag == formatted_featured_tag %}
+            <div class="product--featured-tag">
+              {{ product_tag | escape }}
+            </div>
+            {% assign break_loop = true %}
+            {% break %}
+          {% endif %}
+
+        {% endfor %}
+
+        {% if break_loop %}
+          {% break %}
+        {% endif %}
+
+      {% endfor %}
+
+    {% endif %}
+  </div>
+
+{%- endcapture -%}
+
+{% capture display_title %}
+  <p class="product--title" data-item="paragraph">
+    {{ title }}
+  </p>
+{% endcapture %}
+
+{% capture display_vendor %}
+  {% if show_vendor %}
+    <div class="product--vendor" data-item="light-accent-text">
+      {{ vendor }}
+    </div>
+  {% endif %}
+{% endcapture %}
+
+{% capture display_prices %}
+  <div class="product--price-container">
+
+    <div class="product--price-wrapper">
+      {% if compare_price %}
+        <span class="product--compare-price money" data-item="light-accent-text">
+          {{ compare_price }}
+        </span>&nbsp;
+        <span class="product--price money" data-item="accent-text">
+          {{ price }}
+        </span>
+      {% else %}
+        {% if product.price_varies %}
+          <span class="product--from" data-item="accent-text">
+            {{ from_t }}&nbsp;
+          </span>
+        {% endif %}
+        <span class="product--price money" data-item="accent-text">
+          {{ price }}
+        </span>
+      {% endif %}
+    </div>
+
+    <div class="product--unit-price-container" data-item="small-text">
+      {%- if current_variant.unit_price_measurement -%}
+        <span class="product--unit-price">
+          {{- current_variant.unit_price | money -}}
+        </span>/
+        {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+          <span class="product--reference-value">
+            {{- current_variant.unit_price_measurement.reference_value -}}
+          </span>
+        {%- endif -%}
+        <span class="product--reference-unit">
+          {{- current_variant.unit_price_measurement.reference_unit -}}
+        </span>
+      {%- endif -%}
+    </div>
+
+  </div>
+{% endcapture %}
+
+<div
+  class="product--root"
+  data-product-view="{{ view }}"
+  data-label-color="{{ label_color }}"
+  data-text-alignment="{{ text_alignment }}"
+  {% if hover_image_enabled and hover_image %}
+    data-hover-image="true"
+  {% endif %}
+  {% if view == 'grid' %}
+    data-container="block"
+  {% endif %}
+>
+  {% case view %}
+    {% when 'list' %}
+      <div class="product--image" data-item="image">
+        <a href="{{ url }}" aria-label="{{ product.title }}">
+          {{ image }}
+        </a>
+      </div>
+
+      <div class="product--details">
+        {{ display_labels }}
+
+        <div class="product--details--title-row">
+          {{ display_prices }}
+          <a href="{{ url }}">{{ display_title }}</a>
+        </div>
+
+        <a href="{{ vendor_url }}">{{ display_vendor }}</a>
+
+        {% if excerpt.size > 0 %}
+          <div class="product--excerpt" data-item="paragraph">
+            {{ excerpt }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    {% comment %} 'grid' and 'slider' views share markup, but not styles {% endcomment %}
+    {% else %}
+      {{ display_labels }}
+
+      <a href="{{ url }}" aria-label="{{ product.title }}">
+        <div class="product--image-wrapper">
+          <div class="product--image" data-item="image">
+            {{ image }}
+          </div>
+
+          {% if hover_image_enabled and hover_image %}
+            {{ hover_image }}
+          {% endif %}
+
+          {% if quick_add_enable and product.available %}
+            <div
+              class="product--quick-add"
+              tabindex="0"
+              data-product-id="{{ product_id }}"
+              data-off-canvas--open="right-sidebar"
+              {% if product.has_only_default_variant %}
+                data-off-canvas--view="cart"
+                data-loading="false"
+              {% else %}
+                data-off-canvas--view="product-form"
+              {% endif %}
+              aria-haspopup="menu"
+            >
+              {% if product.has_only_default_variant %}
+                <div class="product--plus">
+                  {% render 'framework--icons', icon: 'plus' %}
+                </div>
+
+                <div class="product--spinner">
+                  {% render 'framework--loading-spinner' %}
+                </div>
+              {% else %}
+                <div class="product--ellipses">
+                  {% render 'framework--icons', icon: 'ellipses' %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="product--details-container">
+          <div class="product--details">
+            <div class="product--details-wrapper">
+              {{ display_vendor }}
+              {{ display_title }}
+
+              {% if swatches_enabled %}
+                <div class="product--swatches--horizontal-view">
+                  {%- for option in product.options_with_values -%}
+                    {%- assign option_name = option.name | strip | downcase -%}
+                    {%- assign unique_id = unique_handle | append: '-horizontal-' | append: product.id -%}
+
+                    {%- if option_name == color_t -%}
+                      {%-
+                        render 'framework--radios',
+                        id: unique_id,
+                        option: option,
+                        display_swatches_only: true
+                      -%}
+                      {%- break -%}
+                    {%- endif -%}
+
+                  {%- endfor -%}
+                </div>
+              {% endif %}
+            </div>
+
+            {{ display_prices }}
+          </div>
+
+          {% comment %} can't use a capture statement for swatches as we need a unique ID {% endcomment %}
+          {% if swatches_enabled %}
+            <div class="product--swatches--column-view">
+              {%- for option in product.options_with_values -%}
+                {%- assign option_name = option.name | strip | downcase -%}
+                {%- assign unique_id = unique_handle | append: '-column-' | append: product.id -%}
+
+                {%- if option_name == color_t -%}
+                  {%-
+                    render 'framework--radios',
+                    id: unique_id,
+                    option: option,
+                    display_swatches_only: true
+                  -%}
+                  {%- break -%}
+                {%- endif -%}
+
+              {%- endfor -%}
+            </div>
+          {% endif %}
+        </div>
+      </a>
+
+      {% if quick_add_enable and product.available %}
+        <div class="product--form-for-off-canvas" style="display:none;">
+          <div class="product--form" data-product-id="{{ product_id }}">
+
+            {% unless product.has_only_default_variant %}
+              <div class="product--form-select-options" data-item="accent-text">
+                {{ select_options_t }}
+              </div>
+
+              <a href="{{ product.url }}">
+                <h2 class="product--form-title" data-item="section-heading">
+                  {{ product.title }}
+                </h2>
+              </a>
+
+              <div class="product--form--media-container">
+                {%- for media in product.media -%}
+                  {%
+                    render "framework--product--media",
+                    media_view: "featured",
+                    product: product,
+                    in_slider: false,
+                    product_media: media,
+                    media_size: "desktop"
+                  %}
+                {%- endfor -%}
+              </div>
+
+              <div class="product--form--ar-button">
+                {%-
+                  render "framework--product--media",
+                  media_view: "media-dependencies",
+                  product: product
+                -%}
+              </div>
+            {% endunless %}
+
+            {%
+              render "framework--product--form",
+              product: product,
+              unique_handle: unique_handle,
+              section_id: section_id,
+              smart_payment_enabled: smart_payment_enabled,
+              swatches_enabled: swatches_enabled,
+              variant_style: variant_style
+            %}
+
+          </div>
+        </div>
+      {% endif %}
+
+  {% endcase %}
+</div>

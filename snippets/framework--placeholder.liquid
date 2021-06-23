@@ -1,0 +1,43 @@
+{% comment %} Aspect ratio needs at least one decimal {% endcomment %}
+{%- liquid
+  assign placeholder = type
+
+  unless aspect_ratio
+    assign aspect_ratio = 1
+  endunless
+
+  unless extra_padding
+    assign extra_padding = ''
+  endunless
+
+  unless cover
+    assign cover = false
+  endunless
+
+  unless cover_mobile
+    assign cover_mobile = false
+  endunless
+
+  if placeholder_index
+    capture placeholder
+      echo type | append: '-' | append: placeholder_index
+    endcapture
+  endif
+-%}
+
+<div
+  class="placeholder--root"
+  data-cover="{{ cover }}"
+  data-cover-mobile="{{ cover_mobile }}"
+  data-darken="{{ darken }}"
+  data-darken-mobile="{{ darken_mobile }}"
+>
+  <div
+    class="placeholder--container"
+    {% unless cover and cover_mobile %}
+      style="padding-top:calc({{ 1 | divided_by: aspect_ratio | times: 100 }}% {{ extra_padding }});"
+    {% endunless %}
+  >
+    {{ placeholder | placeholder_svg_tag }}
+  </div>
+</div>

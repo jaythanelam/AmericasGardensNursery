@@ -1,0 +1,19 @@
+{% capture account %}
+  {% if account_icon == 'icon' %}
+    {% render 'framework--icons', icon: 'account' %}
+  {% else %}
+    {{ 'layout.header.account_view_link' | t }}
+  {% endif %}
+{% endcapture %}
+
+<div class="layout--login">
+  {% if customer %}
+    <a href="{{ routes.account_url }}">
+      {{ account }}
+    </a>
+  {% else %}
+    <a href="{{ routes.account_login_url }}">
+      {{ account }}
+    </a>
+  {% endif %}
+</div>

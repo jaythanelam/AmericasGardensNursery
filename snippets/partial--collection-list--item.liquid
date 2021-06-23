@@ -1,0 +1,78 @@
+{%- liquid
+  if collection
+    comment
+      Translations
+    endcomment
+
+    assign trans_product = 'collections.product' | t
+    assign trans_products = 'collections.products' | t
+
+    comment
+      Variables
+    endcomment
+
+    assign collection_title = collection.title
+    assign no_product_images = true
+
+    capture num_items
+      echo collection.all_products_count | append: ' '
+      echo collection.all_products_count | pluralize: trans_product, trans_products
+    endcapture
+
+    capture collection_image
+      if collection.image
+        render "framework--image", image: collection.image, full_width: true
+
+      elsif collection.products.length > 0
+        for product in collection.products
+          if product.featured_media.preview_image
+            render "framework--image", image: product.featured_media.preview_image, full_width: true
+            assign no_product_images = false
+            break
+          endif
+        endfor
+
+        if no_product_images
+          render "framework--placeholder", type: "collection", aspect_ratio: 1, placeholder_index: 1
+        endif
+
+      else
+        render "framework--placeholder", type: "collection", aspect_ratio: 1, placeholder_index: 1
+      endif
+    endcapture
+
+  else
+    assign collection_title = 'home.onboarding.collection_title' | t
+    assign num_items = 'home.onboarding.num_items' | t
+    capture collection_image
+      render "framework--placeholder", type: "collection", aspect_ratio: 1, placeholder_index: index
+    endcapture
+
+  endif
+-%}
+
+<div class="collection--item">
+  {% if collection %}
+    <a href="{{ collection.url }}">
+  {% endif %}
+
+  <div class="collection--item-image">
+    {{ collection_image }}
+  </div>
+
+  <div class="collection--item-caption">
+    <div class="collection--item-bg"></div>
+    <div class="collection--item-fg">
+      <h3 data-item="block-heading">
+        {{ collection_title }}
+      </h3>
+      <p data-item="accent-text">
+        {{ num_items }}
+      </p>
+    </div>
+  </div>
+
+  {% if collection %}
+    </a>
+  {% endif %}
+</div>

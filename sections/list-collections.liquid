@@ -1,0 +1,62 @@
+{% comment %} Translations {% endcomment %}
+{% assign title_t = 'collections.page_title' | t %}
+
+<div class="collection-list--root">
+  {% paginate collections by 36 %}
+
+    <header class="collection-list--header">
+      {% if template == 'list-collections' %}
+        <h2 data-item="section-heading">
+          {{ title_t }}
+        </h2>
+      {% else %}
+        <h2 data-item="section-heading">
+          {{ linklists[snippet-collection-listing].title }}
+        </h2>
+      {% endif %}
+    </header>
+
+    <div
+      class="collection-list--container"
+      data-container="panel"
+      data-columns="3"
+      data-mobile-columns="1"
+    >
+      {% if linklists.all-collections.links.size > 0 %}
+        {% assign collection_list = linklists.all-collections.links %}
+        {% for link in collection_list %}
+          {% assign collection = link.object %}
+          {% unless
+            collection.handle == 'all' or
+            collection.handle == 'all-products' or
+            collection.handle == 'frontpage'
+          %}
+          {% endunless %}
+            {% render 'partial--collection-list--item', collection: collection %}
+        {% endfor %}
+
+      {% elsif collections.size > 0 %}
+        {% for collection in collections %}
+          {% unless
+            collection.handle == 'all' or
+            collection.handle == 'all-products' or
+            collection.handle == 'frontpage'
+          %}
+            {% render 'partial--collection-list--item', collection: collection %}
+          {% endunless %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..6) %}
+          {% render 'partial--collection-list--item', index: i %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <footer class="collection-list--pagination">
+        {% render 'framework--pagination', paginate: paginate %}
+      </footer>
+    {% endif %}
+
+  {% endpaginate %}
+</div>

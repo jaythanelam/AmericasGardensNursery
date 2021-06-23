@@ -1,0 +1,238 @@
+{% comment %}
+  # Hero - desktop #
+  - Spacing + slide transition causes overhang
+  - 1-4 per slide
+
+  # Hero - mobile #
+  - 1 per slide (2 could be possible)
+  - No arrow nav
+  - Same overhang as desktop
+  - Option to show descriptions on mobile
+
+  # Product - desktop #
+  - 3-4 per slide
+  - Always overhang
+  - No fade option
+
+  # Product - mobile #
+  - 1-2 per slide
+  - No arrow nav
+{% endcomment %}
+
+{% liquid
+  if onboarding and view == 'product'
+    assign num_placeholder_items = 8
+    assign total_blocks = num_placeholder_items
+    assign total_slides = 2
+  elsif onboarding and view == 'product-page'
+    assign num_placeholder_items = 4
+    assign total_blocks = num_placeholder_items
+    assign total_slides = 4
+  endif
+
+  assign blocks_per_slide_mobile = blocks_per_slide_mobile | plus: 0
+  assign blocks_per_slide_float = blocks_per_slide | append: ".00"
+  assign blocks_per_slide_float_mobile = blocks_per_slide_mobile | append: ".00"
+  assign total_slides = total_blocks | divided_by: blocks_per_slide_float | ceil
+  assign total_slides_mobile = total_blocks | divided_by: blocks_per_slide_float_mobile | ceil
+  assign total_spaces = blocks_per_slide | times: total_slides
+  assign total_spaces_mobile = blocks_per_slide_mobile | times: total_slides_mobile
+  assign unique_handle = 'carousel--' | append: section_id
+
+  assign offset = 0
+  assign offset_mobile = 0
+  assign container_offset = 0
+  assign container_offset_mobile = 0
+
+  if spacing_around_blocks
+    assign offset = 48
+    assign offset_mobile = 32
+    assign container_offset = offset | times: total_slides | times: 2
+    assign container_offset_mobile = offset_mobile | times: total_slides_mobile | times: 2
+  endif
+%}
+
+<style>
+  [data-section-id="{{ section_id }}"] .carousel--x-container {
+    width: calc(100% * {{ total_slides }} - {{ container_offset }}px);
+    left: {{ offset }}px;
+  }
+
+  [data-section-id="{{ section_id }}"] .carousel--block {
+    width: calc(100% / {{ total_spaces }});
+  }
+
+  @media only screen and (max-width: 767px) {
+    [data-section-id="{{ section_id }}"] .carousel--x-container {
+      width: calc(100% * {{ total_slides_mobile }} - {{ container_offset_mobile }}px);
+      left: {{ offset_mobile }}px;
+    }
+
+    [data-section-id="{{ section_id }}"] .carousel--block {
+      width: calc(100% / {{ total_spaces_mobile }});
+    }
+  }
+</style>
+
+<div
+  class="carousel--root"
+  data-js-class="FrameworkCarousel"
+  style="{% render 'framework--background-colors', bg_color: bg_color %}"
+  data-bg-color="{{ bg_color }}"
+  data-view="{{ view }}"
+  data-at-end="false"
+  data-at-start="true"
+  data-auto-rotate="{{ auto_rotate }}"
+  data-blocks-per-slide--mobile="{{ blocks_per_slide_mobile }}"
+  data-blocks-per-slide="{{ blocks_per_slide }}"
+  data-dot-nav="{{ dot_nav_enabled }}"
+  data-rotate-frequency="{{ rotate_frequency }}"
+  data-spacing-above="{{ spacing_above }}"
+  data-spacing-around-blocks="{{ spacing_around_blocks }}"
+  data-spacing-below="{{ spacing_below }}"
+  data-transition-type="{{ transition_type }}"
+>
+  <div class="carousel--viewport">
+    <div class="carousel--arrow-nav">
+      <div class="carousel--prev" tabindex="0">
+        {% render 'framework--css-icons', icon: 'prev' %}
+      </div>
+    </div>
+
+    <div class="carousel--x-container" data-js-class="Transition">
+      <div class="carousel--y-container">
+
+      {% if onboarding and view == 'product' %}
+        {% for i in (1..num_placeholder_items) %}
+          <div
+            class="carousel--block"
+            data-loaded="{{ block_loaded }}"
+            data-loaded--mobile="{{ block_loaded_mobile }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="carousel--block--container">
+              {%
+                render 'framework--product--item',
+                onboarding: true,
+                view: "slider",
+                section_id: section_id
+              %}
+            </div>
+          </div>
+        {% endfor %}
+
+      {% elsif onboarding and view == 'product-page' %}
+        {% for i in (1..num_placeholder_items) %}
+          <div
+            class="carousel--block"
+            data-loaded="{{ block_loaded }}"
+            data-loaded--mobile="{{ block_loaded_mobile }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="carousel--block--container">
+              {% render "framework--placeholder", type: "image" %}
+            </div>
+          </div>
+        {% endfor %}
+
+      {% else %}
+        {% for block in blocks limit: total_blocks %}
+          {% liquid
+            assign block_loaded = false
+            assign block_loaded_mobile = false
+
+            if forloop.index <= blocks_per_slide
+              assign block_loaded = true
+            endif
+
+            if forloop.index <= blocks_per_slide_mobile
+              assign block_loaded_mobile = true
+            endif
+          %}
+
+          <div
+            class="carousel--block"
+            data-loaded="{{ block_loaded }}"
+            data-loaded--mobile="{{ block_loaded_mobile }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="carousel--block--container">
+              {% comment %}
+                forced
+                section
+                block
+              {% endcomment %}
+              {% if view == "featured-content" %}
+                {% render 'framework--featured-content',
+                  parallax_enabled: false,
+                  bg_color: "none",
+                  overlap: false,
+                  container_width: 6,
+                  spacing_above: false,
+                  spacing_below: false,
+
+                  alt_color: alt_color,
+                  box_around_text: box_around_text,
+                  darken_image: darken_image,
+                  image_height: image_height,
+                  mobile_overlay: mobile_overlay,
+
+                  text_width: block.settings.text-width,
+                  text_position: block.settings.text-position,
+                  image: block.settings.image,
+                  overline: block.settings.overline,
+                  title: block.settings.title,
+                  description: block.settings.description,
+                  link_text: block.settings.link-text,
+                  link_url: block.settings.link-url
+                %}
+
+              {% elsif view == "product" %}
+                {%
+                  render 'framework--product--item',
+                  product: block,
+                  view: "slider",
+                  unique_handle: unique_handle,
+                  section_id: section_id
+                %}
+
+              {% elsif view == "product-page" %}
+                {%
+                  render "framework--product--media",
+                  media_view: "featured",
+                  in_slider: true,
+                  product: product,
+                  product_media: block,
+                  video_looping_enabled: video_looping_enabled,
+                  media_size: media_size
+                %}
+
+              {% endif %}
+            </div>
+          </div>
+
+        {% endfor %}
+
+      {% endif %}
+
+      </div>
+    </div>
+
+    <div class="carousel--arrow-nav">
+      <div class="carousel--next" tabindex="0">
+        {% render 'framework--css-icons', icon: 'next' %}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="carousel--dot-nav"></div>
+
+  {% if view == "product-page" %}
+    {%
+      render "framework--product--media",
+      media_view: "media-dependencies",
+      product: product
+    %}
+  {% endif %}
+</div>

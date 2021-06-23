@@ -1,0 +1,134 @@
+{%- liquid
+  assign product_title_t = 'general.social.product_title' | t
+  assign facebook_share_t = 'general.social.facebook.share' | t
+  assign twitter_share_t = 'general.social.twitter.share' | t
+  assign pinterest_share_t = 'general.social.pinterest.share' | t
+
+  assign facebook_url = settings.social--facebook--url | escape
+  assign twitter_url = settings.social--twitter--url | escape
+  assign pinterest_url = settings.social--pinterest--url | escape
+  assign instagram_url = settings.social--instagram--url | escape
+  assign vimeo_url = settings.social--vimeo--url | escape
+  assign youtube_url = settings.social--youtube--url | escape
+  assign tiktok_url = settings.social--tiktok--url | escape
+-%}
+
+{% comment %} View {% endcomment %}
+<div class="social-share--root" data-position="{{ position }}">
+
+  {% if position == 'modal' %}
+    <div class="social-share--items">
+      {% if facebook_url.size > 0 %}
+        <a
+          class="social-media--facebook"
+          href="{{ facebook_url }}"
+          title="Facebook"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'facebook' %}
+        </a>
+      {% endif %}
+
+      {% if instagram_url.size > 0 %}
+        <a
+          class="social-media--instagram"
+          href="{{ instagram_url }}"
+          title="Instagram"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'instagram' %}
+        </a>
+      {% endif %}
+
+      {% if twitter_url.size > 0 %}
+        <a
+          class="social-media--twitter"
+          href="{{ twitter_url }}"
+          title="Twitter"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'twitter' %}
+        </a>
+      {% endif %}
+
+      {% if vimeo_url.size > 0 %}
+        <a
+          class="social-media--vimeo"
+          href="{{ vimeo_url }}"
+          title="Vimeo"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'vimeo' %}
+        </a>
+      {% endif %}
+
+      {% if pinterest_url.size > 0 %}
+        <a
+          class="social-media--pinterest"
+          href="{{ pinterest_url }}"
+          title="Pinterest"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'pinterest' %}
+        </a>
+      {% endif %}
+
+      {% if youtube_url.size > 0 %}
+        <a
+          class="social-media--youtube"
+          href="{{ youtube_url }}"
+          title="Youtube"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'youtube' %}
+        </a>
+      {% endif %}
+
+      {% if tiktok_url.size > 0 %}
+        <a
+          class="social-media--tiktok"
+          href="{{ tiktok_url }}"
+          title="TikTok"
+          target="_blank"
+        >
+          {% render 'framework--icons', icon: 'tiktok' %}
+        </a>
+      {% endif %}
+    </div>
+
+  {% elsif position == 'product' %}
+    {% capture shareurl %}{{ shop.url }}{{ product.url }}{% endcapture %}
+
+    <div class="social-share--title" data-item="accent-text">
+      {{ product_title_t }}
+    </div>
+
+    <div class="social-share--items">
+      <a
+        class="social-share--link"
+        href="//www.facebook.com/sharer.php?u={{ shareurl }}&t={{ product.title }}"
+        aria-label="{{ facebook_share_t }}"
+      >
+        {% render 'framework--icons', icon: 'facebook' %}
+      </a>
+
+      <a
+        class="social-share--link"
+        href="//twitter.com/intent/tweet?text=Check%20out%20this%20{% if request.page_type == 'article' or request.page_type == 'blog' %}blog%20post{% elsif request.page_type == 'product' %}product{% endif %}:+{{ shareurl }}"
+        aria-label="{{ twitter_share_t }}"
+      >
+        {% render 'framework--icons', icon: 'twitter' %}
+      </a>
+
+      <a
+        class="social-share--link"
+        href="//pinterest.com/pin/create/button/?url={{ shareurl }}&media={{ product.featured_media | img_url: '1024x1024' }}&description={{ product.title | strip_html | escape | replace: ' ', '%20' }}" count-layout="none"
+        aria-label="{{ pinterest_share_t }}"
+      >
+        {% render 'framework--icons', icon: 'pinterest' %}
+      </a>
+    </div>
+
+  {% endif %}
+
+</div>

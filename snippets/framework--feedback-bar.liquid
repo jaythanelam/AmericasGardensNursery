@@ -1,0 +1,24 @@
+{%- liquid
+  assign success_feedback_t = 'contact_page.success_feedback' | t
+  assign success_t = 'home.newsletter.success' | t
+  assign product_form_t = 'products.sold_out.form_notification' | t
+-%}
+
+<div
+  class="feedback-bar--root"
+  data-js-class="FrameworkFeedbackBar"
+  data-open="false"
+  data-critical-css="false"
+>
+  <div class="feedback-bar--message">
+    <span data-item="accent-text" data-message="contact-modal">
+     {{ success_feedback_t }}
+    </span>
+    <span data-item="accent-text" data-message="newsletter">
+      {{ success_t }}
+    </span>
+    <span data-item="accent-text" data-message="product-form">
+      {{ product_form_t }}
+    </span>
+  </div>
+</div>

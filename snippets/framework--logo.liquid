@@ -1,0 +1,37 @@
+{%- liquid
+  assign logo_type = 'text'
+  if logo or inverted_logo
+    assign logo_type = 'image'
+    assign image_size = '600x200'
+  endif
+-%}
+
+<div
+  class="fw--logo {% if logo_type == 'image' %}height-{{ height_range }}{% endif %} type--{{ logo_type }}"
+>
+  <div class="item" itemscope itemtype="https://schema.org/Organization">
+
+    {% if logo_type == 'image' %}
+      <a href="{{ routes.root_url }}" title="{{ routes.root_url }}" itemprop="url">
+        {% if image_type == 'inverted' %}
+          <img
+            src="{{ inverted_logo | img_url: image_size }}"
+            alt="{{ inverted_logo.alt | default: shop.name }}"
+            itemprop="logo"
+          >
+        {% else %}
+          <img
+            src="{{ logo | img_url: image_size }}"
+            alt="{{ logo.alt | default: shop.name }}"
+            itemprop="logo"
+          >
+        {% endif %}
+      </a>
+    {% else %}
+      <a href="{{ routes.root_url }}" title="{{ routes.root_url }}">
+        <div class="logo--text" data-item="section-heading">{{ shop.name }}</div>
+      </a>
+    {% endif %}
+
+  </div>
+</div>

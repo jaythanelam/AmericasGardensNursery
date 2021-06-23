@@ -1,1 +1,106 @@
-{% section 'page-template' %}
+{%- liquid
+  assign contact_us_t = 'layout.header.contact_us' | t
+  assign contact_name_t = 'contact_page.name' | t
+  assign contact_email_t = 'contact_page.email' | t
+  assign contact_message_t = 'contact_page.message' | t
+  assign contact_button_t = 'contact_page.button' | t
+  assign shopify_disclaimer_t = 'shopify.online_store.spam_detection.disclaimer_html' | t
+  assign follow_t = 'layout.header.follow' | t
+
+  assign facebook_url = settings.social--facebook--url
+  assign twitter_url = settings.social--twitter--url
+  assign pinterest_url = settings.social--pinterest--url
+  assign instagram_url = settings.social--instagram--url
+  assign vimeo_url = settings.social--vimeo--url
+  assign youtube_url = settings.social--youtube--url
+
+  if facebook_url.size > 0 or twitter_url.size > 0 or pinterest_url.size > 0 or instagram_url.size > 0 or vimeo_url.size > 0 or youtube_url.size > 0
+    assign show_social = true
+  endif
+-%}
+
+<div class="contact-page--root">
+  <div class="contact-page--wrapper">
+    <div class="contact-page--header">
+      <h1 data-item="section-heading">
+        {{ page.title }}
+      </h1>
+    </div>
+
+    {% if page.content != blank %}
+      <div class="contact-page--left-column" data-item="rte-content">
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+    <div class="contact-page--right-column">
+      <div class="contact-page--form">
+
+        <div class="contact-page--form-error"></div>
+
+        <h3 class="contact-page--form-title">{{ contact_us_t }}</h3>
+
+        {% form 'contact', id: 'contact_form_page' %}
+
+          <p>
+            <input
+              class="{% if form.errors contains 'name' %}error{% endif %}"
+              type="text"
+              name="contact[name]"
+              value="{{ contact.fields.name }}"
+              aria-label="{{ contact_name_t }}"
+              placeholder="{{ contact_name_t }}"
+            />
+          </p>
+          <p>
+            <input
+              class="{% if form.errors contains 'email' %}error{% endif %}"
+              type="email"
+              name="contact[email]"
+              value="{{ contact.fields.email }}"
+              aria-label="{{ contact_email_t }}"
+              placeholder="{{ contact_email_t }}"
+              required
+            />
+          </p>
+          <p>
+            <textarea
+              class="{% if form.errors contains 'body' %}error{% endif %}"
+              rows="10"
+              cols="60"
+              name="contact[body]"
+              aria-label="{{ contact_message_t }}"
+              placeholder="{{ contact_message_t }}"
+              required
+            >{{ contact.fields.body }}</textarea>
+          </p>
+          <p>
+            <input
+              class="button styled-submit"
+              type="submit"
+              value="{{ contact_button_t }}"
+            />
+          </p>
+
+          {% if form.posted_successfully? or form.errors %}
+            <script>window.location.hash = '#feedback-bar--contact-modal';</script>
+          {% endif %}
+
+          <div data-item="hidden-text">
+            {% comment %} remove the below line to display reCAPTCHA badge {% endcomment %}
+            {{ shopify_disclaimer_t }}
+          </div>
+        {% endform %}
+      </div>
+
+      {% if show_social %}
+        <div class="contact-page--social">
+          <h3 class="contact-page--social-title" data-item="accent-text">
+            {{ follow_t }}
+          </h3>
+          {% render 'partial--social-share', position: 'modal' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

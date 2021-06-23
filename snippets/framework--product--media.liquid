@@ -1,0 +1,240 @@
+{%- liquid
+  assign products_view_ar_t = 'products.view_ar' | t
+
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+
+  if max_height == 'none'
+    assign max_height = false
+  else
+    assign max_height = 600
+  endif
+
+  unless media_size
+    assign media_size = ''
+  endunless
+
+  unless image_zoom_enabled
+    assign image_zoom_enabled = false
+  endunless
+-%}
+
+
+{% unless media_view == 'media-dependencies' %}
+  <div
+    class="product-media--root"
+    data-view="{{ media_view }}"
+    {% if media_view == 'featured' and media_size != 'mobile' %}
+      data-magnify="1.7"
+      data-zoom-enabled="{{ image_zoom_enabled }}"
+    {% endif %}
+    {% if media_size != blank %}
+      data-media-size="{{ media_size }}"
+    {% endif %}
+  >
+{% endunless %}
+
+{% case media_view %}
+
+  {% when 'thumbs' %}
+
+    <div class="product-media--thumbs">
+      {% for media in product.media %}
+        {% assign active_media = false %}
+
+        {% if media == featured_media %}
+          {% assign active_media = true %}
+        {% endif %}
+
+        <div class="product-media--thumb-container">
+          <div
+            class="product-media--thumb"
+            data-active="{{ active_media }}"
+            data-id="{{ media.id }}"
+            tabindex="0"
+          >
+            {%
+              render 'framework--image',
+              image: media.preview_image,
+              widths: '90, 180'
+            %}
+          </div>
+
+          {% if media.media_type == "model" %}
+            {% render 'framework--icons', icon: '3d-badge' %}
+          {% elsif media.media_type == "video" or media.media_type == "external_video" %}
+            {% render 'framework--icons', icon: 'play-badge' %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+  {% when 'featured' %}
+
+    {% if product_media.id == featured_media.id %}
+      {% assign media_active = true %}
+    {% else %}
+      {% assign media_active = false %}
+    {% endif %}
+
+    <div
+      class="product-media--featured"
+      data-id="{{ product_media.id }}"
+      {% unless in_slider %}
+        data-active="{{ media_active }}"
+      {% endunless %}
+      data-media-type="{{ product_media.media_type }}"
+      data-zoom-enabled="{{ image_zoom_enabled }}"
+    >
+      {% case product_media.media_type %}
+        {% when "image" %}
+          {%
+            render 'framework--image',
+            image: product_media,
+            max_height: max_height
+          %}
+
+        {% when "video" %}
+          <div
+            class="product-video--root"
+            tabindex="0"
+            data-js-class="ProductVideo"
+            data-loop-enabled="{{ video_looping_enabled }}"
+            data-type="plyr"
+            {% if media_size != blank %}
+              data-view="{{ media_size }}"
+            {% endif %}
+          >
+            <div
+              class="product-video--container"
+              style="padding-top: {{ 1 | divided_by: product_media.aspect_ratio | times: 100 }}%;"
+            >
+              {{ product_media | video_tag: image_size: "1024x" }}
+            </div>
+          </div>
+
+        {% when "external_video" %}
+          <div
+            class="product-video--root"
+            tabindex="0"
+            data-js-class="ProductVideo"
+            data-loop-enabled="{{ video_looping_enabled }}"
+            data-type="youtube"
+            data-video-id="{{ product_media.external_id }}"
+            {% if media_size != blank %}
+              data-view="{{ media_size }}"
+            {% endif %}
+          >
+            <div
+              class="product-video--container"
+              style="padding-top: {{ 1 | divided_by: product_media.aspect_ratio | times: 100 }}%;"
+            >
+              <div
+                class="product-video"
+                id="{{ media_size }}{% if media_size != blank %}-{% endif %}{{ product_media.id }}"
+              >
+              </div>
+            </div>
+          </div>
+
+        {% when "model" %}
+          <div
+            class="product-model--root"
+            tabindex="0"
+            data-js-class="ProductModel"
+            style="padding-top:
+              {{- 1 | divided_by: product_media.preview_image.aspect_ratio | times: 100 -}}%;"
+            {% if media_size != blank %}
+              data-view="{{ media_size }}"
+            {% endif %}
+          >
+            {{
+              product_media | model_viewer_tag: reveal: 'interaction',
+              toggleable: true,
+              image_size: "1024x"
+            }}
+          </div>
+
+        {% else %}
+          {{ product_media | media_tag }}
+
+      {% endcase %}
+
+    </div>
+
+    {% if image_zoom_enabled and product_media.media_type == 'image' %}
+      <div class="product-media--zoom-image" data-id="{{ product_media.id }}">
+        {% render "framework--image", image: product_media %}
+      </div>
+    {% endif %}
+
+  {% when 'media-dependencies' %}
+
+    {% assign model_exists = false %}
+    {% assign youtube_exists = false %}
+
+    {% for media in product.media %}
+      {% if media.media_type == "model" %}
+        {% assign model_exists = true %}
+      {% endif %}
+
+      {% if media.media_type == "external_video" %}
+        {% assign youtube_exists = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if model_exists %}
+      {% assign product_models = product.media | where: "media_type", "model" %}
+
+      <a
+        class="product-media--ar-button"
+        role="button"
+        data-item="button"
+        aria-label="{{ products_view_ar_t }}"
+      >
+        {% for model in product_models %}
+          <div
+            data-shopify-xr
+            data-shopify-model3d-id="{{ model.id }}"
+            data-shopify-title="{{ product.title }}"
+            {% if featured_media == model %}
+              data-active="true"
+            {% else %}
+              data-active="false"
+            {% endif %}
+          >
+            {% render 'framework--icons', icon: '3d-badge' %}
+            {{ products_view_ar_t }}
+          </div>
+        {% endfor %}
+      </a>
+
+      <script>
+        window.ShopifyXR = window.ShopifyXR || function() {
+          (ShopifyXR.q = ShopifyXR.q || []).push(arguments)
+        }
+
+        {% assign models = product.media | where: 'media_type', 'model' | json %}
+
+        ShopifyXR('addModels', {{ models }});
+      </script>
+
+    {% endif %}
+
+    {% if youtube_exists %}
+      <script>
+        // YouTube callback
+        if (typeof onYouTubeIframeAPIReady != 'function') {
+          function onYouTubeIframeAPIReady() {
+            const yt_ready_event = new Event('theme:utils:youtubeAPIReady');
+            window.dispatchEvent(yt_ready_event);
+          }
+        }
+      </script>
+    {% endif %}
+
+{% endcase %}
+
+{% unless media_view == 'media-dependencies' %}
+  </div>
+{% endunless %}

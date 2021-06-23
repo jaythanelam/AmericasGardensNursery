@@ -1,0 +1,404 @@
+{%- liquid
+  assign alt_color = false
+  assign apply_overlay = false
+  assign bg_color = section.settings.background-color
+  assign container_width = section.settings.container-width
+  assign full_width = section.settings.full-width
+  assign hover_enabled = false
+  assign link_text = section.settings.link-text
+  assign link_url = section.settings.link-url
+  assign mobile_width = section.settings.mobile-width
+  assign spacing = section.settings.spacing
+  assign subtitle = section.settings.subtitle
+  assign text_style = section.settings.text-style
+  assign heading = section.settings.heading
+  assign width = section.settings.width
+  assign block_heading_font = 'block-heading'
+  assign mobile_overlay = section.settings.mobile-overlay
+
+  case text_style
+    when 'light'
+      assign alt_color = true
+
+    when 'light-with-overlay'
+      assign alt_color = true
+      assign apply_overlay = true
+
+    when 'box'
+      assign show_text_background = true
+      assign block_heading_font = 'paragraph'
+
+    when 'hover'
+      assign hover_enabled = true
+      assign mobile_overlay = false
+
+  endcase
+
+  assign header_text_exists = true
+  if heading == blank and subtitle == blank
+    assign header_text_exists = false
+  endif
+
+  assign footer_text_exists = true
+  if link_text == blank
+    assign footer_text_exists = false
+  endif
+
+  assign dark_background = false
+  if bg_color == 'dark'
+    assign dark_background = true
+  endif
+-%}
+
+<div
+  class="featured-grid--root"
+  style="{% render 'framework--background-colors', bg_color: bg_color %}"
+  data-section-id="{{ section.id }}"
+  data-js-class="FrameworkFeaturedGrid"
+  data-alternative-color="{{ alt_color }}"
+  data-apply-overlay="{{ apply_overlay }}"
+  data-container-width="{{ container_width }}"
+  data-container="section"
+  data-dark-background="{{ dark_background }}"
+  data-text-style="{{ text_style }}"
+  data-footer-text-exists="{{ footer_text_exists }}"
+  data-full-width="{{ full_width }}"
+  data-header-text-exists="{{ header_text_exists }}"
+  data-hover-enabled="{{ hover_enabled }}"
+  data-show-text-background="{{ show_text_background }}"
+  data-spacing="{{ spacing }}"
+  data-text-position="center"
+  data-mobile-overlay="{{ mobile_overlay }}"
+>
+
+  {% if header_text_exists %}
+    <div class="featured-grid--header" data-container="panel">
+      <div class="featured-grid--header--container" data-container="block">
+        {% if heading != blank %}
+          <h2 class="featured-grid--heading" data-item="section-heading">
+            {{ heading | escape }}
+          </h2>
+        {% endif %}
+
+        {% if subtitle != blank %}
+          <h3 class="featured-grid--subtitle" data-item="paragraph">
+            {{ subtitle | escape }}
+          </h3>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="featured-grid--body">
+    <div
+      class="featured-grid--body--container"
+      data-container="panel"
+      data-columns="{{ width }}"
+      data-mobile-columns="{{ mobile_width }}"
+      data-block-spacing="{{ spacing }}"
+    >
+      {% for block in section.blocks %}
+        {%- liquid
+          assign link = block.settings.link-url
+          assign wide = block.settings.wide
+          assign tall = block.settings.tall
+
+          assign aspect_ratio = 1.0
+          assign shape = 'square'
+          assign extra_padding = '+ 0px'
+
+          if wide and tall == false
+            assign aspect_ratio = 2.0
+            assign shape = 'wide'
+
+            if spacing
+              assign extra_padding = '- 16px'
+            endif
+
+          elsif wide == false and tall
+            assign aspect_ratio = 0.5
+            assign shape = 'tall'
+
+            if spacing
+              assign extra_padding = '+ 32px'
+            endif
+          endif
+        -%}
+
+        <div
+          class="featured-grid--item"
+          data-container="block"
+          data-wide="{{ wide }}"
+          data-tall="{{ tall }}"
+          data-shape="{{ shape }}"
+          data-retain-ratio="{{ block.settings.retain-ratio }}"
+          {{ block.shopify_attributes }}
+        >
+          {% if link != blank %}
+            <a
+              class="featured-grid--item--link-wrapper"
+              href="{{ link }}"
+              aria-label="
+                {%- if block.settings.heading != blank -%}
+                  {{- block.settings.heading -}}
+                {%- else -%}
+                  {{- heading -}}
+                {%- endif -%}"
+            >
+          {% endif %}
+
+          <div class="featured-grid--item--container">
+            <div class="featured-grid--item--image" data-item="image">
+              {% if block.settings.image %}
+                {%
+                  render "framework--image",
+                  image: block.settings.image,
+                  full_width: true
+                %}
+              {% else %}
+                {%
+                  render "framework--placeholder",
+                  type: "image",
+                  aspect_ratio: aspect_ratio,
+                  extra_padding: extra_padding
+                %}
+              {% endif %}
+            </div>
+
+            {% if
+              block.settings.heading != blank or
+              block.settings.link-text != blank
+            %}
+              <div class="featured-grid--item--overlay-background"></div>
+
+              {% unless block.settings.heading == blank and block.settings.link-text == blank %}
+                <div class="featured-grid--item--text-container">
+                  <div class="featured-grid--item--text-background">
+                    {% if block.settings.heading != blank %}
+                      <h3 class="featured-grid--item--heading" data-item="{{ block_heading_font }}">
+                        {{ block.settings.heading | newline_to_br }}
+                      </h3>
+                    {% endif %}
+
+                    {% if block.settings.link-text != blank %}
+                      <div class="featured-grid--item--link" data-item="block-link">
+                        <div class="featured-grid--item--link-container">
+                          {{ block.settings.link-text }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endunless %}
+            {% endif %}
+
+          </div>
+
+          {% if link != blank %}
+            </a>
+          {% endif %}
+        </div>
+
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if footer_text_exists %}
+    <div class="featured-grid--footer" data-container="panel">
+      <div class="featured-grid--footer--block" data-container="block">
+        <a
+          class="featured-grid--footer--button"
+          data-item="button"
+          href="{{ link_url }}"
+        >
+          <div class="featured-grid--footer--button-container">
+            {{ link_text }}
+          </div>
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Grid with overlay",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout and Color"
+    },
+    {
+      "label": "Text style",
+      "id": "text-style",
+      "type": "select",
+      "options": [
+        { "label": "Light", "value": "light" },
+        { "label": "Light, darken image", "value": "light-with-overlay" },
+        { "label": "Box around text", "value": "box" },
+        { "label": "Show on hover", "value": "hover" }
+      ],
+      "default": "light-with-overlay",
+      "info": "Darkening the image can enhance text visibility"
+    },
+    {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Accent", "value": "accent" }
+      ],
+      "default": "none"
+    },
+    {
+      "id": "spacing",
+      "label": "Show spacing between blocks",
+      "type": "checkbox",
+      "default": true
+    },
+    {
+      "id": "mobile-overlay",
+      "label": "Overlay text on small devices",
+      "type": "checkbox",
+      "default": true,
+      "info": "Not applicable for Show on hover text style."
+    },
+    {
+      "id": "container-width",
+      "label": "Width of container",
+      "type": "range",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "id": "width",
+      "label": "Blocks per row",
+      "type": "range",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "id": "mobile-width",
+      "label": "Blocks per row for small devices",
+      "type": "radio",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "text",
+      "default": "Grid with overlay"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "url",
+      "id": "link-url",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "link-text",
+      "label": "Link text"
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image with optional text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "id": "wide",
+          "label": "Wide",
+          "type": "checkbox",
+          "default": false,
+          "info": "Take up the width of two blocks"
+        },
+        {
+          "id": "tall",
+          "label": "Tall",
+          "type": "checkbox",
+          "default": false,
+          "info": "Take up the height of two blocks"
+        },
+        {
+          "id": "retain-ratio",
+          "label": "Preserve image aspect ratio",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "id": "heading",
+          "label": "Heading",
+          "type": "textarea",
+          "default": "Grid image heading"
+        },
+        {
+          "type": "url",
+          "id": "link-url",
+          "label": "Link"
+        },
+        {
+          "id": "link-text",
+          "label": "Link text",
+          "type": "text",
+          "default": "View more"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Grid with overlay",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "wide": true,
+            "tall": true
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "wide": true,
+            "tall": false
+          }
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,1 +1,10 @@
-{% section 'collection-template' %}
+<div class="collection--root" data-js-class="Collection">
+  {%- liquid
+    section 'framework--collection--header'
+    section 'framework--collection--header-promotion'
+    section 'framework--collection--navigation'
+    section 'framework--collection--body'
+    section 'framework--recent-products'
+    section 'framework--collection--footer-promotion'
+  -%}
+</div>

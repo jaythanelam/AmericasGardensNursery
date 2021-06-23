@@ -1,0 +1,16 @@
+{% assign follow_types = "facebook twitter instagram pinterest vimeo youtube tiktok" | split: ' ' %}
+{% for type in follow_types %}
+  {% capture follow_url %}social--{{ type }}--url{% endcapture %}
+  {% if settings[follow_url].size > 0 %}
+    <a
+      rel="noreferrer"
+      target="_blank"
+      href="{{ settings[follow_url] | escape }}"
+      role="img"
+      aria-label="{{ type }}"
+    >
+      {% render 'framework--icons', icon: type %}
+    </a>
+  {% endif %}
+{% endfor %}
+

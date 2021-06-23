@@ -1,0 +1,31 @@
+{% comment %} utilities {% endcomment %}
+
+{% case utility %}
+
+	{% comment %} 'timesince' requires passing 'created_at' {% endcomment %}
+	{% when 'timesince' %}
+
+		{% comment %} Variables {% endcomment %}
+		{% assign now_timestamp = 'now' | date: '%s' %}
+		{% assign date_start = created_at | date: '%s' %}
+		{% assign diff_seconds = now_timestamp | minus: date_start %}
+
+		{% if diff_seconds > 1382400 %}
+			{{ created_at | time_tag: format: 'date' }}
+		{% elsif diff_seconds > 86400 %}
+			{% assign diff_days = diff_seconds | divided_by: 86400 | round %}
+			{{ 'blog.article.time_since_posted.days' | t: count: diff_days }}
+		{% elsif diff_seconds > 3600 %}
+			{% assign diff_hours = diff_seconds | divided_by: 3600 | round %}
+			{{ 'blog.article.time_since_posted.hours' | t: count: diff_hours }}
+		{% elsif diff_seconds < 60 %}
+			{{ 'blog.article.time_since_posted.minutes' | t: count: 1 }}
+		{% else %}
+			{% assign diff_minutes = diff_seconds | divided_by: 60 | round %}
+			{{ 'blog.article.time_since_posted.minutes' | t: count: diff_minutes }}
+		{% endif %}
+
+	{% comment %} uncomment for next utility {% endcomment %}
+	{% comment %} {% when 'next_utility' %} {% endcomment %}
+
+{% endcase %}

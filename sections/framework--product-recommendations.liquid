@@ -1,0 +1,68 @@
+{%- liquid
+  assign similar_products_heading = section.settings.product-similar-products-heading
+  assign show_section = section.settings.product-similar-products-show
+  assign max_products = 4
+-%}
+
+{% if show_section %}
+  <div
+    class="product-recommendations--root"
+    data-product-id="{{ product.id }}"
+    data-max-products="{{ max_products }}"
+    data-js-class="ProductRecommendations"
+  >
+    {% if recommendations.products_count > 0 %}
+      <div
+        class="product-recommendations--container"
+        data-container="section"
+      >
+        {% if similar_products_heading != blank %}
+          <div class="product-recommendations--header" data-container="block">
+            <h2 class="product-recommendations--title" data-item="section-heading">
+              {{ similar_products_heading }}
+            </h2>
+          </div>
+        {% endif %}
+
+        <div
+          class="product-recommendations--body"
+          data-container="panel"
+          data-columns="4"
+          data-mobile-columns="2"
+        >
+          {% for product in recommendations.products limit: max_products %}
+            {%
+              render 'framework--product--item',
+              product: product,
+              unique_handle: 'recommendation',
+              section_id: section.id
+            %}
+          {% endfor %}
+        </div>
+
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "class": "section--product-recommendations",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "product-similar-products-show",
+      "label": "Show",
+      "default": true,
+      "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)"
+    },
+    {
+      "type": "text",
+      "id": "product-similar-products-heading",
+      "label": "Heading",
+      "default": "You may also like"
+    }
+  ]
+}
+{% endschema %}

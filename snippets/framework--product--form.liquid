@@ -1,0 +1,408 @@
+{%- liquid
+  assign add_to_cart_t = 'products.add_to_cart' | t
+  assign color_t = 'products.color' | t
+  assign out_of_stock_t = 'products.out_of_stock' | t
+  assign quantity_t = 'products.quantity' | t
+  assign signed_up_t = 'products.sold_out.signed_up' | t
+  assign sold_out_email_t = 'products.sold_out.email_description' | t
+  assign sold_out_email_ph_t = 'products.sold_out.email_placeholder' | t
+  assign sold_out_button_t = 'products.sold_out.button' | t
+  capture size_chart_path
+    echo '<code>'
+    echo 'products.size_chart_path' | t
+    echo '</code>'
+  endcapture
+  assign tax_included_t = 'products.tax_included' | t
+  assign unavailable_t = 'products.unavailable' | t
+
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign compare_enabled = false
+  if current_variant.compare_at_price > current_variant.price
+    assign compare_enabled = true
+  endif
+
+  unless section_id
+    assign form_id = 'product-form--' | append: product.id
+  else
+    assign form_id = 'product-form--' | append: section_id | append: '-' | append: product.id
+  endunless
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  unless callback_enabled
+    assign callback_enabled = false
+  endunless
+
+  unless pickup_enabled
+    assign pickup_enabled = false
+  endunless
+
+  unless unique_handle
+    assign unique_id = product.id
+  else
+    assign unique_id = unique_handle | append: '-' | append: product.id
+  endunless
+-%}
+
+<div
+  class="product-form--root"
+  data-callback-enabled="{{ callback_enabled }}"
+  data-handle="{{ product.handle }}"
+  data-is-only-variant="{{ product.has_only_default_variant }}"
+  data-pickup-enabled="{{ pickup_enabled }}"
+  data-size-chart-enabled="{{ size_chart_enabled }}"
+  data-size-chart-option="{{ size_chart_option }}"
+  data-sold-out="{{ sold_out }}"
+  data-title="{{ product.title }}"
+  {% if low_stock_amount > 0 %}
+    data-low-stock-amount="{{ low_stock_amount }}"
+  {% endif %}
+>
+  <div
+    class="modal--root"
+    data-js-class="FrameworkModal"
+    data-modal-view="product-form"
+  >
+
+    {% form 'product', product, class: 'product-form--container', id: form_id %}
+      <div class="product-form--price-container">
+
+        <div class="product-form--price-wrapper">
+          <div class="product-form--price" data-item='accent-text'>
+            {{ current_variant.price | money }}
+          </div>
+
+          <div
+            class="product-form--compare-price"
+            data-item='light-accent-text'
+            {% unless compare_enabled %}
+              style="display:none;"
+            {% else %}
+              style="display:inline-block;"
+            {% endunless %}
+          >
+            {% if compare_enabled %}
+              {{ current_variant.compare_at_price | money }}
+            {% endif %}
+          </div>
+        </div>
+
+        <div
+          class="product-form--unit-price-container"
+          data-item="small-text"
+          {% if current_variant.unit_price_measurement %}
+            style="display:flex;"
+          {% else %}
+            style="display:none;"
+          {% endif %}
+        >
+          <span class="product-form--unit-price">
+            {{- current_variant.unit_price | money -}}
+          </span>/
+          {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+            <span class="product-form--reference-value">
+              {{- current_variant.unit_price_measurement.reference_value -}}
+            </span>
+          {%- endif -%}
+          <span class="product-form--reference-unit">
+            {{- current_variant.unit_price_measurement.reference_unit -}}
+          </span>
+        </div>
+
+        {% if cart.taxes_included %}
+          <div class="product--tax-included" data-item="small-text">
+            {{ tax_included_t }}
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="product-form--installments">
+        {{- form | payment_terms -}}
+      </div>
+
+      <div class="product-form--variants">
+        {% unless product.has_only_default_variant %}
+
+          {% for option in product.options_with_values %}
+            {% assign option_name = option.name | strip | downcase %}
+
+            {% if swatches_enabled and option_name == color_t %}
+              {%
+                render 'framework--radios',
+                option: option,
+                id: unique_id,
+                is_swatches: true
+              %}
+            {% elsif variant_style == 'dropdowns' %}
+              {%
+                render 'framework--disclosure',
+                display_label: true
+                label_name: option_name,
+                option_names: option.values,
+                current_value: option.selected_value,
+                id: unique_id
+              %}
+            {% else %}
+              {%
+                render 'framework--radios',
+                option: option,
+                id: unique_id
+              %}
+            {% endif %}
+
+          {% endfor %}
+
+        {% endunless %}
+
+        <select class="product-form--variant-select" name="id">
+          {% for variant in product.variants %}
+            <option
+              value="{{ variant.id }}"
+              data-sku="{{ variant.sku }}"
+              data-inventory="{{ variant.inventory_management }}"
+              data-available="{{ variant.available }}"
+              {% if
+                variant.inventory_management == "shopify" and
+                variant.inventory_policy == "deny"
+              %}
+                data-inventory-quantity="{{ variant.inventory_quantity }}"
+              {% endif %}
+              {% if variant == current_variant %}
+                selected
+              {% endif %}
+            >
+              {{ variant.title }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <input type="hidden" name="quantity" value="1">
+        {% comment %}
+          NOTE: to add quantity field, remove input above this line and uncomment block below
+        {% endcomment %}
+
+        {% comment %}
+          <div class="product-form--quantity">
+            <label for="product-quantity">{{ quantity_t }}</label>
+            <input
+              id="quantity"
+              type="number"
+              name="quantity"
+              min="1"
+              value="1"
+              style="width: 64px"
+            />
+          </div>
+        {% endcomment %}
+      </div>
+
+      <noscript>
+        <select class="product-form--variant-select--noscript" name="id">
+          {% for variant in product.variants %}
+            <option
+              value="{{ variant.id }}"
+              data-sku="{{ variant.sku }}"
+              {% if variant == current_variant %}
+                selected
+              {% elsif variant.available == false %}
+                disabled
+              {% endif %}
+            >
+              {{ variant.title }}{% if variant.available == false %} ({{ out_of_stock_t }}){% endif %}
+            </option>
+          {% endfor %}
+        </select>
+
+        <style>
+          .product-form--variants {
+            display: none;
+          }
+        </style>
+      </noscript>
+
+      {% comment %} insert selling plan snippets here for subscription support {% endcomment %}
+
+      {% if low_stock_amount > 0 and sold_out == false %}
+        <div class='product-form--low-stock' data-item='paragraph'></div>
+      {% endif %}
+
+      <div class="product-form--button-container"
+        data-enabled="true"
+        {% if smart_payment_enabled and product.selling_plan_groups == empty %}
+          data-item='secondary-button'
+        {% else %}
+          data-item='button'
+        {% endif %}
+      >
+        <button
+          class="product-form--add-to-cart"
+          {%- unless current_variant.available -%}
+            disabled
+          {%- endunless -%}
+        >
+          <span class="product-form--text">
+            {%- if current_variant.available -%}
+              {{ add_to_cart_t }}
+            {%- else -%}
+              {{ out_of_stock_t }}
+            {%- endif -%}
+          </span>
+          <span class="product-form--spinner">
+            {% if smart_payment_enabled %}
+              {% render 'framework--loading-spinner', size: '41px' %}
+            {% else %}
+              {% render 'framework--loading-spinner', size: '41px' %}
+            {% endif %}
+          </span>
+        </button>
+      </div>
+
+      {% if smart_payment_enabled and sold_out == false and product.selling_plan_groups == empty %}
+        <div
+          class="product-form--smart-payment-buttons"
+          {%- unless current_variant.available -%}
+            style="display:none;"
+          {%- endunless -%}
+        >
+          {{- form | payment_button -}}
+        </div>
+      {% endif %}
+
+    {% endform %}
+
+    {% if show_unavailable_form %}
+      <div
+        class="product-form--unavailable"
+        {% if current_variant.available %}
+          style="display:none;"
+        {% endif %}
+      >
+        {% form 'contact', id: 'contact_unavailable' %}
+
+          {% if form.posted_successfully? or form.errors %}
+            <script>window.location.hash = '#feedback-bar--product-form';</script>
+          {% endif %}
+
+          <div class="product-form--notify">
+            {% unless form.posted_successfully? %}
+              <label for="contact_unavailable_email" data-item='hidden-text'>
+                {{ sold_out_email_ph_t }}
+              </label>
+              <input
+                class="{% if form.errors contains 'email' %}error{% endif %}"
+                type="email"
+                name="contact[email]"
+                placeholder="{{ sold_out_email_ph_t }}"
+                value="{{ customer.email }}"
+                id="contact_unavailable_email"
+                required
+              >
+              <input
+                class="email-body"
+                type="hidden"
+                name="contact[body]"
+                value="{{ sold_out_email_t }}: {{ product.title | escape }}"
+              >
+              <div data-item="button">
+                <button>{{ sold_out_button_t }}</button>
+              </div>
+
+            {% else%}
+              <p class="product-form--signed-up" data-item="small-text">
+                {{ signed_up_t }}
+              </p>
+
+            {% endunless %}
+          </div>
+
+          <div data-item="hidden-text">
+            {% comment %} remove the below line to display reCAPTCHA badge {% endcomment %}
+            {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
+          </div>
+        {% endform %}
+      </div>
+    {% endif %}
+
+    {% if pickup_enabled %}
+      <div class="product-form--pickup"></div>
+      <div class="product-form--pickup--spinner" style="display:none;">
+        {% render 'framework--loading-spinner' %}
+      </div>
+    {% endif %}
+
+    {% if size_chart_enabled %}
+      {%- liquid
+        if size_chart_content == blank
+          assign page_content = 'products.empty_page_content_html' | t: size_chart_path: size_chart_path
+        else
+          assign page_content = pages[size_chart_content].content
+        endif
+
+        assign has_size = false
+        for option in product.options
+          assign downcased_option = option | downcase
+          if has_size == false and size_chart_option contains downcased_option
+            assign has_size = true
+          endif
+        endfor
+      -%}
+
+      {% if has_size %}
+        <div class="modal--content">
+          <div class="product-form--modal" data-item="rte-content">
+            {{ page_content }}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+
+</div>
+
+<div class="product-form--schemas" style="display:none;">
+  <span itemprop="name" content="{{ product.title }}"></span>
+  <span
+    itemprop="description"
+    content="{{ product.description | strip_html | truncate: 100 }}"
+  ></span>
+  <span
+    itemprop="image"
+    content="{{ product.media | first | img_url }}"
+  ></span>
+  <div
+    class="product-form--offers"
+    itemprop="offers"
+    itemscope
+    itemtype="https://schema.org/Offer"
+  >
+    <span
+      itemprop="availability"
+      {% if product.available %}
+        content="https://schema.org/InStock"
+      {% else %}
+        content="https://schema.org/SoldOut"
+      {% endif %}
+    ></span>
+    <span itemprop="url" content="{{ product.url }}"></span>
+    <span itemprop="priceCurrency" content="{{ cart.currency.iso_code }}"></span>
+    <span
+      itemprop="price"
+      content="{{ current_variant.price | money_without_currency }}"
+    ></span>
+  </div>
+</div>
+
+{% if callback_enabled and product.has_only_default_variant == false %}
+  <script>
+    var selectCallback = function(variant) {
+      theme.partials.Product.variantSelected(variant);
+      // add your selectCallback code here...
+    };
+  </script>
+{% endif %}

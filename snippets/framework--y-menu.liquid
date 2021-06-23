@@ -1,0 +1,146 @@
+{%- liquid
+  unless js_class
+    assign js_class = 'FrameworkYMenu'
+  endunless
+
+  unless overlap_parent
+    assign overlap_parent = 0
+  endunless
+
+  unless handle
+    assign handle = 'main-menu'
+  endunless
+-%}
+
+<nav class="y-menu" data-js-class="{{ js_class }}">
+  <ul class="y-menu--level-1--container">
+
+    {% comment %} Level 1 {% endcomment %}
+    {% assign list_lvl_1 = handle %}
+    {% for link in linklists[list_lvl_1].links %}
+
+      <li
+        class="y-menu--level-1--link"
+        data-item="nav-text"
+        data-y-menu--depth="{{ link.levels | plus: 1 }}"
+        data-y-menu--open="false"
+        data-link-id="{{ link.handle }}"
+      >
+
+        {% if link.links != blank %}
+          <a
+            href="{{ link.url }}"
+            data-submenu="true"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="y-menu--sub-{{ link.handle }}"
+          >
+            {{ link.title }}
+            {% render 'framework--icons', icon: 'chevron-right--small' %}
+          </a>
+        {% else %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endif %}
+
+          {% comment %} Level 2 {% endcomment %}
+          {% if link.links != blank %}
+            {% assign parent_link = true %}
+            {% if link.url == '#' or link.url == '/#' %}
+              {% assign parent_link = false %}
+            {% endif %}
+
+            <ul
+              class="y-menu--level-2--container"
+              {% if parent_link %}
+                data-y-menu--parent-link="level-2"
+              {% endif %}
+              id="y-menu--sub-{{ link.handle }}"
+            >
+
+              <li class="y-menu--back-link">
+                <a href="#">
+                  {%
+                    render 'framework--icons',
+                    icon: 'chevron-left--small'
+                  %} {{ 'layout.header.back' | t }}
+                </a>
+              </li>
+
+              {% if parent_link %}
+                <li class="y-menu--parent-link">
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endif %}
+
+              {% assign list_lvl_2 = link.handle %}
+              {% for link in linklists[list_lvl_2].links %}
+
+                <li
+                  class="y-menu--level-2--link"
+                  data-item="nav-text"
+                  data-link-id="{{ list_lvl_2 }}--{{ link.handle }}"
+                >
+                  <a href="{{ link.url }}" data-submenu="true">
+                    {{ link.title }}
+                    {% if link.links != blank %}
+                      {% render 'framework--icons', icon: 'chevron-right--small' %}
+                    {% endif %}
+                  </a>
+
+                  {% comment %} Level 3 {% endcomment %}
+                  {% if link.links != blank %}
+                    {% assign parent_link = true %}
+                    {% if link.url == '#' or link.url == '/#' %}
+                      {% assign parent_link = false %}
+                    {% endif %}
+
+                    <ul
+                      class="y-menu--level-3--container"
+                      {% if parent_link %}
+                        data-y-menu--parent-link="level-3"
+                      {% endif %}
+                    >
+                      <li class="y-menu--back-link">
+                        <a href="{{ link.url }}">
+                          {%
+                            render 'framework--icons',
+                            icon: 'chevron-left--small'
+                          %} {{ 'layout.header.back' | t }}
+                        </a>
+                      </li>
+
+                      {% if parent_link %}
+                        <li class="y-menu--parent-link">
+                          <a href="{{ link.url }}">
+                            {{ link.title }}
+                          </a>
+                        </li>
+                      {% endif %}
+
+                      {% assign list_lvl_3 = link.handle %}
+                      {% for link in linklists[list_lvl_3].links %}
+                        <li
+                          class="y-menu--level-3--link"
+                          data-item="nav-text"
+                          data-link-id="{{ list_lvl_2 }}--{{ list_lvl_3 }}--{{ link.handle }}"
+                        >
+                          <a href="{{ link.url }}">
+                            {{ link.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                  {% comment %} End Level 3 {% endcomment %}
+
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          {% comment %} End Level 2 {% endcomment %}
+
+      </li>
+    {% endfor %}
+  </ul>
+  {% comment %} End level 1 {% endcomment %}
+</nav>

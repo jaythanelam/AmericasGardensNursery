@@ -1,0 +1,136 @@
+{%- liquid
+  assign moderated_feedback_t = 'blog.comment.moderated_feedback' | t
+  assign success_feedback_t = 'blog.comment.success_feedback' | t
+  assign error_t = 'blog.comment.error' | t
+  assign name_t = 'blog.comment.name' | t
+  assign email_t = 'blog.comment.email' | t
+  assign comment_t = 'blog.article.comment' | t
+  assign no_comments_t = 'blog.article.no_comments' | t
+  assign button_t = 'blog.comment.button' | t
+  assign moderated_notice_t = 'blog.comment.moderated_notice' | t
+-%}
+
+{% paginate article.comments by 20 %}
+
+{% comment %} View {% endcomment %}
+  <div id="comments" class="comments--root">
+
+    {% if article.comments.size > 0 %}
+
+      <div class="comments--list">
+        {% for comment in article.comments %}
+
+          <div id="comment-{{ comment.id }}" class="comment--item">
+
+            <p class="comment--meta">
+              <span data-item="accent-text">{{ comment.author }}</span> &mdash;
+              <span data-item="light-accent-text">
+                {%
+                  render "framework--utils",
+                  utility: "timesince",
+                  created_at: comment.created_at
+                %}
+              </span>
+            </p>
+
+            <div class="comment--content" data-item="paragraph">
+              {{ comment.content }}
+            </div>
+
+          </div>
+
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="comments--none" data-item="paragraph">{{ no_comments_t }}</div>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      <div class="comments--pagination">
+        {%
+          render 'framework--pagination',
+          paginate: paginate,
+          view: 'blog-comments'
+        %}
+      </div>
+    {% endif %}
+
+    {% form article, class: 'comments--form' %}
+
+      {% if form.posted_successfully? %}
+
+        {% if blog.moderated? %}
+          <p class="success" data-item="accent-text">{{ moderated_feedback_t }}</p>
+        {% else %}
+          <p class="success" data-item="accent-text">{{ success_feedback_t }}</p>
+        {% endif %}
+
+      {% endif %}
+
+      <div class="comments--form-meta">
+
+        <div class="comments--form-name">
+          <input
+            data-item="accent-text"
+            type="text"
+            id="comment_name"
+            name="comment[author]"
+            size="40"
+            placeholder="{{ name_t }}"
+            required
+          />
+          <label for="comment_name">{{ name_t }}</label>
+        </div>
+
+        <div class="comments--form-email">
+          <input
+            data-item="accent-text"
+            type="email"
+            id="comment_email"
+            name="comment[email]"
+            size="40"
+            placeholder="{{ email_t }}"
+            required
+          />
+          <label for="comment_email">{{ email_t }}</label>
+        </div>
+
+      </div>
+
+      <div class="comments--form-input">
+        <textarea
+          data-item="accent-text"
+          id="comment_body"
+          name="comment[body]"
+          cols="40"
+          rows="5"
+          placeholder="{{ comment_t }}"
+          required
+        >{{ form.body }}</textarea>
+        <label for="comment_body">{{ comment_t }}</label>
+      </div>
+
+      {% if blog.moderated? %}
+        <div class="comments--form-moderated" data-item="accent-text">
+          {{ moderated_notice_t }}
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="comments--form-error" data-item="accent-text">
+          {{ error_t }}
+        </div>
+      {% endif %}
+
+      <div class="comments--form-submit" data-item='button'>
+        <button type="submit" value="{{ button_t }}">
+          {{ button_t }}
+        </button>
+      </div>
+
+    {% endform %}
+
+  </div>
+
+{% endpaginate %}
