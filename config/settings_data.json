@@ -174,8 +174,9 @@
       },
       "162062617873abb5fa": {
         "type": "framework--featured-text",
+        "disabled": true,
         "settings": {
-          "background-color": "light",
+          "background-color": "accent",
           "overline": "Overline text",
           "heading": "Introduce your brand",
           "text": "<p>Introduce your brand, products and vision statement and welcome customers to your store.<\/p>"
@@ -357,10 +358,11 @@
           "api-key": "",
           "map-address": "391 Sutter St, San Francisco",
           "background-color": "none",
-          "theme": "grayscale",
+          "theme": "standard",
           "heading": "Our store",
-          "address": "<p>391 Sunrise Blvd,<br\/>Los Angeles<br\/>CA 94108, USA<\/p>",
-          "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>"
+          "address": "<p>4637 Dayton Blvd,<br\/>Chattanooga<br\/>TN 37415 USA<\/p>",
+          "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>",
+          "image": "shopify:\/\/shop_images\/America-s-Gardens-Google-Maps.png"
         }
       },
       "1620626699934396bb": {
@@ -380,8 +382,8 @@
         "type": "framework--newsletter",
         "settings": {
           "background-color": "light",
-          "heading": "Subscribe to our newsletter",
-          "newsletter--subheading": "<p>A short sentence describing what someone will receive by subscribing<\/p>"
+          "heading": "Get Our Latest Promotions",
+          "newsletter--subheading": "<p>Sign up to our newsletter and we will send you information about our upcoming specials into your inbox.<\/p>"
         }
       },
       "1620626889eaeb067c": {
@@ -521,8 +523,8 @@
       "1620626568f9a23d1a",
       "1620626665f401fe84",
       "162062617873abb5fa",
-      "1620626685871fc992",
-      "1620626720192887ce"
+      "1620626720192887ce",
+      "1620626685871fc992"
     ]
   },
   "presets": {
