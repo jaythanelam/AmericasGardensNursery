@@ -99,6 +99,7 @@
           "1620626123773e4061-0": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/annie-spratt-S7viz8JWxwY-unsplash.jpg",
               "text-position": "bottom-left",
               "text-width": "medium",
               "overline": "Overline text",
@@ -111,6 +112,7 @@
           "1620626123773e4061-1": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/benjamin-combs-wuU_SSxDeS0-unsplash.jpg",
               "text-position": "bottom-left",
               "text-width": "medium",
               "overline": "Overline text",
@@ -123,6 +125,7 @@
           "1620626123773e4061-2": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/annie-spratt-zPktb9QkcGY-unsplash.jpg",
               "text-position": "bottom-left",
               "text-width": "medium",
               "overline": "Overline text",
@@ -135,6 +138,7 @@
           "1620626123773e4061-3": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/annie-spratt-yyXw1lGJypI-unsplash.jpg",
               "text-position": "bottom-left",
               "text-width": "medium",
               "overline": "Overline text",
@@ -156,16 +160,16 @@
           "spacing-above": false,
           "spacing-below": false,
           "spacing-around-blocks": false,
-          "image-height": 3,
+          "image-height": 4,
           "darken-image": true,
-          "blocks_per_slide": 2,
+          "blocks_per_slide": 1,
           "blocks_per_slide_mobile": "1",
-          "box-around-text": false,
+          "box-around-text": true,
           "alternative-color": false,
           "mobile-overlay": true,
-          "auto-rotate": false,
+          "auto-rotate": true,
           "rotate-frequency": 7,
-          "transition_type": "slide"
+          "transition_type": "fade"
         }
       },
       "162062617873abb5fa": {
@@ -179,6 +183,7 @@
       },
       "162062620665c87507": {
         "type": "framework--grid-with-overlay",
+        "disabled": true,
         "blocks": {
           "162062620665c87507-0": {
             "type": "image",
@@ -243,19 +248,21 @@
       "16206262299afb5b3e": {
         "type": "framework--featured-video",
         "settings": {
-          "video-url": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+          "video-url": "https:\/\/youtu.be\/WY8daSv6zek",
+          "image": "shopify:\/\/shop_images\/Screen_Shot_2021-06-23_at_4.51.28_PM.png",
           "full-width": true,
           "background-color": "none",
           "section-height": "regular",
           "darken-video": true,
           "alt-text": true,
-          "heading": "Video",
-          "sub-heading": "Add a subheading here",
-          "button-text": "button"
+          "heading": "America's Gardens Nursery",
+          "sub-heading": "Visit us today!",
+          "button-text": "Get Directions"
         }
       },
       "1620626568f9a23d1a": {
         "type": "framework--grid-with-text-below",
+        "disabled": true,
         "blocks": {
           "1620626568f9a23d1a-0": {
             "type": "image",
@@ -315,23 +322,25 @@
           "container-width": 6,
           "spacing-above": false,
           "spacing-below": false,
-          "image-height": 3,
+          "image-height": 4,
           "darken-image": true,
           "parallax-enabled": false,
-          "text-position": "bottom-left",
-          "text-width": "medium",
-          "overlap": true,
+          "text-position": "left",
+          "text-width": "large",
+          "overlap": false,
           "box-around-text": false,
-          "alternative-color": true,
+          "alternative-color": false,
           "mobile-overlay": true,
-          "overline": "Overline text",
-          "title": "Image with Text",
-          "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
+          "image": "shopify:\/\/shop_images\/marble-queen-pothos.jpg",
+          "overline": "Accessories",
+          "title": "Our Latest Pots",
+          "description": "<p>Fermentum at neque non fermentum in feugiat. Urna diam condimentum morbi ut aliquet. Turpis elementum, proin ac ac iaculis porttitor. Nunc nisl, odio nisl id. Nascetur vestibulum et morbi posuere. Dui sit lorem id eu tortor viverra neque. Sed viverra porta eget vulputate eu. Faucibus volutpat viverra volutpat faucibus tellus maecenas diam arcu senectus. Dolor enim ac eleifend ut facilisi viverra neque nec vivamus. Semper enim, convallis neque, ut phasellus mauris.<\/p>",
           "link-text": ""
         }
       },
       "1620626665f401fe84": {
         "type": "framework--featured-blog",
+        "disabled": true,
         "settings": {
           "background-color": "none",
           "blog-heading": "Blog posts",
@@ -356,6 +365,7 @@
       },
       "1620626699934396bb": {
         "type": "framework--featured-collection",
+        "disabled": true,
         "settings": {
           "collection": "",
           "background-color": "none",
@@ -377,7 +387,7 @@
       "1620626889eaeb067c": {
         "type": "framework--featured-collection",
         "settings": {
-          "collection": "",
+          "collection": "featured-plants",
           "background-color": "none",
           "featured-collection--image--show": false,
           "featured-collection--description--show": false,
@@ -506,9 +516,9 @@
       "1620626889eaeb067c",
       "162062620665c87507",
       "1620626699934396bb",
+      "1620626621ffef6b4f",
       "16206262299afb5b3e",
       "1620626568f9a23d1a",
-      "1620626621ffef6b4f",
       "1620626665f401fe84",
       "162062617873abb5fa",
       "1620626685871fc992",
