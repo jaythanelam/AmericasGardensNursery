@@ -511,6 +511,58 @@
           "description": "<p>A collection-wide promotion for sales, product announcements and more.<\/p>",
           "link-text": ""
         }
+      },
+      "framework--featured-collections": {
+        "type": "framework--featured-collections",
+        "settings": {
+          "background-color": "none",
+          "width": 3,
+          "mobile-width": "2",
+          "heading": "Collection list"
+        }
+      },
+      "framework--image-with-text": {
+        "type": "framework--image-with-text",
+        "settings": {
+          "background-color": "light",
+          "container-width": 6,
+          "spacing-above": false,
+          "spacing-below": false,
+          "image-height": 3,
+          "darken-image": false,
+          "parallax-enabled": false,
+          "text-position": "left",
+          "text-width": "medium",
+          "overlap": false,
+          "box-around-text": false,
+          "alternative-color": false,
+          "mobile-overlay": true,
+          "image": "shopify:\/\/shop_images\/annie-spratt-zPktb9QkcGY-unsplash.jpg",
+          "overline": "Overline text",
+          "title": "Beautiful Locally Grown Plants",
+          "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
+          "link-text": ""
+        }
+      },
+      "framework--featured-collection": {
+        "type": "framework--featured-collection",
+        "settings": {
+          "collection": "featured-plants",
+          "background-color": "none",
+          "featured-collection--image--show": false,
+          "featured-collection--description--show": false,
+          "display-type": "grid",
+          "products-per-row--desktop": "4",
+          "products-per-row--mobile": "1"
+        }
+      },
+      "framework--newsletter": {
+        "type": "framework--newsletter",
+        "settings": {
+          "background-color": "light",
+          "heading": "Get Our Latest Promotions",
+          "newsletter--subheading": "<p>Sign up to our newsletter and we will send you information about our upcoming specials into your inbox.<\/p>"
+        }
       }
     },
     "content_for_index": [
