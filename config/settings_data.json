@@ -551,7 +551,7 @@
           "background-color": "none",
           "featured-collection--image--show": false,
           "featured-collection--description--show": false,
-          "display-type": "grid",
+          "display-type": "slider",
           "products-per-row--desktop": "4",
           "products-per-row--mobile": "1"
         }
@@ -577,6 +577,57 @@
           "show-comments": true,
           "enable-disqus": false,
           "disqus-shortname": ""
+        }
+      },
+      "framework--slideshow": {
+        "type": "framework--slideshow",
+        "blocks": {
+          "b1c974bc-ba9d-4a6b-b1e7-e5ba1cbf1bd1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/nursery-AmericasGardensNursery_3.png",
+              "text-position": "bottom-left",
+              "text-width": "medium",
+              "overline": "Overline text",
+              "title": "Slide heading",
+              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
+              "link-url": "\/",
+              "link-text": "View more"
+            }
+          },
+          "ff8539c1-20a0-47fc-974a-c5d76745de5f": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/nik-albert-nHsA7UxMtWs-unsplash.jpg",
+              "text-position": "bottom-left",
+              "text-width": "medium",
+              "overline": "Overline text",
+              "title": "Slide heading",
+              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
+              "link-url": "\/",
+              "link-text": "View more"
+            }
+          }
+        },
+        "block_order": [
+          "b1c974bc-ba9d-4a6b-b1e7-e5ba1cbf1bd1",
+          "ff8539c1-20a0-47fc-974a-c5d76745de5f"
+        ],
+        "settings": {
+          "background-color": "none",
+          "spacing-above": false,
+          "spacing-below": false,
+          "spacing-around-blocks": false,
+          "image-height": 3,
+          "darken-image": true,
+          "blocks_per_slide": 1,
+          "blocks_per_slide_mobile": "1",
+          "box-around-text": true,
+          "alternative-color": false,
+          "mobile-overlay": true,
+          "auto-rotate": true,
+          "rotate-frequency": 7,
+          "transition_type": "fade"
         }
       }
     },
