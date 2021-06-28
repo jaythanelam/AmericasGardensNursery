@@ -563,6 +563,21 @@
           "heading": "Get Our Latest Promotions",
           "newsletter--subheading": "<p>Sign up to our newsletter and we will send you information about our upcoming specials into your inbox.<\/p>"
         }
+      },
+      "framework--article": {
+        "type": "framework--article",
+        "settings": {
+          "show-featured": true,
+          "title-position": "below",
+          "show-date": true,
+          "show-author": true,
+          "show-share": true,
+          "show-tags": true,
+          "show-recent": true,
+          "show-comments": true,
+          "enable-disqus": false,
+          "disqus-shortname": ""
+        }
       }
     },
     "content_for_index": [
