@@ -161,7 +161,7 @@
           "spacing-below": false,
           "spacing-around-blocks": false,
           "image-height": 4,
-          "darken-image": true,
+          "darken-image": false,
           "blocks_per_slide": 1,
           "blocks_per_slide_mobile": "1",
           "box-around-text": true,
@@ -647,6 +647,33 @@
       "list-collections": {
         "type": "list-collections",
         "settings": {
+        }
+      },
+      "product": {
+        "type": "product",
+        "settings": {
+          "vendor-name-show": false,
+          "description-under-form": false,
+          "variant-style": "dropdowns",
+          "swatches-enabled": false,
+          "smart_payment_button": true,
+          "product-sold-out-form-show": false,
+          "low-in-stock-amount": 0,
+          "product-pickup-enabled": true,
+          "share": true,
+          "product-modal-enabled": true,
+          "image-zoom-enabled": true,
+          "loop-enabled": false,
+          "product-size-chart-enabled": false,
+          "product-size-chart-option": "size",
+          "product-size-chart-page-content": ""
+        }
+      },
+      "framework--product-recommendations": {
+        "type": "framework--product-recommendations",
+        "settings": {
+          "product-similar-products-show": true,
+          "product-similar-products-heading": "You may also like"
         }
       }
     },
