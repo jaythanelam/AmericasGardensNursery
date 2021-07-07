@@ -336,7 +336,7 @@
           "spacing-above": false,
           "spacing-below": false,
           "image-height": 4,
-          "darken-image": true,
+          "darken-image": false,
           "parallax-enabled": false,
           "text-position": "left",
           "text-width": "large",
@@ -344,12 +344,12 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/marble-queen-pothos.jpg",
+          "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
           "overline": "Accessories",
           "title": "Our Latest Pots",
-          "description": "<p>Fermentum at neque non fermentum in feugiat. Urna diam condimentum morbi ut aliquet. Turpis elementum, proin ac ac iaculis porttitor. Nunc nisl, odio nisl id. Nascetur vestibulum et morbi posuere. Dui sit lorem id eu tortor viverra neque. Sed viverra porta eget vulputate eu. Faucibus volutpat viverra volutpat faucibus tellus maecenas diam arcu senectus. Dolor enim ac eleifend ut facilisi viverra neque nec vivamus. Semper enim, convallis neque, ut phasellus mauris.<\/p>",
-          "link-url": "",
-          "link-text": ""
+          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's about home. Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind’s about home.<\/p>",
+          "link-url": "shopify:\/\/collections\/pots",
+          "link-text": "Shop Now"
         }
       },
       "1620626665f401fe84": {
