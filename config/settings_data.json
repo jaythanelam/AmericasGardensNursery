@@ -36,7 +36,8 @@
         "settings": {
           "enabled": true,
           "home-page-only": true,
-          "text": "Announcement for sales, promos, shipping info & more — Click and Collect available"
+          "text": "Announcement for sales, promos, shipping info & more — Click and Collect available",
+          "link": ""
         }
       },
       "header": {
@@ -99,52 +100,52 @@
           "1620626123773e4061-0": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/annie-spratt-S7viz8JWxwY-unsplash.jpg",
-              "text-position": "bottom-left",
+              "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
+              "text-position": "center",
               "text-width": "medium",
-              "overline": "Overline text",
-              "title": "Slide heading",
-              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
-              "link-url": "\/",
+              "overline": "America's Garden Nursery",
+              "title": "Let's Get Growing",
+              "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
+              "link-url": "shopify:\/\/collections\/all",
               "link-text": "View more"
             }
           },
           "1620626123773e4061-1": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/benjamin-combs-wuU_SSxDeS0-unsplash.jpg",
-              "text-position": "bottom-left",
+              "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
+              "text-position": "center",
               "text-width": "medium",
-              "overline": "Overline text",
-              "title": "Slide heading",
-              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
-              "link-url": "\/",
+              "overline": "America's Garden Nursery",
+              "title": "Let's Get Growing",
+              "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
+              "link-url": "shopify:\/\/collections\/all",
               "link-text": "View more"
             }
           },
           "1620626123773e4061-2": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/annie-spratt-zPktb9QkcGY-unsplash.jpg",
-              "text-position": "bottom-left",
+              "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
+              "text-position": "center",
               "text-width": "medium",
-              "overline": "Overline text",
-              "title": "Slide heading",
-              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
-              "link-url": "\/",
+              "overline": "America's Garden Nursery",
+              "title": "Let's Get Growing",
+              "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
+              "link-url": "shopify:\/\/collections\/all",
               "link-text": "View more"
             }
           },
           "1620626123773e4061-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/annie-spratt-yyXw1lGJypI-unsplash.jpg",
-              "text-position": "bottom-left",
+              "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
+              "text-position": "center",
               "text-width": "medium",
-              "overline": "Overline text",
-              "title": "Slide heading",
-              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
-              "link-url": "\/",
+              "overline": "America's Garden Nursery",
+              "title": "Let's Get Growing",
+              "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
+              "link-url": "shopify:\/\/collections\/all",
               "link-text": "View more"
             }
           }
@@ -193,6 +194,7 @@
               "tall": true,
               "retain-ratio": false,
               "heading": "Grid image heading",
+              "link-url": "",
               "link-text": "View more"
             }
           },
@@ -203,6 +205,7 @@
               "tall": false,
               "retain-ratio": false,
               "heading": "Grid image heading",
+              "link-url": "",
               "link-text": "View more"
             }
           },
@@ -213,6 +216,7 @@
               "tall": false,
               "retain-ratio": false,
               "heading": "Grid image heading",
+              "link-url": "",
               "link-text": "View more"
             }
           },
@@ -223,6 +227,7 @@
               "tall": false,
               "retain-ratio": false,
               "heading": "Grid image heading",
+              "link-url": "",
               "link-text": "View more"
             }
           }
@@ -243,6 +248,7 @@
           "mobile-width": "2",
           "heading": "Grid with overlay",
           "subtitle": "",
+          "link-url": "",
           "link-text": ""
         }
       },
@@ -258,7 +264,8 @@
           "alt-text": true,
           "heading": "America's Gardens Nursery",
           "sub-heading": "Visit us today!",
-          "button-text": "Get Directions"
+          "button-text": "Get Directions",
+          "button-url": ""
         }
       },
       "1620626568f9a23d1a": {
@@ -270,6 +277,7 @@
             "settings": {
               "title": "Grid image",
               "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
+              "link-url": "",
               "link-text": "View more"
             }
           },
@@ -278,6 +286,7 @@
             "settings": {
               "title": "Grid image",
               "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
+              "link-url": "",
               "link-text": "View more"
             }
           },
@@ -286,6 +295,7 @@
             "settings": {
               "title": "Grid image",
               "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
+              "link-url": "",
               "link-text": "View more"
             }
           },
@@ -294,6 +304,7 @@
             "settings": {
               "title": "Grid image",
               "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
+              "link-url": "",
               "link-text": "View more"
             }
           }
@@ -313,6 +324,7 @@
           "mobile-width": "2",
           "title": "Grid with text below",
           "subtitle": "",
+          "link-url": "",
           "link-text": ""
         }
       },
@@ -336,6 +348,7 @@
           "overline": "Accessories",
           "title": "Our Latest Pots",
           "description": "<p>Fermentum at neque non fermentum in feugiat. Urna diam condimentum morbi ut aliquet. Turpis elementum, proin ac ac iaculis porttitor. Nunc nisl, odio nisl id. Nascetur vestibulum et morbi posuere. Dui sit lorem id eu tortor viverra neque. Sed viverra porta eget vulputate eu. Faucibus volutpat viverra volutpat faucibus tellus maecenas diam arcu senectus. Dolor enim ac eleifend ut facilisi viverra neque nec vivamus. Semper enim, convallis neque, ut phasellus mauris.<\/p>",
+          "link-url": "",
           "link-text": ""
         }
       },
@@ -393,7 +406,7 @@
           "background-color": "none",
           "featured-collection--image--show": false,
           "featured-collection--description--show": false,
-          "display-type": "grid",
+          "display-type": "slider",
           "products-per-row--desktop": "3",
           "products-per-row--mobile": "1"
         }
@@ -433,6 +446,7 @@
           "overline": "Overline text",
           "title": "Collection Promotion",
           "description": "<p>A collection-wide promotion for sales, product announcements and more.<\/p>",
+          "link-url": "",
           "link-text": ""
         }
       },
@@ -481,6 +495,7 @@
               "overline": "Overline text",
               "title": "Grid promotion",
               "description": "<p>Create eye-catching promos within collection grids to increase discoverability and accelerate conversions.<\/p>",
+              "link-url": "",
               "link-text": "Optional link"
             }
           }
@@ -523,6 +538,7 @@
           "overline": "Overline text",
           "title": "Collection Promotion",
           "description": "<p>A collection-wide promotion for sales, product announcements and more.<\/p>",
+          "link-url": "",
           "link-text": ""
         }
       },
