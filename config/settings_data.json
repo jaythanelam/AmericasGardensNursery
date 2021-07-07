@@ -161,7 +161,7 @@
           "spacing-below": false,
           "spacing-around-blocks": false,
           "image-height": 4,
-          "darken-image": true,
+          "darken-image": false,
           "blocks_per_slide": 1,
           "blocks_per_slide_mobile": "1",
           "box-around-text": true,
@@ -438,6 +438,18 @@
       },
       "framework--collection--navigation": {
         "type": "framework--collection--navigation",
+        "blocks": {
+          "d4a41244-4edb-4754-b4df-dbfbe50ba864": {
+            "type": "tag-group",
+            "settings": {
+              "filter-title": "Filter by title",
+              "filter-tags": "<p>small<\/p><p>medium<\/p><p>large<\/p>"
+            }
+          }
+        },
+        "block_order": [
+          "d4a41244-4edb-4754-b4df-dbfbe50ba864"
+        ],
         "settings": {
           "show-browse-button": true,
           "show-sort-by-button": true,
@@ -462,8 +474,9 @@
               "column-number": 1,
               "promo-width": 2,
               "background-color": "light",
-              "alternative-color": false,
+              "alternative-color": true,
               "darken-image": true,
+              "image": "shopify:\/\/shop_images\/annie-spratt-S7viz8JWxwY-unsplash.jpg",
               "image-size": "fit-to-container",
               "overline": "Overline text",
               "title": "Grid promotion",
@@ -484,7 +497,7 @@
       "framework--recent-products": {
         "type": "framework--recent-products",
         "settings": {
-          "enable": true,
+          "enable": false,
           "heading": "Recently viewed"
         }
       },
@@ -506,6 +519,7 @@
           "box-around-text": false,
           "alternative-color": true,
           "mobile-overlay": true,
+          "image": "shopify:\/\/shop_images\/nik-albert-nHsA7UxMtWs-unsplash.jpg",
           "overline": "Overline text",
           "title": "Collection Promotion",
           "description": "<p>A collection-wide promotion for sales, product announcements and more.<\/p>",
@@ -551,7 +565,7 @@
           "background-color": "none",
           "featured-collection--image--show": false,
           "featured-collection--description--show": false,
-          "display-type": "grid",
+          "display-type": "slider",
           "products-per-row--desktop": "4",
           "products-per-row--mobile": "1"
         }
@@ -577,6 +591,89 @@
           "show-comments": true,
           "enable-disqus": false,
           "disqus-shortname": ""
+        }
+      },
+      "framework--slideshow": {
+        "type": "framework--slideshow",
+        "blocks": {
+          "b1c974bc-ba9d-4a6b-b1e7-e5ba1cbf1bd1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/nursery-AmericasGardensNursery_3.png",
+              "text-position": "bottom-left",
+              "text-width": "medium",
+              "overline": "Overline text",
+              "title": "Slide heading",
+              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
+              "link-url": "\/",
+              "link-text": "View more"
+            }
+          },
+          "ff8539c1-20a0-47fc-974a-c5d76745de5f": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/nik-albert-nHsA7UxMtWs-unsplash.jpg",
+              "text-position": "bottom-left",
+              "text-width": "medium",
+              "overline": "Overline text",
+              "title": "Slide heading",
+              "description": "<p>Combine imagery with text to create stand-out campaign sections, eye-catching promotions, information blocks and more.<\/p>",
+              "link-url": "\/",
+              "link-text": "View more"
+            }
+          }
+        },
+        "block_order": [
+          "b1c974bc-ba9d-4a6b-b1e7-e5ba1cbf1bd1",
+          "ff8539c1-20a0-47fc-974a-c5d76745de5f"
+        ],
+        "settings": {
+          "background-color": "none",
+          "spacing-above": false,
+          "spacing-below": false,
+          "spacing-around-blocks": false,
+          "image-height": 3,
+          "darken-image": true,
+          "blocks_per_slide": 1,
+          "blocks_per_slide_mobile": "1",
+          "box-around-text": true,
+          "alternative-color": false,
+          "mobile-overlay": true,
+          "auto-rotate": true,
+          "rotate-frequency": 7,
+          "transition_type": "fade"
+        }
+      },
+      "list-collections": {
+        "type": "list-collections",
+        "settings": {
+        }
+      },
+      "product": {
+        "type": "product",
+        "settings": {
+          "vendor-name-show": false,
+          "description-under-form": false,
+          "variant-style": "dropdowns",
+          "swatches-enabled": false,
+          "smart_payment_button": true,
+          "product-sold-out-form-show": false,
+          "low-in-stock-amount": 0,
+          "product-pickup-enabled": true,
+          "share": true,
+          "product-modal-enabled": true,
+          "image-zoom-enabled": true,
+          "loop-enabled": false,
+          "product-size-chart-enabled": false,
+          "product-size-chart-option": "size",
+          "product-size-chart-page-content": ""
+        }
+      },
+      "framework--product-recommendations": {
+        "type": "framework--product-recommendations",
+        "settings": {
+          "product-similar-products-show": true,
+          "product-similar-products-heading": "You may also like"
         }
       }
     },
