@@ -804,11 +804,12 @@
         "settings": {
           "api-key": "",
           "map-address": "391 Sutter St, San Francisco",
-          "background-color": "light",
+          "background-color": "none",
           "theme": "grayscale",
           "heading": "We Welcome You to Visit Us in Red Bank.",
           "address": "<p>4637 Dayton Blvd.<br\/>Chattanooga, TN 37415<\/p>",
-          "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>"
+          "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>",
+          "image": "shopify:\/\/shop_images\/map_2x_bec346a2-2f0d-44d6-896c-002def5b7083.png"
         }
       }
     },
