@@ -254,6 +254,7 @@
       },
       "16206262299afb5b3e": {
         "type": "framework--featured-video",
+        "disabled": true,
         "settings": {
           "video-url": "https:\/\/youtu.be\/WY8daSv6zek",
           "image": "shopify:\/\/shop_images\/Screen_Shot_2021-06-23_at_4.51.28_PM.png",
@@ -336,7 +337,7 @@
           "spacing-above": false,
           "spacing-below": false,
           "image-height": 4,
-          "darken-image": true,
+          "darken-image": false,
           "parallax-enabled": false,
           "text-position": "left",
           "text-width": "large",
@@ -344,12 +345,12 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/marble-queen-pothos.jpg",
+          "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
           "overline": "Accessories",
           "title": "Our Latest Pots",
-          "description": "<p>Fermentum at neque non fermentum in feugiat. Urna diam condimentum morbi ut aliquet. Turpis elementum, proin ac ac iaculis porttitor. Nunc nisl, odio nisl id. Nascetur vestibulum et morbi posuere. Dui sit lorem id eu tortor viverra neque. Sed viverra porta eget vulputate eu. Faucibus volutpat viverra volutpat faucibus tellus maecenas diam arcu senectus. Dolor enim ac eleifend ut facilisi viverra neque nec vivamus. Semper enim, convallis neque, ut phasellus mauris.<\/p>",
-          "link-url": "",
-          "link-text": ""
+          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's about home. Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind’s about home.<\/p>",
+          "link-url": "shopify:\/\/collections\/pots",
+          "link-text": "Shop Now"
         }
       },
       "1620626665f401fe84": {
@@ -691,6 +692,30 @@
           "product-similar-products-show": true,
           "product-similar-products-heading": "You may also like"
         }
+      },
+      "162569576407ee477a": {
+        "type": "framework--image-with-text",
+        "settings": {
+          "background-color": "accent",
+          "container-width": 6,
+          "spacing-above": false,
+          "spacing-below": true,
+          "image-height": 4,
+          "darken-image": false,
+          "parallax-enabled": false,
+          "text-position": "bottom",
+          "text-width": "large",
+          "overlap": false,
+          "box-around-text": false,
+          "alternative-color": false,
+          "mobile-overlay": true,
+          "image": "shopify:\/\/shop_images\/feature-full-bleed.png",
+          "overline": "",
+          "title": "Visit America’s Gardens for 20% OFF Annuals",
+          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's about home.<\/p>",
+          "link-url": "",
+          "link-text": "Get Directions"
+        }
       }
     },
     "content_for_index": [
@@ -699,6 +724,7 @@
       "162062620665c87507",
       "1620626699934396bb",
       "1620626621ffef6b4f",
+      "162569576407ee477a",
       "16206262299afb5b3e",
       "1620626568f9a23d1a",
       "1620626665f401fe84",
