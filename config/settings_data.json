@@ -12,7 +12,7 @@
     "color--header": "#155157",
     "bg-color--footer": "#ffe6b9",
     "color--footer": "#155157",
-    "typography--heading": "volkhov_n4",
+    "typography--heading": "volkhov_n7",
     "typography--heading--uppercase": false,
     "typography--heading--size": "x-large",
     "typography--accent": "ibm_plex_sans_n4",
@@ -34,8 +34,8 @@
       "announcement": {
         "type": "announcement",
         "settings": {
-          "enabled": true,
-          "home-page-only": true,
+          "enabled": false,
+          "home-page-only": false,
           "text": "Announcement for sales, promos, shipping info & more — Click and Collect available",
           "link": ""
         }
@@ -417,9 +417,9 @@
       "framework--collection--header": {
         "type": "framework--collection--header",
         "settings": {
-          "enable-header": true,
+          "enable-header": false,
           "show-title": true,
-          "title-alignment": "center",
+          "title-alignment": "left",
           "show-description": true,
           "show-image": true,
           "use-image-fallback": true,
@@ -434,23 +434,24 @@
           "show": true,
           "only-on-collection": "",
           "background-color": "light",
-          "container-width": 5,
-          "spacing-above": true,
-          "spacing-below": true,
+          "container-width": 6,
+          "spacing-above": false,
+          "spacing-below": false,
           "image-height": 2,
           "darken-image": true,
           "parallax-enabled": false,
           "text-position": "center",
-          "text-width": "medium",
+          "text-width": "large",
           "overlap": false,
           "box-around-text": false,
           "alternative-color": true,
           "mobile-overlay": true,
+          "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
           "overline": "Overline text",
-          "title": "Collection Promotion",
-          "description": "<p>A collection-wide promotion for sales, product announcements and more.<\/p>",
+          "title": "Latest Promotion Here",
+          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
           "link-url": "",
-          "link-text": ""
+          "link-text": "Shop Now"
         }
       },
       "framework--collection--navigation": {
@@ -493,7 +494,7 @@
               "background-color": "light",
               "alternative-color": true,
               "darken-image": true,
-              "image": "shopify:\/\/shop_images\/annie-spratt-S7viz8JWxwY-unsplash.jpg",
+              "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
               "image-size": "fit-to-container",
               "overline": "Overline text",
               "title": "Grid promotion",
@@ -537,7 +538,7 @@
           "box-around-text": false,
           "alternative-color": true,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/nik-albert-nHsA7UxMtWs-unsplash.jpg",
+          "image": "shopify:\/\/shop_images\/ad-full-bleed_2x_597f4246-0c6f-48c6-8978-91ceb0f7e51e.png",
           "overline": "Overline text",
           "title": "Collection Promotion",
           "description": "<p>A collection-wide promotion for sales, product announcements and more.<\/p>",
