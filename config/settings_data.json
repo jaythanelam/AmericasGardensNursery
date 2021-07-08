@@ -63,20 +63,21 @@
           "b6a3fdf5-9398-416f-b689-db3bc40597e0": {
             "type": "about",
             "settings": {
-              "about-title": "About the store",
-              "text": "<p>2021 © Your brand name here.<br\/><br\/>A brief store summary, tagline, or vision statement.<\/p><p><\/p>",
+              "about-title": "America's Garden Nursery",
+              "text": "<p>2021 © America's Garden Nursery.<br\/><br\/><a href=\"mailto:INFO@AMERICASGARDENS.COM\" target=\"_blank\" title=\"mailto:INFO@AMERICASGARDENS.COM\">INFO@AMERICASGARDENS.COM<br\/><\/a><br\/>4637 Dayton Blvd<br\/>Chattanooga, TN 37415<\/p><p><\/p>",
               "subscribe--show-social-icons": true
             }
           },
           "e32c2919-5280-4489-935f-dc5071aecf12": {
             "type": "menu",
             "settings": {
-              "menu-title": "Info",
-              "menu": "footer"
+              "menu-title": "Menu",
+              "menu": "main-menu"
             }
           },
           "71875b6d-1dad-4541-9984-699f9700b197": {
             "type": "menu",
+            "disabled": true,
             "settings": {
               "menu-title": "Quick links",
               "menu": "footer"
@@ -796,6 +797,18 @@
           "description": "",
           "link-url": "",
           "link-text": "Learn More"
+        }
+      },
+      "framework--map": {
+        "type": "framework--map",
+        "settings": {
+          "api-key": "",
+          "map-address": "391 Sutter St, San Francisco",
+          "background-color": "light",
+          "theme": "grayscale",
+          "heading": "We Welcome You to Visit Us in Red Bank.",
+          "address": "<p>4637 Dayton Blvd.<br\/>Chattanooga, TN 37415<\/p>",
+          "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>"
         }
       }
     },
