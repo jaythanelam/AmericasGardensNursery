@@ -368,6 +368,7 @@
       },
       "1620626685871fc992": {
         "type": "framework--map",
+        "disabled": true,
         "settings": {
           "api-key": "",
           "map-address": "391 Sutter St, San Francisco",
