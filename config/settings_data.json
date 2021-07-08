@@ -546,11 +546,36 @@
       },
       "framework--featured-collections": {
         "type": "framework--featured-collections",
+        "blocks": {
+          "8a8f731b-0af6-401a-9364-db175d3e945b": {
+            "type": "collection",
+            "settings": {
+              "collection": "bags-apparel"
+            }
+          },
+          "f3efe863-6589-4dd5-915d-8b7ce81e33db": {
+            "type": "collection",
+            "settings": {
+              "collection": "plant-care"
+            }
+          },
+          "8df3f7ed-d578-4cde-b7c1-16e5eef63a65": {
+            "type": "collection",
+            "settings": {
+              "collection": "tools-accessories"
+            }
+          }
+        },
+        "block_order": [
+          "8a8f731b-0af6-401a-9364-db175d3e945b",
+          "f3efe863-6589-4dd5-915d-8b7ce81e33db",
+          "8df3f7ed-d578-4cde-b7c1-16e5eef63a65"
+        ],
         "settings": {
-          "background-color": "none",
+          "background-color": "accent",
           "width": 3,
           "mobile-width": "2",
-          "heading": "Collection list"
+          "heading": "We Deliver Bulk Products"
         }
       },
       "framework--image-with-text": {
@@ -741,6 +766,36 @@
           "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's eye muse about home.<\/p>",
           "link-url": "",
           "link-text": "Visit"
+        }
+      },
+      "framework--custom-content": {
+        "type": "framework--custom-content",
+        "settings": {
+          "custom_html": "<div><p>Some HTML content<\/p><\/div>"
+        }
+      },
+      "framework--image-with-text-3": {
+        "type": "framework--image-with-text-3",
+        "settings": {
+          "background-color": "light",
+          "container-width": 6,
+          "spacing-above": true,
+          "spacing-below": true,
+          "image-height": 3,
+          "darken-image": false,
+          "parallax-enabled": false,
+          "text-position": "left",
+          "text-width": "large",
+          "overlap": false,
+          "box-around-text": false,
+          "alternative-color": false,
+          "mobile-overlay": true,
+          "image": "shopify:\/\/shop_images\/plants-half-01_2x_496134bc-566b-4430-b49a-192ca0da52dc.png",
+          "overline": "",
+          "title": "Beautiful Locally Grown Plants",
+          "description": "",
+          "link-url": "",
+          "link-text": "Learn More"
         }
       }
     },
