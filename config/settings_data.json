@@ -47,7 +47,7 @@
           "logo-position": "center",
           "logo-height": 100,
           "fix-enabled": false,
-          "fixed-logo-height": 20,
+          "fixed-logo-height": 50,
           "menu": "main-menu",
           "header-account-show": true,
           "account-icon": "icon",
