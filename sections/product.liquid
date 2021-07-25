@@ -194,6 +194,47 @@
         </div>
       {% endunless %}
 
+      {% assign light_requ = product.metafields.airf.light_requ %}
+      {% if light_requ and light_requ != '&nbsp' %}
+          {{ light_requ }}
+      {% endif %}
+
+
+      {% assign water = product.metafields.airf.water %}
+      {% if water and water != '&nbsp' %}
+          {{ water }}
+      {% endif %}
+
+      {% assign soil = product.metafields.airf.soil %}
+      {% if soil and soil != '&nbsp' %}
+          {{ soil }}
+      {% endif %}
+
+      {% assign temperatur = product.metafields.airf.temperatur %}
+      {% if temperatur and temperatur != '&nbsp' %}
+          {{ temperatur }}
+      {% endif %}
+
+      {% assign flowering = product.metafields.airf.flowering %}
+      {% if flowering and flowering != '&nbsp' %}
+          {{ flowering }}
+      {% endif %}
+
+      {% assign re-potting = product.metafields.airf.re-potting %}
+      {% if re-potting and re-potting != '&nbsp' %}
+          {{ re-potting }}
+      {% endif %}
+
+      {% assign disea_pest = product.metafields.airf.disea_pest %}
+      {% if disea_pest and disea_pest != '&nbsp' %}
+          {{ disea_pest }}
+      {% endif %}
+
+      {% assign toxicity = product.metafields.airf.toxicity %}
+      {% if toxicity and toxicity != '&nbsp' %}
+          {{ toxicity }}
+      {% endif %}
+
       {% if share_enabled %}
         <div class="product-page--social-media">
           {% render 'partial--social-share', position: 'product' %}
@@ -324,4 +365,3 @@
   ]
 }
 {% endschema %}
-{% section 'framework--accordion' %}
