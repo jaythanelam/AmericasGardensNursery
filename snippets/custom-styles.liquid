@@ -89,30 +89,30 @@
 
 
 /********  CUSTOM ACCORDIANS ON PRODUCT PAGE  *********/
-.text ul {
+.accordion .text ul {
   list-style: disc;
 }
 
-ul {
+.accordion ul {
   list-style: none;
   padding: 0;
 }
 
-.inner ul {
+.accordion .inner ul {
   padding-left: 1em;
   overflow: hidden;
   display: none;
 }
 
-.show ul {
+.accordion .show ul {
   /*display: block;*/
 }
 
-li {
+.accordion li {
   margin: .5em 0;
 }
 
-a.toggle {
+.accordion a.toggle {
   width: 100%;
   display: block;
   background: rgba(0,0,0,0.78);
@@ -122,6 +122,6 @@ a.toggle {
   transition: background .3s ease;
 }
 
-a:hover {
+.accordion a:hover {
   background: rgba(0, 0, 0, 0.9);
 }
