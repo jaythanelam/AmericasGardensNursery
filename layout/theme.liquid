@@ -83,6 +83,9 @@
     {% endif %}
 
     {{ content_for_header }}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer=”defer”></script>
+
   </head>
 
   <body
@@ -180,5 +183,6 @@
       {% render 'framework--modal' %}
     {% endunless %}
 
+    {{ 'jquery.accordion.js' | asset_url | script_tag }}
   </body>
 </html>

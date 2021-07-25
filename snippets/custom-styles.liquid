@@ -86,3 +86,38 @@
 .contact-page--root {
   background-color: #F7F7F7;
 }
+
+
+/********  CUSTOM ACCORDIANS ON PRODUCT PAGE  *********/
+.text ul {
+  list-style: disc;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  .inner {
+    padding-left: 1em;
+    overflow: hidden;
+    display: none;
+    &.show {
+      /*display: block;*/
+    }
+  }
+
+  li {
+    margin: .5em 0;
+    a.toggle {
+      width: 100%;
+      display: block;
+      background: rgba(0,0,0,0.78);
+      color: #fefefe;
+      padding: .75em;
+      border-radius: 0.15em;
+      transition: background .3s ease;
+      &:hover {
+        background: rgba(0, 0, 0, 0.9);
+      }
+    }
+  }
+}
