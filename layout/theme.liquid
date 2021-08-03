@@ -184,5 +184,7 @@
     {% endunless %}
 
     {{ 'jquery.accordion.js' | asset_url | script_tag }}
-  </body>
+   {% include 'smile-initializer' %}
+
+</body>
 </html>
