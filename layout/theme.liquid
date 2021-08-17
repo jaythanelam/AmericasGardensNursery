@@ -74,6 +74,7 @@
 
     <style>{% render 'custom-styles' %}</style>
 
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
     <script src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script>
 
@@ -84,8 +85,11 @@
 
     {{ content_for_header }}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer=”defer”></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
+    <script src="{{ 'custom.js' | asset_url }}" ></script>
+    
   </head>
 
   <body

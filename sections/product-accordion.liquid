@@ -1,0 +1,388 @@
+{%- liquid
+  comment
+    Translations
+  endcomment
+
+  assign image_modal_t = 'products.image_modal' | t
+
+  comment
+    Variables
+  endcomment
+
+  assign description = product.description | strip_html
+  assign description_under_form = section.settings.description-under-form
+  assign image_zoom_enabled = section.settings.image-zoom-enabled
+  assign low_stock_amount = section.settings.low-in-stock-amount
+  assign modal_enabled = section.settings.product-modal-enabled
+  assign pickup_enabled = section.settings.product-pickup-enabled
+  assign share_enabled = section.settings.share
+  assign size_chart_enabled = section.settings.product-size-chart-enabled
+  assign smart_payment_enabled = section.settings.smart_payment_button
+  assign swatches_enabled = section.settings.swatches-enabled
+  assign show_unavailable_form = section.settings.product-sold-out-form-show
+  assign show_vendor = section.settings.vendor-name-show
+  assign size_chart_content = section.settings.product-size-chart-page-content
+  assign size_chart_option = section.settings.product-size-chart-option
+  assign variant_style = section.settings.variant-style
+  assign video_looping_enabled = section.settings.loop-enabled
+
+  assign has_media = false
+  assign onboarding = true
+  if product.media.size > 0
+    assign has_media = true
+    assign onboarding = false
+  endif
+
+  assign column_count = 2
+  if product.media.size == 1
+    assign column_count = 1
+  endif
+-%}
+
+{% comment %} View {% endcomment %}
+<div
+  class="product-page--root"
+  data-js-class="Product"
+  data-section-id="{{ section.id }}"
+  data-section-type="product_page"
+  data-media-length="{{ product.media.size }}"
+  {% if description_under_form %}
+    data-form-view="below"
+  {% else %}
+    data-form-view="above"
+  {% endif %}
+  itemscope
+  itemtype="https://schema.org/Product"
+>
+
+  <div class="product-page--left-column">
+    {% if modal_enabled and has_media %}
+      <div
+        class="modal"
+        data-js-class="FrameworkModal"
+        data-modal-view="product-media"
+      >
+    {% endif %}
+
+    <div
+      class="product-page--grid"
+      data-container="panel"
+      data-columns="{{ column_count }}"
+      data-mobile-columns="{{ column_count }}"
+    >
+      {% if has_media %}
+        {% for media in product.media %}
+          {% if modal_enabled and media.media_type == 'image' %}
+            <a class="modal--link" href="#" aria-label="{{ image_modal_t }}">
+          {% endif %}
+
+          <div
+            class="product-media--wrapper"
+            data-zoom-enabled="{{ image_zoom_enabled }}"
+            data-media-type="{{ media.media_type }}"
+          >
+            {%
+              render "framework--product--media",
+              media_view: "featured",
+              product: product,
+              in_slider: false,
+              product_media: media,
+              video_looping_enabled: video_looping_enabled,
+              image_zoom_enabled: image_zoom_enabled,
+              max_height: 'none'
+            %}
+          </div>
+
+          {% if modal_enabled and media.media_type == 'image' %}
+            </a>
+          {% endif %}
+        {% endfor %}
+
+        {%
+          render "framework--product--media",
+          media_view: "media-dependencies",
+          product: product,
+          max_height: 'none'
+        %}
+
+      {% else %}
+        {% for i in (1..4) %}
+          {% render "framework--placeholder", type: "image" %}
+        {% endfor %}
+
+      {% endif %}
+    </div>
+
+    {% if modal_enabled and has_media %}
+        <div class="product-page--modal-media">
+          {% for media in product.media %}
+            {% if media.media_type == "image" %}
+              <div class="modal--content">
+                {% render "framework--image", image: media %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="product-page--carousel">
+    {% render
+      'framework--carousel',
+      view: 'product-page',
+      section_id: section.id,
+      onboarding: onboarding,
+      product: product,
+      video_looping_enabled: video_looping_enabled,
+      blocks: product.media,
+      dot_nav_enabled: true,
+      media_size: 'mobile',
+      blocks_per_slide: 1,
+      blocks_per_slide_mobile: 1,
+      total_blocks: product.media.size,
+      total_slides: product.media.size,
+      spacing_around_blocks: true,
+      transition_type: 'slide'
+    %}
+  </div>
+
+  <div class="product-page--right-column">
+    <div class="product-page--right-column--container">
+      <h2 class="product-page--title" data-item="section-heading">
+        {{ product.title }}
+      </h2>
+
+      {% if show_vendor %}
+        <div class="product-page--vendor" data-item="accent-text">
+          <a
+            href="{{ product.vendor | url_for_vendor }}"
+            itemprop="brand"
+            content="{{ product.vendor }}"
+          >
+            {{ product.vendor }}
+          </a>
+        </div>
+      {% endif %}
+
+      {% unless product.description == blank %}
+        <div class="product-page--description" data-view="above" data-item="rte-content">
+          {{ product.description }}
+        </div>
+      {% endunless %}
+
+      {%
+        render "framework--product--form",
+        product: product,
+        callback_enabled: true,
+        low_stock_amount: low_stock_amount,
+        pickup_enabled: pickup_enabled,
+        show_unavailable_form: show_unavailable_form,
+        size_chart_enabled: size_chart_enabled,
+        size_chart_content: size_chart_content,
+        size_chart_option: size_chart_option,
+        smart_payment_enabled: smart_payment_enabled,
+        swatches_enabled: swatches_enabled,
+        variant_style: variant_style
+      %}
+
+      {% unless product.description == blank %}
+        <div class="product-page--description" data-view="below" data-item="rte-content">
+          {{ product.description }}
+        </div>
+      {% endunless %}
+      
+      <div class="product-description-accordion">
+        {% assign scope = product.metafields.airf %}
+        {% assign accord_rep = scope.accord_rep %}
+        {% if accord_rep and accord_rep != blank %}
+        {% for row in accord_rep.rows %}
+        <div class="accordion-wrapper">
+          {% for row_field in row %}
+          {% if row_field.key contains "acc_title" %}
+          <span class="accordion-button" id="{{row_field.key}}">{{ scope[row_field.key] }}</span>
+          {% endif %}
+
+          {% if row_field.key contains "acc_desc" %}
+          <div class="accordion-panel" id="{{row_field.key}}">{{ scope[row_field.key] }}</div>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+      
+
+      {% assign light_requ = product.metafields.airf.light_requ %}
+      {% if light_requ and light_requ != '&nbsp' %}
+          {{ light_requ }}
+      {% endif %}
+
+
+      {% assign water = product.metafields.airf.water %}
+      {% if water and water != '&nbsp' %}
+          {{ water }}
+      {% endif %}
+
+      {% assign soil = product.metafields.airf.soil %}
+      {% if soil and soil != '&nbsp' %}
+          {{ soil }}
+      {% endif %}
+
+      {% assign temperatur = product.metafields.airf.temperatur %}
+      {% if temperatur and temperatur != '&nbsp' %}
+          {{ temperatur }}
+      {% endif %}
+
+      {% assign flowering = product.metafields.airf.flowering %}
+      {% if flowering and flowering != '&nbsp' %}
+          {{ flowering }}
+      {% endif %}
+
+      {% assign re-potting = product.metafields.airf.re-potting %}
+      {% if re-potting and re-potting != '&nbsp' %}
+          {{ re-potting }}
+      {% endif %}
+
+      {% assign disea_pest = product.metafields.airf.disea_pest %}
+      {% if disea_pest and disea_pest != '&nbsp' %}
+          {{ disea_pest }}
+      {% endif %}
+
+      {% assign toxicity = product.metafields.airf.toxicity %}
+      {% if toxicity and toxicity != '&nbsp' %}
+          {{ toxicity }}
+      {% endif %}
+
+      {% if share_enabled %}
+        <div class="product-page--social-media">
+          {% render 'partial--social-share', position: 'product' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Product page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "vendor-name-show",
+      "label": "Show vendor name",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "description-under-form",
+      "label": "Show description below buttons",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "variant-style",
+      "label": "Product variant style",
+      "options": [
+        { "label": "Dropdowns", "value": "dropdowns" },
+        { "label": "Buttons", "value": "buttons" }
+      ],
+      "default": "dropdowns"
+    },
+    {
+      "type": "checkbox",
+      "id": "swatches-enabled",
+      "label": "Enable color swatches",
+      "default": false,
+      "info": "Automatically turn color options into swatches. [Learn more](https://support.troopthemes.com/guide/color-swatch-guide)"
+    },
+    {
+      "type": "checkbox",
+      "id": "smart_payment_button",
+      "label": "Show dynamic checkout button",
+      "info": "Lets customers check out directly using a familiar payment method. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product-sold-out-form-show",
+      "label": "Show notification form when product is sold out"
+    },
+    {
+      "label": "Show low in stock notice when quantity is",
+      "id": "low-in-stock-amount",
+      "type": "range",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "info": "Set to 0 to disable this feature. Updated for each variant."
+    },
+    {
+      "type": "checkbox",
+      "id": "product-pickup-enabled",
+      "label": "Enable product pickup",
+      "default": true,
+      "info": "Learn more about [local pickup](https://help.shopify.com/en/manual/sell-in-person/pos-classic/shopify-pos-from-admin/buy-online-pickup-in-store)."
+    },
+    {
+      "type": "checkbox",
+      "id": "share",
+      "label": "Enable social sharing",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "paragraph",
+      "content": "Learn more about [media types](https://help.shopify.com/en/manual/products/product-media)."
+    },
+    {
+      "type": "checkbox",
+      "id": "product-modal-enabled",
+      "label": "Enable modal popup",
+      "default": true,
+      "info": "Opens when clicking featured product image"
+    },
+    {
+      "type": "checkbox",
+      "id": "image-zoom-enabled",
+      "label": "Enable image zoom",
+      "default": true,
+      "info": "Triggers when you roll your mouse over an image"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop-enabled",
+      "label": "Enable video looping",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Size chart"
+    },
+    {
+      "type": "checkbox",
+      "id": "product-size-chart-enabled",
+      "label": "Enable",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "product-size-chart-option",
+      "label": "Link from option",
+      "default": "size"
+    },
+    {
+      "type": "page",
+      "id": "product-size-chart-page-content",
+      "label": "Page content"
+    }
+  ]
+}
+{% endschema %}

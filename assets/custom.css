@@ -1,0 +1,61 @@
+.product-description-accordion .accordion-panel {
+  display: none;
+}
+.active{
+  display: block !important;
+  max-height: 500px;
+  transition: all 5s ease;
+}
+.accordion-wrapper{
+	position: relative;
+}
+.product-description-accordion {
+    margin-top: 32px;
+    width: 100%;
+    background: #fff;
+}
+.accordion-button {
+    font-family: "IBM Plex Sans",sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    cursor: pointer;
+    color: #155157;
+    border-radius: 3px;
+    padding: 20px 0;
+    display: block;
+    letter-spacing: .1rem;
+    border-top: 1px solid rgba(34,66,41,.16);
+    text-transform: uppercase;
+}
+
+.accordion-button::before{
+  	border-color: #224229;
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    content: "";
+    height: 6px;
+    position: absolute;
+    right: 16px;
+    top: 28px;
+    transform: rotate(135deg);
+    width: 6px;
+}
+.accordion-button.active::before{
+	top: 30px;
+    transform: rotate(-45deg);
+}
+.accordion-wrapper:last-child .accordion-button{
+  border-bottom: 1px solid rgba(34,66,41,.16);
+}
+.accordion-panel{
+	border-top: 1px solid rgba(34,66,41,.16);
+  	padding: 20px 0;
+}
+.accordion-wrapper:last-child .accordion-panel{
+  border-top: none;
+  border-bottom: 1px solid rgba(34,66,41,.16);
+}
+.accordion-panel p {
+    font-size: 16px;
+}
