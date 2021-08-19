@@ -288,6 +288,7 @@
           "1620626568f9a23d1a-1": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Wooden_Flower_Pot_Filled.png",
               "title": "Pots & Planters",
               "description": "<p>Pot, we really like POT!!!<\/p>",
               "link-url": "shopify:\/\/collections\/pots",
@@ -308,7 +309,7 @@
             "type": "image",
             "settings": {
               "title": "Garden Gifts",
-              "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
+              "description": "<p>We ain't got no stinking gifts!!<\/p>",
               "link-url": "",
               "link-text": "View more"
             }
