@@ -275,39 +275,39 @@
       },
       "1620626568f9a23d1a": {
         "type": "framework--grid-with-text-below",
-        "disabled": true,
         "blocks": {
           "1620626568f9a23d1a-0": {
             "type": "image",
             "settings": {
-              "title": "Grid image",
-              "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
-              "link-url": "",
+              "title": "Bags & Apparel",
+              "description": "<p>We've got alot of cool garden bags & apparel<\/p>",
+              "link-url": "shopify:\/\/collections\/bags-apparel",
               "link-text": "View more"
             }
           },
           "1620626568f9a23d1a-1": {
             "type": "image",
             "settings": {
-              "title": "Grid image",
-              "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
-              "link-url": "",
+              "title": "Pots & Planters",
+              "description": "<p>Pot, we really like POT!!!<\/p>",
+              "link-url": "shopify:\/\/collections\/pots",
               "link-text": "View more"
             }
           },
           "1620626568f9a23d1a-2": {
             "type": "image",
             "settings": {
-              "title": "Grid image",
-              "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
-              "link-url": "",
+              "image": "shopify:\/\/shop_images\/Landscape_Plants.png",
+              "title": "Tools & Accessories",
+              "description": "<p>You are a big old TOOL<\/p>",
+              "link-url": "shopify:\/\/collections\/tools-accessories",
               "link-text": "View more"
             }
           },
           "1620626568f9a23d1a-3": {
             "type": "image",
             "settings": {
-              "title": "Grid image",
+              "title": "Garden Gifts",
               "description": "<p>Explain a set of product features, add illustrations, infographics, logo lists, or link to pages.<\/p>",
               "link-url": "",
               "link-text": "View more"
@@ -327,8 +327,8 @@
           "width": 4,
           "image-width": 0,
           "mobile-width": "2",
-          "title": "Grid with text below",
-          "subtitle": "",
+          "title": "More Collections",
+          "subtitle": "Shop Online",
           "link-url": "",
           "link-text": ""
         }
@@ -337,10 +337,10 @@
         "type": "framework--image-with-text",
         "settings": {
           "background-color": "light",
-          "container-width": 6,
+          "container-width": 5,
           "spacing-above": false,
           "spacing-below": false,
-          "image-height": 4,
+          "image-height": 3,
           "darken-image": false,
           "parallax-enabled": false,
           "text-position": "left",
@@ -351,9 +351,9 @@
           "mobile-overlay": true,
           "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
           "overline": "Accessories",
-          "title": "Our Latest Pots",
-          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's about home. Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind’s about home.<\/p>",
-          "link-url": "shopify:\/\/collections\/pots",
+          "title": "Shop New Arrivals!",
+          "description": "<p>Check out what's on the horizon at America's Gardens<\/p>",
+          "link-url": "shopify:\/\/collections",
           "link-text": "Shop Now"
         }
       },
@@ -412,7 +412,7 @@
           "background-color": "none",
           "featured-collection--image--show": false,
           "featured-collection--description--show": false,
-          "display-type": "slider",
+          "display-type": "grid",
           "products-per-row--desktop": "3",
           "products-per-row--mobile": "1"
         }
@@ -728,11 +728,11 @@
       "162569576407ee477a": {
         "type": "framework--image-with-text",
         "settings": {
-          "background-color": "accent",
-          "container-width": 6,
-          "spacing-above": false,
+          "background-color": "none",
+          "container-width": 1,
+          "spacing-above": true,
           "spacing-below": true,
-          "image-height": 4,
+          "image-height": 0,
           "darken-image": false,
           "parallax-enabled": false,
           "text-position": "bottom",
@@ -741,11 +741,10 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/feature-full-bleed.png",
-          "overline": "",
-          "title": "Visit America’s Gardens for 20% OFF Annuals",
-          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's about home.<\/p>",
-          "link-url": "",
+          "overline": "Plants",
+          "title": "Visit America’s Gardens for Buy Two & Get One FREE on marked perennials!",
+          "description": "",
+          "link-url": "shopify:\/\/pages\/location",
           "link-text": "Get Directions"
         }
       },
