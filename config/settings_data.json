@@ -34,9 +34,9 @@
       "announcement": {
         "type": "announcement",
         "settings": {
-          "enabled": false,
+          "enabled": true,
           "home-page-only": false,
-          "text": "Announcement for sales, promos, shipping info & more — Click and Collect available",
+          "text": "Get Free Shipping For Online Orders OVER $100",
           "link": ""
         }
       },
@@ -179,12 +179,11 @@
       },
       "162062617873abb5fa": {
         "type": "framework--featured-text",
-        "disabled": true,
         "settings": {
           "background-color": "accent",
-          "overline": "Overline text",
-          "heading": "Introduce your brand",
-          "text": "<p>Introduce your brand, products and vision statement and welcome customers to your store.<\/p>"
+          "overline": "America's Gardens",
+          "heading": "We Know The Dirt!",
+          "text": "<p>We truly do know \"the dirt\".  We don't merely purchase and then resell our online products from innocuous growers and wholesalers but rather, we grow each live item that we resell online  at our retail location in Chattanooga, TN. That means that live and breath each and every plant as it travels from our dirt to yours!<\/p>"
         }
       },
       "162062620665c87507": {
@@ -279,6 +278,7 @@
           "1620626568f9a23d1a-0": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Bags_Apparel1_4x4_6888193c-8cd7-4ddd-9f64-1962a7bf222b.png",
               "title": "Bags & Apparel",
               "description": "<p>We've got alot of cool garden bags & apparel<\/p>",
               "link-url": "shopify:\/\/collections\/bags-apparel",
@@ -288,7 +288,7 @@
           "1620626568f9a23d1a-1": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Wooden_Flower_Pot_Filled.png",
+              "image": "shopify:\/\/shop_images\/Face_Pot1_4x4_ddae1cfa-abbb-4278-8bd2-99c52b0caa81.png",
               "title": "Pots & Planters",
               "description": "<p>Pot, we really like POT!!!<\/p>",
               "link-url": "shopify:\/\/collections\/pots",
@@ -298,7 +298,7 @@
           "1620626568f9a23d1a-2": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Landscape_Plants.png",
+              "image": "shopify:\/\/shop_images\/Tools1_4x4_289bcd3b-22e3-4c94-be26-630e79cbf333.png",
               "title": "Tools & Accessories",
               "description": "<p>You are a big old TOOL<\/p>",
               "link-url": "shopify:\/\/collections\/tools-accessories",
@@ -308,6 +308,7 @@
           "1620626568f9a23d1a-3": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
               "title": "Garden Gifts",
               "description": "<p>We ain't got no stinking gifts!!<\/p>",
               "link-url": "",
@@ -350,12 +351,12 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
-          "overline": "Accessories",
-          "title": "Shop New Arrivals!",
+          "image": "shopify:\/\/shop_images\/Coming_Soon.png",
+          "overline": "On Line",
+          "title": "Sneak Peek At What's Growing....",
           "description": "<p>Check out what's on the horizon at America's Gardens<\/p>",
-          "link-url": "shopify:\/\/collections",
-          "link-text": "Shop Now"
+          "link-url": "shopify:\/\/products\/dischidia-ruscifolia-ger-ant-plant",
+          "link-text": "Have A Look"
         }
       },
       "1620626665f401fe84": {
@@ -411,10 +412,10 @@
         "settings": {
           "collection": "featured-plants",
           "background-color": "none",
-          "featured-collection--image--show": false,
+          "featured-collection--image--show": true,
           "featured-collection--description--show": false,
           "display-type": "grid",
-          "products-per-row--desktop": "3",
+          "products-per-row--desktop": "4",
           "products-per-row--mobile": "1"
         }
       },
@@ -728,6 +729,7 @@
       },
       "162569576407ee477a": {
         "type": "framework--image-with-text",
+        "disabled": true,
         "settings": {
           "background-color": "none",
           "container-width": 1,
