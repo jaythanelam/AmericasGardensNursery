@@ -401,6 +401,7 @@
       },
       "1620626720192887ce": {
         "type": "framework--newsletter",
+        "disabled": true,
         "settings": {
           "background-color": "light",
           "heading": "Get Our Latest Promotions",
@@ -817,6 +818,63 @@
           "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>",
           "image": "shopify:\/\/shop_images\/map_2x_bec346a2-2f0d-44d6-896c-002def5b7083.png"
         }
+      },
+      "16296677428bd0b34b": {
+        "type": "sts_review_slider",
+        "disabled": true,
+        "settings": {
+          "title": "What Our Customers Think..",
+          "titlehtmltype": "h2",
+          "titlehtmlloc": "center",
+          "ststtemplateid": "10415",
+          "margintop": 0,
+          "marginlr": 40,
+          "marginbottom": 0
+        }
+      },
+      "16296680153dcd395d": {
+        "type": "testimonials",
+        "blocks": {
+          "16296680153dcd395d-0": {
+            "type": "quote",
+            "settings": {
+              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.<\/p>",
+              "author": "Author's name",
+              "author_link": ""
+            }
+          },
+          "16296680153dcd395d-1": {
+            "type": "quote",
+            "settings": {
+              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.<\/p>",
+              "author": "Author's name",
+              "author_link": ""
+            }
+          },
+          "16296680153dcd395d-2": {
+            "type": "quote",
+            "settings": {
+              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.<\/p>",
+              "author": "Author's name",
+              "author_link": ""
+            }
+          }
+        },
+        "block_order": [
+          "16296680153dcd395d-0",
+          "16296680153dcd395d-1",
+          "16296680153dcd395d-2"
+        ],
+        "settings": {
+          "slider": 1.5,
+          "delay": 5,
+          "title": "What Our Customers Are Saying..",
+          "header_font_size": 41,
+          "heading_color": "#faae42",
+          "author_color": "#faae42",
+          "quote_color": "#155157",
+          "heading_font": "alegreya_sans_i5"
+        }
       }
     },
     "content_for_index": [
@@ -824,14 +882,16 @@
       "1620626889eaeb067c",
       "162062620665c87507",
       "1620626699934396bb",
+      "1620626568f9a23d1a",
       "1620626621ffef6b4f",
       "162569576407ee477a",
       "16206262299afb5b3e",
-      "1620626568f9a23d1a",
       "1620626665f401fe84",
       "162062617873abb5fa",
       "1620626720192887ce",
-      "1620626685871fc992"
+      "1620626685871fc992",
+      "16296677428bd0b34b",
+      "16296680153dcd395d"
     ]
   },
   "presets": {
