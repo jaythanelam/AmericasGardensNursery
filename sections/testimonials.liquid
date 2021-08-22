@@ -1,0 +1,273 @@
+<div class="kacher-testimonial-page-width" data-section-id="{{ section.id }}" data-section-type="quotes">
+  {% if section.settings.title != blank %}
+  <div class="kacher-testimonial-header">
+    <h2 class = "kacher-custom_header_font_testimonial">{{ section.settings.title | escape }}</h2>
+  </div>
+  {% endif %}
+
+  {% if section.blocks.size > 0 %}
+  <div>
+    <div class="kacher-slick-list">
+      <ul class="slick-track-list">
+        {% for block in section.blocks %}
+        <li class="item ">
+          <blockquote>
+            <span class="quote-icon kacher-square">
+              <div class="kacher-square-content">
+                {% if block.settings.image != blank %}
+                {{ block.settings.image | img_url: '160x160', scale: 2 | img_tag: block.settings.image.alt}}
+                {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+            </span>
+
+            {% if block.settings.quote != blank %}
+            <div class="rte-setting kacher-quote">
+              {{ block.settings.quote }}
+            </div>
+            {% endif %}
+            {% if block.settings.author != blank %}
+            {% if block.settings.author_link != blank %}
+            <kacher><a href="{{block.settings.author_link}}">@{{ block.settings.author | escape }}</a></kacher>
+            {% else %}
+            <kacher>{{ block.settings.author | escape }}</kacher>
+            {% endif %}
+            {% endif %}
+          </blockquote>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+</div>
+
+<style lang="scss">
+  {% assign header_font = section.settings.heading_font %}
+  {{ header_font | font_face }}
+
+  .kacher-quote p {
+    color: {{ section.settings.quote_color }};
+  }
+  .kacher-testimonial-page-width {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  .kacher-testimonial-header {
+    text-align: center;
+    margin-bottom: 55px;
+  }
+  .kacher-custom_header_font_testimonial {
+    font-family :  {{ header_font.family }},{{ header_font.fallback_families }};
+    color : {{ section.settings.heading_color }} !important;
+    font-size: {{ section.settings.header_font_size }}px !important;
+  }
+
+  .kacher-square {
+    width: 35%;
+    min-width: 100px;
+    position: relative;
+  }
+  .kacher-square:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+  .kacher-square .kacher-square-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .kacher-slick-list {
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+  }
+  .kacher-slick-list .slick-track-list .item blockquote {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    quotes: "" "";
+  }
+  .kacher-slick-list .slick-track-list .item blockquote .quote-icon {
+    display: block;
+    background-color: gainsboro;
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .kacher-slick-list .slick-track-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    white-space: nowrap;
+    font-size: 0;
+  }
+  .kacher-slick-list .slick-track-list .item {
+    width: 33.33%;
+    position: relative;
+    display: inline-block;
+    white-space: normal;
+    font-size: initial;
+    word-break: break-word;
+  }
+  .kacher-slick-list .slick-track-list .item blockquote .quote-icon.kacher-square .kacher-square-content img {
+    object-fit: contain;
+    display: block;
+    width: 100%;
+  }
+  .kacher-slick-list .slick-track-list .item blockquote kacher a {
+    color: {{ section.settings.author_color }};
+    text-decoration: underline;
+    font-style: italic;
+  }
+
+  .kacher-slick-list .slick-track-list .item blockquote kacher a:hover {
+    color: #9F745A;
+  }
+
+  @media only screen and (max-width: 749px) {
+    .kacher-slick-list .slick-track-list .item {
+      width: 100%;
+    }
+    .kacher-square {
+      width: 50%;
+    }
+  }
+
+</style>
+
+
+<script>
+
+    var speed = {{ section.settings.slider }};
+    var delay = {{ section.settings.delay }}
+  document.addEventListener("DOMContentLoaded",()=>{function a(a){for(var c=b.querySelectorAll(".item")[0].offsetWidth,d=0;d<e;d++)b.querySelectorAll(".item")[d].style.transitionTimingFunction="ease-out",b.querySelectorAll(".item")[d].style.transitionDuration=a+"s",b.querySelectorAll(".item")[d].style.right=c+"px";setTimeout(function(){var a=b.querySelectorAll(".item")[0];b.appendChild(a);for(var c=0;c<e;c++)b.querySelectorAll(".item")[c].style.transitionDuration=`0s`,b.querySelectorAll(".item")[c].style.right="0px"},1e3*a)}var b=document.querySelector(".slick-track-list"),c=b.querySelectorAll(".item").length;if(3===c)for(var d=0;d<c;d++)b.querySelectorAll(".item")[d].style.right="0px",b.appendChild(b.querySelectorAll(".item")[d].cloneNode(!0));var e=b.querySelectorAll(".item").length;setInterval(function(){a(speed)},1e3*delay)});
+</script>
+
+{% schema %}
+{
+   "name":"Testimonials",
+   "class":"index-section",
+   "max_blocks":9,
+   "settings":[
+      {
+         "type":"range",
+         "id":"slider",
+         "label":"Speed",
+         "min":1,
+         "max":3,
+         "step":0.5,
+         "default":1.5,
+         "info":"*Note: Press SAVE to see the update!"
+      },
+      {
+         "type":"range",
+         "id":"delay",
+         "label":"Delay",
+         "min":5,
+         "max":10,
+         "step":1,
+         "default":5,
+         "info":"*Note: Press SAVE to see the update!"
+      },
+      {
+         "type":"text",
+         "id":"title",
+         "label":"Heading",
+         "default":"Testimonials"
+      },
+      {
+         "type":"range",
+         "id":"header_font_size",
+         "label":"Heading Font Size",
+         "min":30,
+         "max":100,
+         "step":1,
+         "default":30
+      },
+      {
+         "type":"color",
+         "label":"Heading Color.",
+         "id":"heading_color",
+         "default":"#000"
+      },
+      {
+         "type":"color",
+         "id":"author_color",
+         "label":"Author Text Color",
+         "default":"#000"
+      },
+      {
+         "type":"color",
+         "id":"quote_color",
+         "label":"Text Color",
+         "default":"#000"
+      },
+      {
+         "type":"font_picker",
+         "label":"Heading Font.",
+         "id":"heading_font",
+         "default":"helvetica_n4"
+      }
+   ],
+   "blocks":[
+      {
+         "type":"quote",
+         "name":"Testimonial",
+         "settings":[
+            {
+               "type":"image_picker",
+               "id":"image",
+               "label":"Image"
+            },
+            {
+               "type":"richtext",
+               "id":"quote",
+               "label":"Text",
+               "default":"<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+            },
+            {
+               "type":"text",
+               "id":"author",
+               "label":"Author",
+               "default":"Author's name"
+            },
+            {
+               "type":"url",
+               "id":"author_link",
+               "label":"Author Social Profile",
+               "info":"Optional"
+            }
+         ]
+      }
+   ],
+   "presets":[
+      {
+         "name":"Testimonial Slider",
+         "category":"Advanced layout",
+         "blocks":[
+            {
+               "type":"quote"
+            },
+            {
+               "type":"quote"
+            },
+            {
+               "type":"quote"
+            }
+         ]
+      }
+   ]
+}
+
+{% endschema %}
