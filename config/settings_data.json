@@ -277,6 +277,7 @@
         "blocks": {
           "1620626568f9a23d1a-0": {
             "type": "image",
+            "disabled": true,
             "settings": {
               "image": "shopify:\/\/shop_images\/Bags_Apparel1_4x4_6888193c-8cd7-4ddd-9f64-1962a7bf222b.png",
               "title": "Bags & Apparel",
@@ -299,8 +300,8 @@
             "type": "image",
             "settings": {
               "image": "shopify:\/\/shop_images\/Tools1_4x4_289bcd3b-22e3-4c94-be26-630e79cbf333.png",
-              "title": "Tools & Accessories",
-              "description": "<p>You are a big old TOOL<\/p>",
+              "title": "Soils & Such",
+              "description": "<p>Soils, fertilizers, etc.<\/p>",
               "link-url": "shopify:\/\/collections\/tools-accessories",
               "link-text": "View more"
             }
@@ -325,11 +326,11 @@
         "settings": {
           "background-color": "light",
           "spacing": true,
-          "container-width": 4,
-          "width": 4,
+          "container-width": 6,
+          "width": 3,
           "image-width": 0,
           "mobile-width": "2",
-          "title": "More Collections",
+          "title": "Additional Products",
           "subtitle": "Shop Online",
           "link-url": "",
           "link-text": ""
@@ -883,11 +884,11 @@
       "162062620665c87507",
       "1620626699934396bb",
       "1620626568f9a23d1a",
+      "162062617873abb5fa",
       "1620626621ffef6b4f",
       "162569576407ee477a",
       "16206262299afb5b3e",
       "1620626665f401fe84",
-      "162062617873abb5fa",
       "1620626720192887ce",
       "1620626685871fc992",
       "16296677428bd0b34b",
