@@ -1,1 +1,15 @@
 {% section 'framework--account' %}
+{%- if shop.customer_accounts_enabled -%}
+  <button type="button" class="btn--link" onclick="avadaJoyTrigger();">
+    {%- if customer -%}
+      {%- assign aj_point = customer.metafields.avada_joy.point | split: '' -%}
+      {%- for digit in aj_point -%}
+        {%- assign threeFromEnd = aj_point.size | minus: forloop.index | modulo: 3 -%}
+        {%- if threeFromEnd == 2 and forloop.index != 1 -%}{{ digit | prepend: ',' }}{%- else -%}{{ digit }}{%- endif -%}
+      {% endfor %}
+      {{ customer.metafields.avada_joy.point | pluralize: 'Point', 'Points' }}
+    {%- else -%}
+      Rewards
+    {%- endif -%}
+  </button>
+{%- endif -%}

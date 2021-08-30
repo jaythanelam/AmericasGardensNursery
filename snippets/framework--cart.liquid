@@ -1,4 +1,4 @@
-{%- liquid
+<script class="cartFlagX"></script>{%- liquid
   assign your_cart_t = 'cart.your_cart' | t
   assign price_t = 'cart.price' | t
   assign quantity_t = 'cart.quantity' | t
@@ -81,7 +81,7 @@
 
                 <div class="cart--item--title">
                   <div data-item="block-heading">
-                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                    <a href="{{ item.url }}">{{ item.product.title }}<span class="tdf-cart-item-t"></span></a>
                   </div>
 
                   {% unless item.variant.title contains 'Default' %}
@@ -222,7 +222,7 @@
               >
                 <div class="cart--item--title">
                   <div data-item="block-heading">
-                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                    <a href="{{ item.url }}">{{ item.product.title }}<span class="tdf-cart-item-t"></span></a>
                   </div>
                 </div>
 
@@ -393,7 +393,7 @@
 
           <div class="cart--total">
             <div data-item="block-heading">{{ total_t }}</div>
-            <div class="cart--total--price money" data-item="accent-text">
+            <div class="cart--total--price money" data-item="accent-text"><span style="display:none" class="tdf-cart-total-flag"></span>
               {{ cart.total_price | money_with_currency }}
             </div>
           </div>

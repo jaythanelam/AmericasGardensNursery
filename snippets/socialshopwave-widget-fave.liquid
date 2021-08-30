@@ -1,0 +1,44 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% assign ssw_manual_uninstall = shop.metafields.ssw['manual_uninstall'] | plus: 0 %}
+{% assign ssw_script_tags_allowed = shop.metafields.ssw['script_tags_allowed'] | plus: 0 %}
+{% if content_for_header contains 'ssw-empty.js' or ssw_manual_uninstall == 1 or ssw_script_tags_allowed != 1 %}
+{% if product %}
+  <div id="widget-fave-html">
+  </div>
+  <script type="text/javascript" defer>
+    if(typeof sswWidgetFaveInterval == 'undefined'){
+      var sswWidgetFaveInterval = setInterval(function(){
+        if(typeof userChecked != 'undefined' && userChecked){
+          clearInterval(sswWidgetFaveInterval);
+          var data = {
+            'module': 'feed',
+            'name': 'fave',
+            'product_id': {{ product.id }},
+            'variant_id': {{ product.selected_or_first_available_variant.id }},
+            'first_variant_id': {{ product.variants.first.id }},
+            '_sid': sswCookie('hesid'),
+            'hash_key': sswCookie('hash_key'),
+            'page' : 'product'
+          };
+
+          if (sswCookie('mail_id')) {
+            data.resource_id = sswCookie('mail_id');
+            data.resource_type = 'mail';
+          }
+
+          ssw.get(sswProxyUrl + '/lite2/core/widget/index', data, function(response){
+            ssw('#widget-fave-html').html(response);
+            if(response)
+              window._sswFaveNotSync = true;
+          });
+        }
+      }, 300);
+    }
+  </script>
+{% endif %}
+{% endif %}

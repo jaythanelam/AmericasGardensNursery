@@ -1,0 +1,18 @@
+{% if content_for_header contains 'loader_2.js' %}
+{% if customer %}
+<script class="tdf_customer" data-id="{{ customer.id }}" data-e="{{ customer.email | replace: '"', '' }}" data-phone="{{ customer.phone | replace: '"', '' }}" data-name="{{ customer.name | replace: '"', '' }}" data-tags="{% for tag in customer.tags %}{{ tag | replace: '"', '' }},{% endfor %}" data-total_spent="{{ customer.total_spent }}" data-orders_count="{{ customer.orders_count }}">
+Shopify = window.Shopify || {};
+Shopify.customer_address = {{ customer.default_address | json }};
+Shopify.customer_orders = [{% for order in customer.orders %}{% if order.cancelled == false %}{ca: {{ order.created_at | date: "%s" }}, p: {{ order.total_price }}, it: [{% for line_item in order.line_items %}{v: "{{line_item.vendor | replace: '"', ''}}", t: "{{line_item.title | replace: '"', ''}}" },{% endfor %}]},{% endif %}{% endfor %}];
+</script>
+{% endif %}
+
+<script id="tdf_pxrscript" class="tdf_script5">
+Shopify = window.Shopify || {};
+Shopify.shop = Shopify.shop || 'americas-gardens-nursery.myshopify.com';
+</script>
+<script src="https://d5zu2f4xvqanl.cloudfront.net/4/fe/loader_2.js?shop=americas-gardens-nursery.myshopify.com" async></script>
+<script>
+!function(t){var e=function(e){var n,a;(n=t.createElement("script")).type="text/javascript",n.async=!0,n.src=e,(a=t.getElementsByTagName("script")[0]).parentNode.insertBefore(n,a)};setTimeout(function(){window.tdfInited||(window.altcdn=1,e("https://cdn.shopify.com/s/files/1/0013/1642/1703/t/1/assets/loader_2.js?shop=americas-gardens-nursery.myshopify.com"))},1689)}(document);
+</script>
+{% endif %}

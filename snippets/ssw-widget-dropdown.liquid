@@ -1,0 +1,15 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% assign ssw_fave_enabled = shop.metafields.ssw['fave_enabled'] | plus: 0 %}
+{% assign ssw_community_enabled = shop.metafields.ssw['community_enabled'] | plus: 0 %}
+{% if ssw_community_enabled or ssw_fave_enabled %}
+<li id="view_profile_link"><a tabindex="-1" href="/pages/profile">{{ 'socialshopwave.view_profile' | t }}</a></li>
+{% endif %}
+{% if ssw_fave_enabled == 1 %}
+<li id="view_wishlist_link"><a tabindex="-1" href="/pages/wishlist">{{ 'socialshopwave.my_faves' | t }}</a></li>
+{% endif %}
+<li id="edit_profile_link"><a tabindex="-1" href="/pages/profile-edit">{{ 'socialshopwave.edit_profile' | t }}</a></li>

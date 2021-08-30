@@ -1,0 +1,12 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% if shop.metafields.ssw.settings.auto_integrate_login == 1 %}
+<script>var sswAutoIntegrate = true;</script>
+<div style="display: none">
+  {% render 'socialshopwave-widget-auth' %}
+</div>
+{% endif %}

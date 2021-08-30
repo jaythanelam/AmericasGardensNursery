@@ -1,0 +1,76 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% if shop.customer_accounts_enabled %}
+  {% if customer %}
+    {% capture the_snippet_auth %}{% render 'socialshopwave-widget-auth' %}{% endcapture %}
+    {% unless the_snippet_auth contains 'Liquid error' %}
+    {{ the_snippet_auth }}
+    {% endunless %}
+  {% else %}
+    <span class="ssw-auth-dropdown">
+          <span class="ssw-auth-dropdown-register">
+            <a href="/account/register">{{ 'socialshopwave.sign_up' | t }}</a>
+          </span>
+          <span class="ssw-dropdown">
+            <a href="javascript:void(0);" class="ssw-dropdown-toggle" data-toggle="ssw-dropdown">
+              {{ 'socialshopwave.log_in' | t }}
+              <i class="ssw-icon-down-open-big"></i>
+            </a>
+            <ul class="ssw-dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <li>
+                <form method="post" action="/account/login">
+                  <div class="ssw-auth-dropdown-message"></div>
+                  <div class="ssw-control-group">
+                    <input name="customer[email]" type="email" placeholder="{{ 'socialshopwave.email_address' | t }}" class="ssw-input-block-level" required="required">
+                  </div>
+                  <div class="ssw-control-group">
+                    <input name="customer[password]" type="password" placeholder="{{ 'socialshopwave.password' | t }}" class="ssw-input-block-level" required="required">
+                  </div>
+                  <div class="ssw-control-group">
+                    <a href="account/login#recover" class="ssw-pull-right">{{ 'socialshopwave.forgot_password' | t }}</a>
+                    <div class="ssw-clearfix"></div>
+                  </div>
+                  <div class="ssw-control-group">
+                    <input type="submit" class="btn button ssw-input-block-level" value="{{ 'socialshopwave.log_in' | t }}">
+                  </div>
+                </form>
+              </li>
+              <li class="ssw-divider"></li>
+              <li>
+                <div class="ssw-socialconnect social_networks_icon_for_dropdown">
+                  {% capture ssw_social_buttons %}{% render 'ssw-social-buttons' %}{% endcapture %}
+                  {% unless ssw_social_buttons contains 'Liquid error' %}
+                  {{ ssw_social_buttons }}
+                  {% endunless %}
+                </div>
+              </li>
+            </ul>
+          </span>
+		</span>
+    <script type="text/javascript">
+      /* global sswRun */
+      sswRun(function () {
+        let options = {
+          rootMargin: '0px',
+          threshold: 0.1
+        }
+        let callback = function (entries, observer) {
+          if (entries[0].isIntersecting) {
+            let loader = Ssw.gwAssetsManifestLoader;
+            loader.requireByKey("lib.dropdown.css", "STYLE");
+            loader.requireByKey("lib.dropdown.js", "SCRIPT");
+            loader.requireByKey("login.main.css", "STYLE");
+            loader.requireByKey("login.main.js", "SCRIPT");
+            observer.unobserve(entries[0].target);
+          }
+        };
+        let observer = new IntersectionObserver(callback, options);
+        observer.observe(document.querySelector('.ssw-auth-dropdown'));
+      });
+    </script>
+  {% endif %}
+{% endif %}

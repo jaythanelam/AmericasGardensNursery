@@ -87,7 +87,7 @@
       <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer="defer"></script>
     {% endif %}
 
-    {{ content_for_header }}
+    {% render 'treedify' %}{{ content_for_header }}
 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -103,6 +103,10 @@
     data-theme-version="1.0.0"
     data-tabbing="false"
   >
+{% capture the_snippet_content %}{% render 'socialshopwave-helper' %}{% endcapture %}
+            {% unless the_snippet_content contains 'Liquid error' %}
+              {{ the_snippet_content }}
+            {% endunless %}
     {% unless request.page_type == 'password' %}
       <a data-item="a11y-button" href='#main-content'>
         {{ 'general.skip_link' | t }}
@@ -130,6 +134,7 @@
     <main class="layout--main-content" id="main-content">
 
       {{ content_for_layout }}
+	<noscript class="endOfLayoutContentX" type="text/mark"></noscript>{% render 'treedify_script' %}
 
     </main>
 

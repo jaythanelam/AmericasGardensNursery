@@ -1,0 +1,1 @@
+<script class="productInfox" type="text/info" data-id="{{product.id}}" data-ava="{{product.available}}" data-vars="{% for variant in product.variants %}{%if variant.available %}{{variant.id}},{%endif%}{% endfor %}" data-cols="{% for collection in product.collections %}{{collection.id}},{% endfor %}"></script>
