@@ -1,0 +1,17 @@
+{% if customer %}
+    {% assign lootly_customer_id = customer.id %}
+    {% assign lootly_customer_signature = customer.id | append: shop.metafields['lootly'].api_secret | md5 %}
+{% endif %}
+{% if shop %}
+    {% assign lootly_shop_domain = shop.permanent_domain %}
+    {% assign lootly_shop_signature = shop.permanent_domain | append: shop.metafields['lootly'].api_secret | md5 %}
+{% endif %}
+
+<div id="lootly-widget" class="lootly-init" style="display: none"
+    data-provider="https://lootly.io"
+    data-api-key="{{ shop.metafields['lootly'].api_key }}"
+    data-shop-domain="{{ lootly_shop_domain }}"
+    data-shop-id="{{ lootly_shop_signature }}"
+    data-customer-id="{{ lootly_customer_id }}"
+    data-customer-signature="{{ lootly_customer_signature }}">
+</div>
