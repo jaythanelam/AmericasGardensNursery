@@ -1,0 +1,15 @@
+<script>
+  window.AVADA_JOY = window.AVADA_JOY || {};
+  window.AVADA_JOY.shopId = 'OynW0yzN3NcmW8kuFNV3';
+  window.AVADA_JOY.status = true;
+  window.AVADA_JOY.account_enabled = {{ shop.customer_accounts_enabled }};
+  window.AVADA_JOY.login_url = {{ routes.account_login_url | json }};
+  window.AVADA_JOY.register_url = {{ routes.account_register_url | json }};
+  window.AVADA_JOY.customer = {
+    id: {{ customer.id | json }},
+    email: {{ customer.email | json }},
+    first_name: {{ customer.first_name | json }},
+    last_name: {{ customer.last_name | json }},
+    point: {{ customer.metafields.avada_joy.point | json }}
+  };
+</script>
