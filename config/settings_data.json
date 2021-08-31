@@ -34,7 +34,7 @@
       "announcement": {
         "type": "announcement",
         "settings": {
-          "enabled": true,
+          "enabled": false,
           "home-page-only": false,
           "text": "Get Free Shipping For Online Orders OVER $100",
           "link": ""
@@ -454,11 +454,11 @@
           "alternative-color": true,
           "mobile-overlay": true,
           "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
-          "overline": "Overline text",
-          "title": "Latest Promotion Here",
-          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
+          "overline": "Nursery",
+          "title": "Perennial Sale!",
+          "description": "<p>Come on into the garden center and buy two marked one gallon perennials and get one FREE!<\/p>",
           "link-url": "",
-          "link-text": "Shop Now"
+          "link-text": ""
         }
       },
       "framework--collection--navigation": {
@@ -485,7 +485,7 @@
           "show-sort-by-list": true,
           "show-refine-list": true,
           "show-search-link": true,
-          "tag-groups-enabled": false
+          "tag-groups-enabled": true
         }
       },
       "framework--collection--body": {
@@ -493,6 +493,7 @@
         "blocks": {
           "13718f13-9b6f-4172-baba-54c57dd65be8": {
             "type": "promotion",
+            "disabled": true,
             "settings": {
               "only-on-collection": "",
               "row-number": 2,
@@ -839,8 +840,9 @@
           "16296680153dcd395d-0": {
             "type": "quote",
             "settings": {
-              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.<\/p>",
-              "author": "Author's name",
+              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
+              "quote": "<p>I LOVE America's Gardens! They have a really good selection of quality plants, unbeatable service and great prices. The staff is friendly, helpful and knowledgeable and they make the often overwhelming process of landscaping super easy. There's even a cute gift shop!<\/p>",
+              "author": "Angela Rich",
               "author_link": ""
             }
           },
