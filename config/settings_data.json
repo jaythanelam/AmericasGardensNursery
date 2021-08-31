@@ -34,7 +34,7 @@
       "announcement": {
         "type": "announcement",
         "settings": {
-          "enabled": false,
+          "enabled": true,
           "home-page-only": false,
           "text": "Get Free Shipping For Online Orders OVER $100",
           "link": ""
@@ -424,22 +424,22 @@
       "framework--collection--header": {
         "type": "framework--collection--header",
         "settings": {
-          "enable-header": false,
+          "enable-header": true,
           "show-title": true,
           "title-alignment": "left",
           "show-description": true,
           "show-image": true,
-          "use-image-fallback": true,
+          "use-image-fallback": false,
           "image-height": "medium",
           "alt-color": true,
-          "apply-overlay": true
+          "apply-overlay": false
         }
       },
       "framework--collection--header-promotion": {
         "type": "framework--collection--header-promotion",
         "settings": {
           "show": true,
-          "only-on-collection": "",
+          "only-on-collection": "featured-plants",
           "background-color": "light",
           "container-width": 6,
           "spacing-above": false,
@@ -454,9 +454,9 @@
           "alternative-color": true,
           "mobile-overlay": true,
           "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
-          "overline": "Nursery",
-          "title": "Perennial Sale!",
-          "description": "<p>Come on into the garden center and buy two marked one gallon perennials and get one FREE!<\/p>",
+          "overline": "Shop Online",
+          "title": "Shop On Line With Us!",
+          "description": "",
           "link-url": "",
           "link-text": ""
         }
@@ -493,7 +493,6 @@
         "blocks": {
           "13718f13-9b6f-4172-baba-54c57dd65be8": {
             "type": "promotion",
-            "disabled": true,
             "settings": {
               "only-on-collection": "",
               "row-number": 2,
@@ -531,7 +530,7 @@
       "framework--collection--footer-promotion": {
         "type": "framework--collection--footer-promotion",
         "settings": {
-          "show": true,
+          "show": false,
           "only-on-collection": "",
           "background-color": "light",
           "container-width": 6,
@@ -559,18 +558,21 @@
         "blocks": {
           "8a8f731b-0af6-401a-9364-db175d3e945b": {
             "type": "collection",
+            "disabled": true,
             "settings": {
               "collection": "bags-apparel"
             }
           },
           "f3efe863-6589-4dd5-915d-8b7ce81e33db": {
             "type": "collection",
+            "disabled": true,
             "settings": {
               "collection": "plant-care"
             }
           },
           "8df3f7ed-d578-4cde-b7c1-16e5eef63a65": {
             "type": "collection",
+            "disabled": true,
             "settings": {
               "collection": "tools-accessories"
             }
@@ -585,7 +587,7 @@
           "background-color": "accent",
           "width": 3,
           "mobile-width": "2",
-          "heading": "We Deliver Bulk Products"
+          "heading": "We Deliver Bulk Products!"
         }
       },
       "framework--image-with-text": {
@@ -595,19 +597,18 @@
           "container-width": 6,
           "spacing-above": false,
           "spacing-below": false,
-          "image-height": 3,
+          "image-height": 0,
           "darken-image": true,
           "parallax-enabled": false,
-          "text-position": "center",
+          "text-position": "top",
           "text-width": "large",
           "overlap": false,
-          "box-around-text": false,
+          "box-around-text": true,
           "alternative-color": true,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/ad-full-bleed_2x_597f4246-0c6f-48c6-8978-91ceb0f7e51e.png",
           "overline": "",
-          "title": "All Cactus 20% OFF",
-          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture.<\/p>",
+          "title": "",
+          "description": "",
           "link-url": "",
           "link-text": ""
         }
@@ -617,8 +618,8 @@
         "settings": {
           "collection": "featured-plants",
           "background-color": "none",
-          "featured-collection--image--show": false,
-          "featured-collection--description--show": false,
+          "featured-collection--image--show": true,
+          "featured-collection--description--show": true,
           "display-type": "slider",
           "products-per-row--desktop": "4",
           "products-per-row--mobile": "1"
@@ -760,8 +761,8 @@
           "background-color": "none",
           "container-width": 6,
           "spacing-above": false,
-          "spacing-below": false,
-          "image-height": 4,
+          "spacing-below": true,
+          "image-height": 2,
           "darken-image": true,
           "parallax-enabled": false,
           "text-position": "left",
@@ -771,9 +772,9 @@
           "alternative-color": false,
           "mobile-overlay": true,
           "image": "shopify:\/\/shop_images\/gardner-half-tall.png",
-          "overline": "America's Garden Nursery",
-          "title": "We Know the Dirt",
-          "description": "<p>Realm of the galaxies across the centuries the carbon in our apple pies vanquish the impossible another world venture. Dream of the mind's eye muse about home.<\/p>",
+          "overline": "America's Gardens Nursery",
+          "title": "Come Visit Our Store!",
+          "description": "<p>We have a full garden center nursery located at Chattanooga, TN. <\/p>",
           "link-url": "",
           "link-text": "Visit"
         }
@@ -817,7 +818,7 @@
           "theme": "grayscale",
           "heading": "We Welcome You to Visit Us in Red Bank.",
           "address": "<p>4637 Dayton Blvd.<br\/>Chattanooga, TN 37415<\/p>",
-          "hours": "<p>Monday - Friday<br\/>10am - 6pm<br\/><br\/>Saturday - Sunday<br\/>12pm - 5pm<\/p>",
+          "hours": "<p>Monday - Saturday<br\/>9am - 6pm<br\/><br\/>Closed Sunday<br\/><\/p>",
           "image": "shopify:\/\/shop_images\/map_2x_bec346a2-2f0d-44d6-896c-002def5b7083.png"
         }
       },
@@ -877,6 +878,26 @@
           "author_color": "#faae42",
           "quote_color": "#155157",
           "heading_font": "alegreya_sans_i5"
+        }
+      },
+      "product-accordion": {
+        "type": "product-accordion",
+        "settings": {
+          "vendor-name-show": false,
+          "description-under-form": false,
+          "variant-style": "dropdowns",
+          "swatches-enabled": false,
+          "smart_payment_button": true,
+          "product-sold-out-form-show": false,
+          "low-in-stock-amount": 0,
+          "product-pickup-enabled": true,
+          "share": true,
+          "product-modal-enabled": true,
+          "image-zoom-enabled": true,
+          "loop-enabled": false,
+          "product-size-chart-enabled": false,
+          "product-size-chart-option": "size",
+          "product-size-chart-page-content": ""
         }
       }
     },
