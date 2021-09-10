@@ -183,7 +183,7 @@
           "background-color": "accent",
           "overline": "America's Gardens",
           "heading": "We Know The Dirt!",
-          "text": "<p>We truly do know \"the dirt\".  We don't merely purchase and then resell our online products from innocuous growers and wholesalers but rather, we grow each live item that we resell online  at our retail location in Chattanooga, TN. That means that live and breath each and every plant as it travels from our dirt to yours!<\/p>"
+          "text": "<p>We truly do know \"the dirt\".  We don't merely purchase and then resell our online products from innocuous growers and wholesalers but rather, we grow each live item that we resell online  at our retail location in Chattanooga, TN. That means that live and breathe each and every plant as it travels from our dirt to yours!<\/p>"
         }
       },
       "162062620665c87507": {
@@ -315,19 +315,29 @@
               "link-url": "",
               "link-text": "View more"
             }
+          },
+          "9be76971-a97f-4afc-bab5-63ecb5dd9428": {
+            "type": "image",
+            "settings": {
+              "title": "Home Goods",
+              "description": "<p>Goods for your lovely HOME<\/p>",
+              "link-url": "",
+              "link-text": "View more"
+            }
           }
         },
         "block_order": [
           "1620626568f9a23d1a-0",
           "1620626568f9a23d1a-1",
           "1620626568f9a23d1a-2",
-          "1620626568f9a23d1a-3"
+          "1620626568f9a23d1a-3",
+          "9be76971-a97f-4afc-bab5-63ecb5dd9428"
         ],
         "settings": {
           "background-color": "light",
           "spacing": true,
           "container-width": 6,
-          "width": 3,
+          "width": 4,
           "image-width": 0,
           "mobile-width": "2",
           "title": "Additional Products",
