@@ -286,6 +286,26 @@
               "link-text": "View more"
             }
           },
+          "1620626568f9a23d1a-3": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Chimes_Home_Goods.png",
+              "title": "Garden Gifts",
+              "description": "<p>For that special gift!<\/p>",
+              "link-url": "shopify:\/\/products\/thanks-for-helping-me-grow-pot-w-starfish-sansevieria",
+              "link-text": "View more"
+            }
+          },
+          "9be76971-a97f-4afc-bab5-63ecb5dd9428": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
+              "title": "Home Goods",
+              "description": "<p>Unique gifts for your home<\/p>",
+              "link-url": "shopify:\/\/collections\/home-goods",
+              "link-text": "View more"
+            }
+          },
           "1620626568f9a23d1a-1": {
             "type": "image",
             "settings": {
@@ -305,34 +325,14 @@
               "link-url": "shopify:\/\/collections\/tools-accessories",
               "link-text": "View more"
             }
-          },
-          "1620626568f9a23d1a-3": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Chimes_Home_Goods.png",
-              "title": "Garden Gifts",
-              "description": "<p>For that special gift!<\/p>",
-              "link-url": "shopify:\/\/collections",
-              "link-text": "View more"
-            }
-          },
-          "9be76971-a97f-4afc-bab5-63ecb5dd9428": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
-              "title": "Home Goods",
-              "description": "<p>Unique gifts for your home<\/p>",
-              "link-url": "shopify:\/\/collections\/home-goods",
-              "link-text": "View more"
-            }
           }
         },
         "block_order": [
           "1620626568f9a23d1a-0",
-          "1620626568f9a23d1a-1",
-          "1620626568f9a23d1a-2",
           "1620626568f9a23d1a-3",
-          "9be76971-a97f-4afc-bab5-63ecb5dd9428"
+          "9be76971-a97f-4afc-bab5-63ecb5dd9428",
+          "1620626568f9a23d1a-1",
+          "1620626568f9a23d1a-2"
         ],
         "settings": {
           "background-color": "light",
@@ -351,13 +351,13 @@
         "type": "framework--image-with-text",
         "settings": {
           "background-color": "light",
-          "container-width": 5,
-          "spacing-above": false,
-          "spacing-below": false,
-          "image-height": 3,
+          "container-width": 4,
+          "spacing-above": true,
+          "spacing-below": true,
+          "image-height": 2,
           "darken-image": false,
           "parallax-enabled": false,
-          "text-position": "left",
+          "text-position": "right",
           "text-width": "small",
           "overlap": false,
           "box-around-text": false,
@@ -437,7 +437,7 @@
         "settings": {
           "enable-header": true,
           "show-title": true,
-          "title-alignment": "left",
+          "title-alignment": "center",
           "show-description": true,
           "show-image": true,
           "use-image-fallback": false,
