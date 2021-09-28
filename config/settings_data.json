@@ -286,6 +286,15 @@
               "link-text": "View more"
             }
           },
+          "0d5ecbe1-c335-455f-bdcb-a17cee8e1430": {
+            "type": "image",
+            "settings": {
+              "title": "Featured Plants",
+              "description": "<p>Houseplants to love!<\/p>",
+              "link-url": "",
+              "link-text": "View more"
+            }
+          },
           "1620626568f9a23d1a-3": {
             "type": "image",
             "settings": {
@@ -329,6 +338,7 @@
         },
         "block_order": [
           "1620626568f9a23d1a-0",
+          "0d5ecbe1-c335-455f-bdcb-a17cee8e1430",
           "1620626568f9a23d1a-3",
           "9be76971-a97f-4afc-bab5-63ecb5dd9428",
           "1620626568f9a23d1a-1",
@@ -338,10 +348,10 @@
           "background-color": "light",
           "spacing": true,
           "container-width": 6,
-          "width": 4,
+          "width": 5,
           "image-width": 0,
           "mobile-width": "2",
-          "title": "Additional Products",
+          "title": "Collections",
           "subtitle": "Shop Online",
           "link-url": "",
           "link-text": ""
@@ -422,6 +432,7 @@
       },
       "1620626889eaeb067c": {
         "type": "framework--featured-collection",
+        "disabled": true,
         "settings": {
           "collection": "featured-plants",
           "background-color": "none",
@@ -439,8 +450,8 @@
           "show-title": true,
           "title-alignment": "center",
           "show-description": true,
-          "show-image": true,
-          "use-image-fallback": false,
+          "show-image": false,
+          "use-image-fallback": true,
           "image-height": "medium",
           "alt-color": true,
           "apply-overlay": false
@@ -449,7 +460,7 @@
       "framework--collection--header-promotion": {
         "type": "framework--collection--header-promotion",
         "settings": {
-          "show": true,
+          "show": false,
           "only-on-collection": "featured-plants",
           "background-color": "light",
           "container-width": 6,
@@ -505,8 +516,8 @@
           "13718f13-9b6f-4172-baba-54c57dd65be8": {
             "type": "promotion",
             "settings": {
-              "only-on-collection": "",
-              "row-number": 2,
+              "only-on-collection": "featured-plants",
+              "row-number": 1,
               "column-number": 1,
               "promo-width": 2,
               "background-color": "light",
@@ -516,8 +527,8 @@
               "image-size": "fit-to-container",
               "overline": "Overline text",
               "title": "Grid promotion",
-              "description": "<p>Create eye-catching promos within collection grids to increase discoverability and accelerate conversions.<\/p>",
-              "link-url": "",
+              "description": "<p>\"Aloe\" to America's Gardens On Line Ordering. We're so glad to have you that we're giving a free Aloe plant to each new customer for the first week of October!<\/p>",
+              "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": "Optional link"
             }
           }
@@ -528,7 +539,7 @@
         "settings": {
           "products-per-row--desktop": 4,
           "products-per-row--mobile": "1",
-          "number-of-rows": 6
+          "number-of-rows": 4
         }
       },
       "framework--recent-products": {
