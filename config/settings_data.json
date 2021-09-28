@@ -363,7 +363,7 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Coming_Soon2.png",
+          "image": "shopify:\/\/shop_images\/Coming_Soon3_0478bd06-bcb3-4e95-ac13-5a87f77b40d3.png",
           "overline": "On Line",
           "title": "Sneak Peek At What's Growing....",
           "description": "<p>Check out what's on the horizon at America's Gardens<\/p>",
@@ -727,7 +727,7 @@
           "low-in-stock-amount": 1,
           "product-pickup-enabled": true,
           "share": true,
-          "product-modal-enabled": true,
+          "product-modal-enabled": false,
           "image-zoom-enabled": true,
           "loop-enabled": false,
           "product-size-chart-enabled": false,
@@ -883,7 +883,7 @@
           "16296680153dcd395d-2"
         ],
         "settings": {
-          "slider": 1.5,
+          "slider": 1,
           "delay": 5,
           "title": "What Our Customers Are Saying..",
           "header_font_size": 41,
