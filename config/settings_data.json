@@ -149,7 +149,7 @@
               "overline": "America's Garden Nursery",
               "title": "We Know The Dirt!",
               "description": "<p><br\/>\"There is no power for change greater than a community discovering what it cares about.\" – <strong>Margaret J. Wheatley<\/strong><br\/><br\/><\/p>",
-              "link-url": "shopify:\/\/collections\/all",
+              "link-url": "shopify:\/\/collections",
               "link-text": "View more"
             }
           }
@@ -357,12 +357,12 @@
           "darken-image": false,
           "parallax-enabled": false,
           "text-position": "left",
-          "text-width": "large",
+          "text-width": "small",
           "overlap": false,
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Coming_Soon.png",
+          "image": "shopify:\/\/shop_images\/Coming_Soon2.png",
           "overline": "On Line",
           "title": "Sneak Peek At What's Growing....",
           "description": "<p>Check out what's on the horizon at America's Gardens<\/p>",
@@ -860,16 +860,18 @@
           "16296680153dcd395d-1": {
             "type": "quote",
             "settings": {
-              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.<\/p>",
-              "author": "Author's name",
+              "image": "shopify:\/\/shop_images\/Snow_Lady_Shasta_Daisy.jpg",
+              "quote": "<p>On so many occasions, I've asked Denise questions about my lawn, plants and so many other garden questions. She's always been generous with her knowledge and time. She keeps me in line!<\/p>",
+              "author": "Keirl King",
               "author_link": ""
             }
           },
           "16296680153dcd395d-2": {
             "type": "quote",
             "settings": {
-              "quote": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.<\/p>",
-              "author": "Author's name",
+              "image": "shopify:\/\/shop_images\/Purple_Smoke_Tree.jpg",
+              "quote": "<p>I've been in the garden center on several occasions and the staff has always been so helpful! I love the small town feel of the place.<\/p>",
+              "author": "John Garland",
               "author_link": ""
             }
           }
