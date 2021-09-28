@@ -289,9 +289,9 @@
           "1620626568f9a23d1a-1": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Face_Pot1_4x4_ddae1cfa-abbb-4278-8bd2-99c52b0caa81.png",
+              "image": "shopify:\/\/shop_images\/Wooden_Flower_Pot_Filled.png",
               "title": "Pots & Planters",
-              "description": "<p>Pot, we really like POT!!!<\/p>",
+              "description": "<p>Indoor & Outdoor<\/p>",
               "link-url": "shopify:\/\/collections\/pots",
               "link-text": "View more"
             }
@@ -309,19 +309,20 @@
           "1620626568f9a23d1a-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
+              "image": "shopify:\/\/shop_images\/Chimes_Home_Goods.png",
               "title": "Garden Gifts",
-              "description": "<p>We ain't got no stinking gifts!!<\/p>",
-              "link-url": "",
+              "description": "<p>For that special gift!<\/p>",
+              "link-url": "shopify:\/\/collections",
               "link-text": "View more"
             }
           },
           "9be76971-a97f-4afc-bab5-63ecb5dd9428": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
               "title": "Home Goods",
-              "description": "<p>Goods for your lovely HOME<\/p>",
-              "link-url": "",
+              "description": "<p>Unique gifts for your home<\/p>",
+              "link-url": "shopify:\/\/collections\/home-goods",
               "link-text": "View more"
             }
           }
