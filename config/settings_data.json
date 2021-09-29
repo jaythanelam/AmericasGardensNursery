@@ -780,7 +780,7 @@
       "framework--image-with-text-2": {
         "type": "framework--image-with-text-2",
         "settings": {
-          "background-color": "none",
+          "background-color": "accent",
           "container-width": 6,
           "spacing-above": false,
           "spacing-below": true,
@@ -793,11 +793,11 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/gardner-half-tall.png",
+          "image": "shopify:\/\/shop_images\/Planting.jpg",
           "overline": "America's Gardens Nursery",
           "title": "Come Visit Our Store!",
           "description": "<p>We have a full garden center nursery located at Chattanooga, TN. <\/p>",
-          "link-url": "",
+          "link-url": "shopify:\/\/pages\/contact-us",
           "link-text": "Visit"
         }
       },
