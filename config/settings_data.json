@@ -628,6 +628,7 @@
           "box-around-text": true,
           "alternative-color": true,
           "mobile-overlay": true,
+          "image": "shopify:\/\/shop_images\/Perennials1.jpg",
           "overline": "",
           "title": "",
           "description": "",
@@ -782,9 +783,9 @@
         "settings": {
           "background-color": "accent",
           "container-width": 6,
-          "spacing-above": false,
+          "spacing-above": true,
           "spacing-below": true,
-          "image-height": 2,
+          "image-height": 3,
           "darken-image": true,
           "parallax-enabled": false,
           "text-position": "left",
@@ -793,10 +794,10 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Planting.jpg",
+          "image": "shopify:\/\/shop_images\/Greenhouse.png",
           "overline": "America's Gardens Nursery",
           "title": "Come Visit Our Store!",
-          "description": "<p>We have a full garden center nursery located at Chattanooga, TN. <\/p>",
+          "description": "<p>We have a full garden center nursery located at Chattanooga, TN. It's at that location that we grow our plants, sell other garden products\/plants and provide our customers with \"hands on\" services.<\/p>",
           "link-url": "shopify:\/\/pages\/contact-us",
           "link-text": "Visit"
         }
@@ -823,12 +824,12 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/plants-half-01_2x_496134bc-566b-4430-b49a-192ca0da52dc.png",
+          "image": "shopify:\/\/shop_images\/Flowers_for_Nursery_Page.png",
           "overline": "",
           "title": "Beautiful Locally Grown Plants",
-          "description": "",
+          "description": "<p>At our location in Chattanooga, TN, we grow and sell annuals, perennials, vegetables & houseplants for all seasons!<\/p>",
           "link-url": "",
-          "link-text": "Learn More"
+          "link-text": ""
         }
       },
       "framework--map": {
@@ -922,6 +923,14 @@
           "product-size-chart-enabled": false,
           "product-size-chart-option": "size",
           "product-size-chart-page-content": ""
+        }
+      },
+      "framework--service-list": {
+        "type": "framework--service-list",
+        "settings": {
+          "background-color": "none",
+          "section--title": "Add title here",
+          "show-description": false
         }
       }
     },
