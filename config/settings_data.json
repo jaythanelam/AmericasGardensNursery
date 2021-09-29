@@ -289,6 +289,7 @@
           "0d5ecbe1-c335-455f-bdcb-a17cee8e1430": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Featured_Plants_for_Front_Page.png",
               "title": "Featured Plants",
               "description": "<p>Houseplants to love!<\/p>",
               "link-url": "",
@@ -318,7 +319,7 @@
           "1620626568f9a23d1a-1": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Wooden_Flower_Pot_Filled.png",
+              "image": "shopify:\/\/shop_images\/Pots.png",
               "title": "Pots & Planters",
               "description": "<p>Indoor & Outdoor<\/p>",
               "link-url": "shopify:\/\/collections\/pots",
@@ -328,7 +329,7 @@
           "1620626568f9a23d1a-2": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Tools1_4x4_289bcd3b-22e3-4c94-be26-630e79cbf333.png",
+              "image": "shopify:\/\/shop_images\/Soils_for_Soils_Such_pic.png",
               "title": "Soils & Such",
               "description": "<p>Soils, fertilizers, etc.<\/p>",
               "link-url": "shopify:\/\/collections\/tools-accessories",
@@ -609,7 +610,7 @@
           "background-color": "accent",
           "width": 3,
           "mobile-width": "2",
-          "heading": "We Deliver Bulk Products!"
+          "heading": "We Deliver Bulk Products....Call Us To Place An Order!"
         }
       },
       "framework--image-with-text": {
@@ -619,7 +620,7 @@
           "container-width": 6,
           "spacing-above": false,
           "spacing-below": false,
-          "image-height": 0,
+          "image-height": 2,
           "darken-image": true,
           "parallax-enabled": false,
           "text-position": "top",
@@ -628,7 +629,7 @@
           "box-around-text": true,
           "alternative-color": true,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Perennials1.jpg",
+          "image": "shopify:\/\/shop_images\/Plants_for_Nursery_Page.png",
           "overline": "",
           "title": "",
           "description": "",
@@ -639,12 +640,12 @@
       "framework--featured-collection": {
         "type": "framework--featured-collection",
         "settings": {
-          "collection": "featured-plants",
+          "collection": "home-goods",
           "background-color": "none",
           "featured-collection--image--show": true,
           "featured-collection--description--show": true,
           "display-type": "slider",
-          "products-per-row--desktop": "4",
+          "products-per-row--desktop": "3",
           "products-per-row--mobile": "1"
         }
       },
@@ -785,7 +786,7 @@
           "container-width": 6,
           "spacing-above": true,
           "spacing-below": true,
-          "image-height": 3,
+          "image-height": 2,
           "darken-image": true,
           "parallax-enabled": false,
           "text-position": "left",
@@ -794,7 +795,7 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Greenhouse.png",
+          "image": "shopify:\/\/shop_images\/Lady_Spraying_plants_for_Nursery_Page.png",
           "overline": "America's Gardens Nursery",
           "title": "Come Visit Our Store!",
           "description": "<p>We have a full garden center nursery located at Chattanooga, TN. It's at that location that we grow our plants, sell other garden products\/plants and provide our customers with \"hands on\" services.<\/p>",
