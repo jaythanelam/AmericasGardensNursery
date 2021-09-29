@@ -149,7 +149,7 @@
               "overline": "America's Garden Nursery",
               "title": "We Know The Dirt!",
               "description": "<p><br\/>\"There is no power for change greater than a community discovering what it cares about.\" – <strong>Margaret J. Wheatley<\/strong><br\/><br\/><\/p>",
-              "link-url": "shopify:\/\/collections",
+              "link-url": "shopify:\/\/pages\/the-nursery",
               "link-text": "View more"
             }
           }
@@ -292,7 +292,7 @@
               "image": "shopify:\/\/shop_images\/Featured_Plants_for_Front_Page.png",
               "title": "Featured Plants",
               "description": "<p>Houseplants to love!<\/p>",
-              "link-url": "",
+              "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": "View more"
             }
           },
@@ -302,7 +302,7 @@
               "image": "shopify:\/\/shop_images\/Chimes_Home_Goods.png",
               "title": "Garden Gifts",
               "description": "<p>For that special gift!<\/p>",
-              "link-url": "shopify:\/\/products\/thanks-for-helping-me-grow-pot-w-starfish-sansevieria",
+              "link-url": "shopify:\/\/collections\/gifts",
               "link-text": "View more"
             }
           },
@@ -333,7 +333,7 @@
               "title": "Soils & Such",
               "description": "<p>Soils, fertilizers, etc.<\/p>",
               "link-url": "shopify:\/\/collections\/tools-accessories",
-              "link-text": "View more"
+              "link-text": "View More"
             }
           }
         },
@@ -354,7 +354,7 @@
           "mobile-width": "2",
           "title": "Collections",
           "subtitle": "Shop Online",
-          "link-url": "",
+          "link-url": "shopify:\/\/collections",
           "link-text": ""
         }
       },
@@ -798,7 +798,7 @@
           "image": "shopify:\/\/shop_images\/Lady_Spraying_plants_for_Nursery_Page.png",
           "overline": "America's Gardens Nursery",
           "title": "Come Visit Our Store!",
-          "description": "<p>We have a full garden center nursery located at Chattanooga, TN. It's at that location that we grow our plants, sell other garden products\/plants and provide our customers with \"hands on\" services.<\/p>",
+          "description": "<p>In addition to our on-line store, we have a full garden center\/plant nursery located at Chattanooga, TN (Red Bank). It's at that retail location that we are able to seed, propagate and grow a full selection of plants as well as other retail other garden products & supplies to customers that visit our garden center.<\/p>",
           "link-url": "shopify:\/\/pages\/contact-us",
           "link-text": "Visit"
         }
