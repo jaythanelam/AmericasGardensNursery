@@ -7,12 +7,12 @@
   assign mobile_width = section.settings.mobile-width
   assign image_width = section.settings.image-width
   assign spacing = section.settings.spacing
-  assign title = section.settings.title
+  assign heading = section.settings.heading
   assign subtitle = section.settings.subtitle
   assign width = section.settings.width
 
   assign header_text_exists = true
-  if title == blank and subtitle == blank
+  if heading == blank and subtitle == blank
     assign header_text_exists = false
   endif
 
@@ -46,9 +46,9 @@
   {% if header_text_exists %}
     <div class="featured-grid--header" data-container="panel">
       <div class="featured-grid--header--container" data-container="block">
-        {% if title != blank %}
+        {% if heading != blank %}
           <h2 class="featured-grid--heading" data-item="section-heading">
-            {{ title | escape }}
+            {{ heading | escape }}
           </h2>
         {% endif %}
 
@@ -71,14 +71,16 @@
     >
       {% for block in section.blocks %}
         {% liquid
-          assign link = block.settings.link-url
-          assign link_text = block.settings.link-text
+          assign block_link_url = block.settings.link-url
+          assign block_link_text = block.settings.link-text
           assign description = block.settings.description
+          assign image = block.settings.image
           assign link_wrapper = false
-          if link_text == blank and link != blank and description == blank
+          assign title = block.settings.title
+
+          if block_link_text == blank and block_link_url != blank and description == blank
             assign link_wrapper = true
           endif
-
         %}
 
         <div
@@ -89,13 +91,12 @@
           {% if link_wrapper %}
             <a
               class="featured-grid--item--link-wrapper"
-              href="{{ link }}"
-              aria-label="
-                {%- if block.settings.title != blank -%}
-                  {{- block.settings.title -}}
-                {%- else -%}
-                  {{- title -}}
-                {%- endif -%}"
+              href="{{ block_link_url }}"
+              {%- if title != blank -%}
+                aria-label="{{ title }}"
+              {%- else -%}
+                aria-label="{{ heading }}"
+              {%- endif -%}
             >
           {% endif %}
 
@@ -107,10 +108,10 @@
                 style="max-width:{{ image_width | plus: 16 }}px;"
               {% endif %}
             >
-              {% if block.settings.image %}
+              {% if image %}
                 {%
                   render "framework--image",
-                  image: block.settings.image,
+                  image: image,
                   full_width: true
                 %}
               {% else %}
@@ -122,15 +123,11 @@
               {% endif %}
             </div>
 
-            {% if
-              block.settings.title != blank or
-              description != blank or
-              block.settings.link-text != blank
-            %}
+            {% if title != blank or description != blank or block_link_text != blank %}
               <div class="featured-grid--item--text-container">
-                {% if block.settings.title != blank %}
-                  <h3 class="featured-grid--item--heading" data-item="block-heading">
-                    {{ block.settings.title | escape }}
+                {% if title != blank %}
+                  <h3 class="featured-grid--item--title" data-item="block-heading">
+                    {{ title | escape }}
                   </h3>
                 {% endif %}
 
@@ -140,11 +137,16 @@
                   </div>
                 {% endif %}
 
-                {% if link_text != blank %}
+                {% if block_link_text != blank %}
                   <div class="featured-grid--item--link" data-item="block-link">
-                    <div class="featured-grid--item--link-container">
-                      {{ link_text }}
-                    </div>
+                    <a
+                      class="featured-grid--item--link-container"
+                      {% if block_link_url != blank %}
+                        href="{{ block_link_url }}"
+                      {% endif %}
+                    >
+                      {{ block_link_text }}
+                    </a>
                   </div>
                 {% endif %}
               </div>
@@ -248,8 +250,8 @@
     },
     {
       "type": "text",
-      "id": "title",
-      "label": "Title",
+      "id": "heading",
+      "label": "Heading",
       "default": "Grid with text below"
     },
     {
@@ -268,7 +270,6 @@
       "label": "Link text"
     }
   ],
-
   "blocks": [
     {
       "type": "image",
@@ -305,7 +306,6 @@
       ]
     }
   ],
-
   "presets": [
     {
       "name": "Grid with text below",
