@@ -36,7 +36,7 @@
         "settings": {
           "enabled": true,
           "home-page-only": false,
-          "text": "Get Free Shipping For Online Orders OVER $100",
+          "text": "Black Friday Sales.....50% off all house plants (Enter Code: AGNHALFOFF)",
           "link": ""
         }
       },
@@ -143,12 +143,12 @@
           "1620626123773e4061-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
+              "image": "shopify:\/\/shop_images\/shutterstock_65922025_1.jpg",
               "text-position": "center",
               "text-width": "medium",
               "overline": "America's Garden Nursery",
-              "title": "We Know The Dirt!",
-              "description": "<p><br\/>\"There is no power for change greater than a community discovering what it cares about.\" – <strong>Margaret J. Wheatley<\/strong><br\/><br\/><\/p>",
+              "title": "Christmas Holiday Savings!",
+              "description": "<p><strong>Celebrate the Holiday Season with America's Gardens! We've got fresh frasier fir Christmas Trees in, Garland & Wreaths not to mention great gifts!<\/strong><br\/><br\/><\/p>",
               "link-url": "shopify:\/\/pages\/the-nursery",
               "link-text": "View more"
             }
@@ -352,7 +352,7 @@
           "width": 5,
           "image-width": 0,
           "mobile-width": "2",
-          "title": "Collections",
+          "heading": "Grid with text below",
           "subtitle": "Shop Online",
           "link-url": "shopify:\/\/collections",
           "link-text": ""
@@ -374,12 +374,12 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Coming_Soon3_0478bd06-bcb3-4e95-ac13-5a87f77b40d3.png",
-          "overline": "On Line",
-          "title": "Sneak Peek At What's Growing....",
-          "description": "<p>Check out what's on the horizon at America's Gardens<\/p>",
-          "link-url": "shopify:\/\/products\/dischidia-ruscifolia-ger-ant-plant",
-          "link-text": "Have A Look"
+          "image": "shopify:\/\/shop_images\/Christmas_Trees1.jpg",
+          "overline": "At the Nursery",
+          "title": "FRESH Christmas Trees",
+          "description": "<p>We just got our fresh cut firs in at the garden center - they're moving fast so don't wait too long!<\/p>",
+          "link-url": "shopify:\/\/pages\/location",
+          "link-text": "Our Location"
         }
       },
       "1620626665f401fe84": {
