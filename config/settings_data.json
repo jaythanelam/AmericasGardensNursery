@@ -147,8 +147,8 @@
               "text-position": "center",
               "text-width": "medium",
               "overline": "America's Garden Nursery",
-              "title": "Christmas Holiday Savings!",
-              "description": "<p><strong>Celebrate the Holiday Season with America's Gardens! We've got fresh frasier fir Christmas Trees in, Garland & Wreaths not to mention great gifts!<\/strong><br\/><br\/><\/p>",
+              "title": "CHRISTMAS SAVINGS!!!",
+              "description": "<p><strong>BIG SALE (50% OFF) on all house plants Saturday, December 18!!! <\/strong><\/p><p><strong>Celebrate the Holiday Season with extra savings at America's Gardens! Use CHRISTMAS21 promotion code for all online orders.<\/strong><\/p><p><br\/><\/p>",
               "link-url": "shopify:\/\/pages\/the-nursery",
               "link-text": "View more"
             }
@@ -374,10 +374,10 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Christmas_Trees1.jpg",
+          "image": "shopify:\/\/shop_images\/Merry_Christmas2.gif",
           "overline": "At the Nursery",
-          "title": "FRESH Christmas Trees",
-          "description": "<p>We just got our fresh cut firs in at the garden center - they're moving fast so don't wait too long!<\/p>",
+          "title": "Shop With Us!",
+          "description": "<p>Although we've SOLD OUT out of our Fresh Frazier Christmas Trees and wreaths, we still have plenty of gifts, pots and house plants in stock!<\/p>",
           "link-url": "shopify:\/\/pages\/location",
           "link-text": "Our Location"
         }
