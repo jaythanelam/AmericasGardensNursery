@@ -147,8 +147,8 @@
               "text-position": "center",
               "text-width": "medium",
               "overline": "America's Garden Nursery",
-              "title": "CHRISTMAS SAVINGS!!!",
-              "description": "<p><strong>BIG SALE (50% OFF) on all house plants purchased online for one day only - Sunday, December 19! <\/strong><\/p><p><strong>Celebrate the Holiday Season with extra savings at America's Gardens! Use CHRISTMAS21 promotion code for all online orders.<\/strong><\/p><p><br\/><\/p>",
+              "title": "Happy Holidays!",
+              "description": "<p><\/p><p><strong>Celebrate the Holiday Season with extra savings at America's Gardens. Come find a gift that makes Santa jealous!!<\/strong><\/p><p><br\/><\/p>",
               "link-url": "shopify:\/\/pages\/the-nursery",
               "link-text": "View more"
             }
@@ -352,7 +352,7 @@
           "width": 5,
           "image-width": 0,
           "mobile-width": "2",
-          "heading": "Grid with text below",
+          "heading": "Just a few ideas!",
           "subtitle": "Shop Online",
           "link-url": "shopify:\/\/collections",
           "link-text": ""
