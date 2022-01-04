@@ -143,12 +143,12 @@
           "1620626123773e4061-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/shutterstock_65922025_1.jpg",
+              "image": "shopify:\/\/shop_images\/Planting.jpg",
               "text-position": "center",
               "text-width": "medium",
               "overline": "America's Garden Nursery",
-              "title": "Happy Holidays!",
-              "description": "<p><\/p><p><strong>Celebrate the Holiday Season with extra savings at America's Gardens. Come find a gift that makes Santa jealous!!<\/strong><\/p><p><br\/><\/p>",
+              "title": "Burrr.........",
+              "description": "<p><\/p><p><strong>We're spending the next couple of weeks getting ready for the new spring season. Although we've reduced our store hours to M-F 10:00am to 5:00pm temporarily so that we can focus our attention on new and improved products and displays, we hope that you'll still come see us.<\/strong><\/p><p><strong> Stay warm and stay safe!<\/strong><\/p><p><br\/><\/p>",
               "link-url": "shopify:\/\/pages\/the-nursery",
               "link-text": "View more"
             }
@@ -374,10 +374,10 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Merry_Christmas2.gif",
+          "image": "shopify:\/\/shop_images\/Pots.png",
           "overline": "At the Nursery",
           "title": "Shop With Us!",
-          "description": "<p>Although we've SOLD OUT out of our Fresh Frazier Christmas Trees and wreaths, we still have plenty of gifts, pots and house plants in stock!<\/p>",
+          "description": "<p>We know that it's cold and windy out but we still have plenty of gifts, pots and house plants in stock!<\/p>",
           "link-url": "shopify:\/\/pages\/location",
           "link-text": "Our Location"
         }
