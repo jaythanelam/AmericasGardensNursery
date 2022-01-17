@@ -526,11 +526,11 @@
               "darken-image": true,
               "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
               "image-size": "fit-to-container",
-              "overline": "Overline text",
-              "title": "Grid promotion",
-              "description": "<p>\"Aloe\" to America's Gardens On Line Ordering. We're so glad to have you that we're giving a free Aloe plant to each new customer for the first week of October!<\/p>",
+              "overline": "",
+              "title": "",
+              "description": "<p><strong>New Year <\/strong><\/p><p><strong>New Plants <\/strong><\/p><p><strong>New Prices<\/strong><\/p>",
               "link-url": "shopify:\/\/collections\/featured-plants",
-              "link-text": "Optional link"
+              "link-text": ""
             }
           }
         },
