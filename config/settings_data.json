@@ -289,7 +289,7 @@
           "0d5ecbe1-c335-455f-bdcb-a17cee8e1430": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Featured_Plants_for_Front_Page.png",
+              "image": "shopify:\/\/shop_images\/3D86A7A2-8C20-4FB2-8D1C-BEDACCDE1C35.jpg",
               "title": "Featured Plants",
               "description": "<p>Houseplants to love!<\/p>",
               "link-url": "shopify:\/\/collections\/featured-plants",
@@ -308,6 +308,7 @@
           },
           "9be76971-a97f-4afc-bab5-63ecb5dd9428": {
             "type": "image",
+            "disabled": true,
             "settings": {
               "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
               "title": "Home Goods",
@@ -338,7 +339,6 @@
           },
           "ef81218a-c44a-40d4-be1a-1b5b9c3d4420": {
             "type": "image",
-            "disabled": true,
             "settings": {
               "image": "shopify:\/\/shop_images\/calender_logo_for_website.png",
               "title": "Upcoming Calendar",
