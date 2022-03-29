@@ -341,9 +341,9 @@
             "disabled": true,
             "settings": {
               "image": "shopify:\/\/shop_images\/calender_logo_for_website.png",
-              "title": "Upcoming Calender",
+              "title": "Upcoming Calendar",
               "description": "<p>Events & Workshops<\/p>",
-              "link-url": "",
+              "link-url": "shopify:\/\/collections\/upcoming-calender",
               "link-text": "View more"
             }
           }
