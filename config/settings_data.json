@@ -19,6 +19,7 @@
     "typography--paragraph": "ibm_plex_sans_n4",
     "typography--paragraph--size": "medium",
     "product--hover-image-enabled": true,
+    "product--new-label-period": 30,
     "search--show-in-header": true,
     "favicon": "shopify:\/\/shop_images\/AGN-Logo-Initials.png",
     "cart--type": "page",
@@ -463,7 +464,7 @@
           "show-title": true,
           "title-alignment": "center",
           "show-description": true,
-          "show-image": false,
+          "show-image": true,
           "use-image-fallback": true,
           "image-height": "medium",
           "alt-color": true,
@@ -502,13 +503,21 @@
           "d4a41244-4edb-4754-b4df-dbfbe50ba864": {
             "type": "tag-group",
             "settings": {
-              "filter-title": "Filter by title",
-              "filter-tags": "<p>small<\/p><p>medium<\/p><p>large<\/p>"
+              "filter-title": "",
+              "filter-tags": "<p>small<\/p><p>medium<\/p><p>large<\/p><p>SHRUBS<\/p><p>TREES<\/p><p><\/p>"
+            }
+          },
+          "8862e05f-2fd4-4c3d-b39b-7641978bbc0c": {
+            "type": "tag-group",
+            "settings": {
+              "filter-title": "Filter by tag",
+              "filter-tags": "<p>SHRUBS<\/p><p>TREES<\/p><p><\/p>"
             }
           }
         },
         "block_order": [
-          "d4a41244-4edb-4754-b4df-dbfbe50ba864"
+          "d4a41244-4edb-4754-b4df-dbfbe50ba864",
+          "8862e05f-2fd4-4c3d-b39b-7641978bbc0c"
         ],
         "settings": {
           "show-browse-button": true,
@@ -520,7 +529,7 @@
           "show-sort-by-list": true,
           "show-refine-list": true,
           "show-search-link": true,
-          "tag-groups-enabled": true
+          "tag-groups-enabled": false
         }
       },
       "framework--collection--body": {
@@ -529,7 +538,7 @@
           "13718f13-9b6f-4172-baba-54c57dd65be8": {
             "type": "promotion",
             "settings": {
-              "only-on-collection": "featured-plants",
+              "only-on-collection": "shrubs",
               "row-number": 1,
               "column-number": 1,
               "promo-width": 2,
@@ -544,10 +553,29 @@
               "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": ""
             }
+          },
+          "3b7e8e36-54dd-4139-a9b2-67f273fd17ac": {
+            "type": "promotion",
+            "settings": {
+              "only-on-collection": "",
+              "row-number": 2,
+              "column-number": 1,
+              "promo-width": 2,
+              "background-color": "light",
+              "alternative-color": false,
+              "darken-image": true,
+              "image-size": "fit-to-container",
+              "overline": "Overline text",
+              "title": "Grid promotion",
+              "description": "<p>Create eye-catching promos within collection grids to increase discoverability and accelerate conversions.<\/p>",
+              "link-url": "",
+              "link-text": "Optional link"
+            }
           }
         },
         "block_order": [
-          "13718f13-9b6f-4172-baba-54c57dd65be8"
+          "13718f13-9b6f-4172-baba-54c57dd65be8",
+          "3b7e8e36-54dd-4139-a9b2-67f273fd17ac"
         ],
         "settings": {
           "products-per-row--desktop": 4,
