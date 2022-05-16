@@ -556,6 +556,7 @@
           },
           "3b7e8e36-54dd-4139-a9b2-67f273fd17ac": {
             "type": "promotion",
+            "disabled": true,
             "settings": {
               "only-on-collection": "",
               "row-number": 2,
@@ -563,13 +564,14 @@
               "promo-width": 2,
               "background-color": "light",
               "alternative-color": false,
-              "darken-image": true,
+              "darken-image": false,
+              "image": "shopify:\/\/shop_images\/benjamin-combs-wuU_SSxDeS0-unsplash.jpg",
               "image-size": "fit-to-container",
-              "overline": "Overline text",
-              "title": "Grid promotion",
-              "description": "<p>Create eye-catching promos within collection grids to increase discoverability and accelerate conversions.<\/p>",
+              "overline": "",
+              "title": "",
+              "description": "",
               "link-url": "",
-              "link-text": "Optional link"
+              "link-text": ""
             }
           }
         },
