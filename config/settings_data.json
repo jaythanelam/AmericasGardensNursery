@@ -836,7 +836,7 @@
           "overlap": false,
           "box-around-text": false,
           "alternative-color": false,
-          "mobile-overlay": true,
+          "mobile-overlay": false,
           "image": "shopify:\/\/shop_images\/Lady_Spraying_plants_for_Nursery_Page.png",
           "overline": "America's Gardens Nursery",
           "title": "Come Visit Our Store!",
@@ -866,11 +866,11 @@
           "overlap": false,
           "box-around-text": false,
           "alternative-color": false,
-          "mobile-overlay": true,
+          "mobile-overlay": false,
           "image": "shopify:\/\/shop_images\/270A9E47-AA5E-443E-A334-C71367EB4B50.png",
           "overline": "",
           "title": "Tons of Bulk",
-          "description": "<p>We carry a variety of landscaping essentials and offer delivery! If you bring a truck of a trailer we will scoop you for free!<\/p>",
+          "description": "<p>We carry a variety of landscaping essentials and offer delivery! If you bring a truck and\/or a trailer we will scoop you for free!<\/p>",
           "link-url": "",
           "link-text": ""
         }
