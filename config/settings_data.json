@@ -1,18 +1,19 @@
 {
   "current": {
-    "color--accent": "#ffe6b9",
-    "bg-color--body": "#ffffff",
+    "color--accent": "#f1c990",
+    "bg-color--body": "#faae42",
     "color--body": "#155157",
-    "color--alternative": "#ffffff",
-    "bg-color--panel": "#fff",
+    "color--alternative": "#fafad5",
+    "bg-color--panel": "#fafad5",
     "color--button": "#155157",
     "bg-color--button": "#faae42",
     "bg-color--announcement": "#155157",
     "announcement--alternative-text": true,
+    "bg-color--header": "#fafaf1",
     "color--header": "#155157",
-    "bg-color--footer": "#ffe6b9",
+    "bg-color--footer": "#faae42",
     "color--footer": "#155157",
-    "typography--heading": "volkhov_n7",
+    "typography--heading": "abril_fatface_n4",
     "typography--heading--uppercase": false,
     "typography--heading--size": "x-large",
     "typography--accent": "ibm_plex_sans_n4",
@@ -189,6 +190,7 @@
       },
       "162062620665c87507": {
         "type": "framework--grid-with-overlay",
+        "disabled": true,
         "blocks": {
           "162062620665c87507-0": {
             "type": "image",
@@ -244,7 +246,7 @@
         ],
         "settings": {
           "text-style": "light-with-overlay",
-          "background-color": "light",
+          "background-color": "none",
           "spacing": true,
           "mobile-overlay": true,
           "container-width": 5,
@@ -291,19 +293,39 @@
             "type": "image",
             "settings": {
               "image": "shopify:\/\/shop_images\/3D86A7A2-8C20-4FB2-8D1C-BEDACCDE1C35.jpg",
-              "title": "Featured Plants",
+              "title": "House Plants",
               "description": "<p>Houseplants to love!<\/p>",
               "link-url": "shopify:\/\/collections\/featured-plants",
+              "link-text": "View more"
+            }
+          },
+          "1620626568f9a23d1a-2": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Soils_for_Soils_Such_pic.png",
+              "title": "Soils & Such",
+              "description": "<p>Bagged Soils, fertilizers, etc.<\/p>",
+              "link-url": "shopify:\/\/collections\/bagged-soil-such",
+              "link-text": "View More"
+            }
+          },
+          "1620626568f9a23d1a-1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Pots.png",
+              "title": "Pots & Planters",
+              "description": "<p>Indoor & Outdoor<\/p>",
+              "link-url": "shopify:\/\/collections\/pots",
               "link-text": "View more"
             }
           },
           "1620626568f9a23d1a-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Chimes_Home_Goods.png",
-              "title": "Garden Gifts",
-              "description": "<p>For that special gift!<\/p>",
-              "link-url": "shopify:\/\/collections\/gifts",
+              "image": "shopify:\/\/shop_images\/Snow_Lady_Shasta_Daisy.jpg",
+              "title": "Perennials",
+              "description": "<p>Hot, Long Days of Summer<\/p>",
+              "link-url": "shopify:\/\/collections\/perennials",
               "link-text": "View more"
             }
           },
@@ -318,33 +340,13 @@
               "link-text": "View more"
             }
           },
-          "1620626568f9a23d1a-1": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Pots.png",
-              "title": "Pots & Planters",
-              "description": "<p>Indoor & Outdoor<\/p>",
-              "link-url": "shopify:\/\/collections\/pots",
-              "link-text": "View more"
-            }
-          },
-          "1620626568f9a23d1a-2": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Soils_for_Soils_Such_pic.png",
-              "title": "Soils & Such",
-              "description": "<p>Soils, fertilizers, etc.<\/p>",
-              "link-url": "shopify:\/\/collections\/tools-accessories",
-              "link-text": "View More"
-            }
-          },
           "ef81218a-c44a-40d4-be1a-1b5b9c3d4420": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/calender_logo_for_website.png",
-              "title": "Upcoming Calendar",
-              "description": "<p>Events & Workshops<\/p>",
-              "link-url": "shopify:\/\/collections\/upcoming-calender",
+              "image": "shopify:\/\/shop_images\/Soils_for_Soils_Such_pic.png",
+              "title": "Bulk Landscape Products",
+              "description": "<p>Mulch, Topsoil, Gravel, Stones, etc.<\/p>",
+              "link-url": "shopify:\/\/collections\/bulk-products",
               "link-text": "View more"
             }
           }
@@ -352,10 +354,10 @@
         "block_order": [
           "1620626568f9a23d1a-0",
           "0d5ecbe1-c335-455f-bdcb-a17cee8e1430",
+          "1620626568f9a23d1a-2",
+          "1620626568f9a23d1a-1",
           "1620626568f9a23d1a-3",
           "9be76971-a97f-4afc-bab5-63ecb5dd9428",
-          "1620626568f9a23d1a-1",
-          "1620626568f9a23d1a-2",
           "ef81218a-c44a-40d4-be1a-1b5b9c3d4420"
         ],
         "settings": {
