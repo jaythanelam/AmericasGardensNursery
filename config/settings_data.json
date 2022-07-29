@@ -149,7 +149,7 @@
               "text-width": "medium",
               "overline": "America's Garden Nursery",
               "title": "House Plant SALE",
-              "description": "<p><\/p><p>Join us July 29th & 30th <\/p><p>for refreshments while you browse through our <\/p><p>50 % off House Plants!<\/p><p>*in-store only*<\/p><p><br\/><\/p>",
+              "description": "<p><\/p><p><strong>Join us July 29th & 30th <\/strong><\/p><p><strong>for refreshments while you browse through our <\/strong><\/p><p><strong>50 % off House Plants!<\/strong><\/p><p><strong>*in-store only*<\/strong><\/p><p><br\/><\/p>",
               "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": "View more"
             }
@@ -189,11 +189,9 @@
       },
       "162062620665c87507": {
         "type": "framework--grid-with-overlay",
-        "disabled": true,
         "blocks": {
           "162062620665c87507-0": {
             "type": "image",
-            "disabled": true,
             "settings": {
               "image": "shopify:\/\/shop_images\/Smiley_Face.png",
               "wide": true,
@@ -249,11 +247,11 @@
           "background-color": "light",
           "spacing": true,
           "mobile-overlay": true,
-          "container-width": 4,
+          "container-width": 5,
           "width": 4,
           "mobile-width": "2",
-          "heading": "Grid with overlay",
-          "subtitle": "",
+          "heading": "Hot, Hot, Hot!",
+          "subtitle": "Summer Activities",
           "link-url": "",
           "link-text": ""
         }
