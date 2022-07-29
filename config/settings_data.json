@@ -35,8 +35,8 @@
       "announcement": {
         "type": "announcement",
         "settings": {
-          "enabled": true,
-          "home-page-only": false,
+          "enabled": false,
+          "home-page-only": true,
           "text": "Love what you Grow!",
           "link": ""
         }
@@ -45,15 +45,15 @@
         "type": "header",
         "settings": {
           "logo": "shopify:\/\/shop_images\/AGN-Logo-Full-noTag_3x_e254dcd7-9e5c-4775-9098-a6743f7dff45.png",
-          "logo-position": "center",
-          "logo-height": 100,
+          "logo-position": "above",
+          "logo-height": 15,
           "fix-enabled": false,
           "fixed-logo-height": 50,
           "menu": "main-menu",
           "header-account-show": true,
-          "account-icon": "icon",
-          "search-icon": "icon",
-          "cart-icon": "bag",
+          "account-icon": "text",
+          "search-icon": "text",
+          "cart-icon": "cart",
           "show-currency-selector": false,
           "show-locale-selector": false
         }
@@ -144,13 +144,13 @@
           "1620626123773e4061-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/IMG_1756.jpg",
+              "image": "shopify:\/\/shop_images\/Greenhouse.png",
               "text-position": "center",
               "text-width": "medium",
               "overline": "America's Garden Nursery",
               "title": "House Plant SALE",
               "description": "<p><\/p><p>Join us July 29th & 30th <\/p><p>for refreshments while you browse through our <\/p><p>50 % off House Plants!<\/p><p>*in-store only*<\/p><p><br\/><\/p>",
-              "link-url": "shopify:\/\/pages\/the-nursery",
+              "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": "View more"
             }
           }
@@ -164,9 +164,9 @@
         "settings": {
           "background-color": "light",
           "spacing-above": false,
-          "spacing-below": false,
+          "spacing-below": true,
           "spacing-around-blocks": false,
-          "image-height": 4,
+          "image-height": 2,
           "darken-image": false,
           "blocks_per_slide": 1,
           "blocks_per_slide_mobile": "1",
@@ -193,7 +193,9 @@
         "blocks": {
           "162062620665c87507-0": {
             "type": "image",
+            "disabled": true,
             "settings": {
+              "image": "shopify:\/\/shop_images\/Smiley_Face.png",
               "wide": true,
               "tall": true,
               "retain-ratio": false,
