@@ -42,7 +42,7 @@
         "type": "announcement",
         "settings": {
           "enabled": false,
-          "home-page-only": true,
+          "home-page-only": false,
           "text": "Love what you Grow!",
           "link": ""
         }
@@ -483,11 +483,11 @@
         "settings": {
           "show": false,
           "only-on-collection": "",
-          "background-color": "light",
-          "container-width": 6,
+          "background-color": "none",
+          "container-width": 4,
           "spacing-above": false,
           "spacing-below": false,
-          "image-height": 2,
+          "image-height": 0,
           "darken-image": true,
           "parallax-enabled": false,
           "text-position": "center",
@@ -540,7 +540,7 @@
           "show-refine-button": true,
           "show-layout-buttons": false,
           "show-collections-list": true,
-          "custom-collection-list": "",
+          "custom-collection-list": "main-menu",
           "show-sort-by-list": true,
           "show-refine-list": true,
           "show-search-link": true,
@@ -550,54 +550,33 @@
       "framework--collection--body": {
         "type": "framework--collection--body",
         "blocks": {
-          "13718f13-9b6f-4172-baba-54c57dd65be8": {
-            "type": "promotion",
-            "settings": {
-              "only-on-collection": "sale-items",
-              "row-number": 8,
-              "column-number": 3,
-              "promo-width": 3,
-              "background-color": "light",
-              "alternative-color": true,
-              "darken-image": true,
-              "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
-              "image-size": "fit-to-container",
-              "overline": "",
-              "title": "",
-              "description": "",
-              "link-url": "shopify:\/\/collections\/featured-plants",
-              "link-text": ""
-            }
-          },
           "3b7e8e36-54dd-4139-a9b2-67f273fd17ac": {
             "type": "promotion",
             "disabled": true,
             "settings": {
-              "only-on-collection": "promotion",
+              "only-on-collection": "",
               "row-number": 2,
               "column-number": 1,
               "promo-width": 2,
               "background-color": "light",
               "alternative-color": false,
               "darken-image": false,
-              "image": "shopify:\/\/shop_images\/benjamin-combs-wuU_SSxDeS0-unsplash.jpg",
               "image-size": "fit-to-container",
               "overline": "",
               "title": "Sale Products",
               "description": "",
-              "link-url": "shopify:\/\/collections\/promotion",
+              "link-url": "",
               "link-text": ""
             }
           }
         },
         "block_order": [
-          "13718f13-9b6f-4172-baba-54c57dd65be8",
           "3b7e8e36-54dd-4139-a9b2-67f273fd17ac"
         ],
         "settings": {
-          "products-per-row--desktop": 3,
+          "products-per-row--desktop": 4,
           "products-per-row--mobile": "1",
-          "number-of-rows": 9
+          "number-of-rows": 7
         }
       },
       "framework--recent-products": {
