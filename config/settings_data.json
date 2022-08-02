@@ -25,6 +25,8 @@
     "product--new-label-period": 46,
     "product--featured-tags": "New! Sustainable",
     "search--show-in-header": true,
+    "social--instagram--url": "https:\/\/www.instagram.com\/americasgardens\/",
+    "social--facebook--url": "https:\/\/www.facebook.com\/AmericasGardensTN",
     "favicon": "shopify:\/\/shop_images\/AGN-Logo-Initials.png",
     "cart--type": "page",
     "checkout_logo_image": "shopify:\/\/shop_images\/AGN-Logo-Full-noTag_3x_e254dcd7-9e5c-4775-9098-a6743f7dff45.png",
@@ -469,8 +471,8 @@
           "show-title": true,
           "title-alignment": "center",
           "show-description": true,
-          "show-image": true,
-          "use-image-fallback": true,
+          "show-image": false,
+          "use-image-fallback": false,
           "image-height": "small",
           "alt-color": true,
           "apply-overlay": true
@@ -480,7 +482,7 @@
         "type": "framework--collection--header-promotion",
         "settings": {
           "show": false,
-          "only-on-collection": "featured-plants",
+          "only-on-collection": "",
           "background-color": "light",
           "container-width": 6,
           "spacing-above": false,
@@ -551,10 +553,10 @@
           "13718f13-9b6f-4172-baba-54c57dd65be8": {
             "type": "promotion",
             "settings": {
-              "only-on-collection": "shrubs",
-              "row-number": 1,
-              "column-number": 1,
-              "promo-width": 2,
+              "only-on-collection": "sale-items",
+              "row-number": 8,
+              "column-number": 3,
+              "promo-width": 3,
               "background-color": "light",
               "alternative-color": true,
               "darken-image": true,
@@ -562,7 +564,7 @@
               "image-size": "fit-to-container",
               "overline": "",
               "title": "",
-              "description": "<p><strong>Sign up for our very first Gardening 101 <\/strong><\/p><p><strong>class in the Greenhouse <\/strong><\/p><p><strong>April 9th, 2022!<\/strong><\/p>",
+              "description": "",
               "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": ""
             }
