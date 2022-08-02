@@ -595,7 +595,7 @@
           "3b7e8e36-54dd-4139-a9b2-67f273fd17ac"
         ],
         "settings": {
-          "products-per-row--desktop": 4,
+          "products-per-row--desktop": 3,
           "products-per-row--mobile": "1",
           "number-of-rows": 9
         }
