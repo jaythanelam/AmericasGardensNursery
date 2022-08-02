@@ -20,7 +20,10 @@
     "typography--paragraph": "ibm_plex_sans_n4",
     "typography--paragraph--size": "medium",
     "product--hover-image-enabled": true,
-    "product--new-label-period": 30,
+    "product--text-alignment": "center",
+    "product--label-color": "light",
+    "product--new-label-period": 46,
+    "product--featured-tags": "New! Sustainable",
     "search--show-in-header": true,
     "favicon": "shopify:\/\/shop_images\/AGN-Logo-Initials.png",
     "cart--type": "page",
@@ -147,11 +150,11 @@
             "settings": {
               "image": "shopify:\/\/shop_images\/Asters.jpg",
               "text-position": "center",
-              "text-width": "medium",
+              "text-width": "small",
               "overline": "",
-              "title": "",
-              "description": "<p><\/p><p>Hot, hot days of summer lead to<\/p><p>hot, hot deals! Buy two regularly<\/p><p> priced one gallon perennials <\/p><p>and get one  FREE!<\/p><p><\/p><p><br\/><\/p>",
-              "link-url": "shopify:\/\/collections\/featured-plants",
+              "title": "America's Gardens",
+              "description": "<p><\/p><p>We make finding the perfect flowers, trees and\/or shrubs easy.  Our huge selection makes shopping by color, size, sun exposure and more enjoyable!<\/p><p><\/p><p><br\/><\/p>",
+              "link-url": "shopify:\/\/collections\/perennials",
               "link-text": "View more"
             }
           }
@@ -468,9 +471,9 @@
           "show-description": true,
           "show-image": true,
           "use-image-fallback": true,
-          "image-height": "medium",
+          "image-height": "small",
           "alt-color": true,
-          "apply-overlay": false
+          "apply-overlay": true
         }
       },
       "framework--collection--header-promotion": {
@@ -505,33 +508,41 @@
           "d4a41244-4edb-4754-b4df-dbfbe50ba864": {
             "type": "tag-group",
             "settings": {
-              "filter-title": "",
-              "filter-tags": "<p>small<\/p><p>medium<\/p><p>large<\/p><p>SHRUBS<\/p><p>TREES<\/p><p><\/p>"
+              "filter-title": "Environment",
+              "filter-tags": "<p>Sun<\/p><p>Shade<\/p><p><\/p><p><\/p><p><\/p>"
             }
           },
           "8862e05f-2fd4-4c3d-b39b-7641978bbc0c": {
             "type": "tag-group",
             "settings": {
-              "filter-title": "Filter by tag",
-              "filter-tags": "<p>SHRUBS<\/p><p>TREES<\/p><p><\/p>"
+              "filter-title": "Soil Moisture",
+              "filter-tags": "<p>Dry<\/p><p>Moist<\/p><p><\/p><p><\/p>"
+            }
+          },
+          "c07347b2-0162-4ee5-bd85-8a6c717aee18": {
+            "type": "tag-group",
+            "settings": {
+              "filter-title": "Deciduous or Evergreen",
+              "filter-tags": "<p>Deciduous<\/p><p>Evergreen<\/p>"
             }
           }
         },
         "block_order": [
           "d4a41244-4edb-4754-b4df-dbfbe50ba864",
-          "8862e05f-2fd4-4c3d-b39b-7641978bbc0c"
+          "8862e05f-2fd4-4c3d-b39b-7641978bbc0c",
+          "c07347b2-0162-4ee5-bd85-8a6c717aee18"
         ],
         "settings": {
           "show-browse-button": true,
           "show-sort-by-button": true,
           "show-refine-button": true,
-          "show-layout-buttons": true,
+          "show-layout-buttons": false,
           "show-collections-list": true,
           "custom-collection-list": "",
           "show-sort-by-list": true,
           "show-refine-list": true,
           "show-search-link": true,
-          "tag-groups-enabled": false
+          "tag-groups-enabled": true
         }
       },
       "framework--collection--body": {
@@ -560,7 +571,7 @@
             "type": "promotion",
             "disabled": true,
             "settings": {
-              "only-on-collection": "",
+              "only-on-collection": "promotion",
               "row-number": 2,
               "column-number": 1,
               "promo-width": 2,
@@ -570,9 +581,9 @@
               "image": "shopify:\/\/shop_images\/benjamin-combs-wuU_SSxDeS0-unsplash.jpg",
               "image-size": "fit-to-container",
               "overline": "",
-              "title": "",
+              "title": "Sale Products",
               "description": "",
-              "link-url": "",
+              "link-url": "shopify:\/\/collections\/promotion",
               "link-text": ""
             }
           }
@@ -584,13 +595,13 @@
         "settings": {
           "products-per-row--desktop": 4,
           "products-per-row--mobile": "1",
-          "number-of-rows": 4
+          "number-of-rows": 8
         }
       },
       "framework--recent-products": {
         "type": "framework--recent-products",
         "settings": {
-          "enable": false,
+          "enable": true,
           "heading": "Recently viewed"
         }
       },
