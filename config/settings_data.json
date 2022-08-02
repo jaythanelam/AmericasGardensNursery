@@ -145,12 +145,12 @@
           "1620626123773e4061-3": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Greenhouse.png",
+              "image": "shopify:\/\/shop_images\/Asters.jpg",
               "text-position": "center",
               "text-width": "medium",
-              "overline": "America's Garden Nursery",
+              "overline": "",
               "title": "",
-              "description": "<p><\/p><p><br\/><\/p>",
+              "description": "<p><\/p><p>Hot, hot days of summer lead to<\/p><p>hot, hot deals! Buy two regularly<\/p><p> priced one gallon perennials <\/p><p>and get one  FREE!<\/p><p><\/p><p><br\/><\/p>",
               "link-url": "shopify:\/\/collections\/featured-plants",
               "link-text": "View more"
             }
