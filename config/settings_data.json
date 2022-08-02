@@ -597,7 +597,7 @@
         "settings": {
           "products-per-row--desktop": 4,
           "products-per-row--mobile": "1",
-          "number-of-rows": 8
+          "number-of-rows": 9
         }
       },
       "framework--recent-products": {
