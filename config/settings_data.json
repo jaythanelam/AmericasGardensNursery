@@ -986,7 +986,15 @@
       "1620626685871fc992",
       "16296677428bd0b34b",
       "16296680153dcd395d"
-    ]
+    ],
+    "blocks": {
+      "16256948136948485038": {
+        "type": "shopify:\/\/apps\/upcharge-surcharges-fees\/blocks\/app-embed-block\/3660e544-1847-4d53-9b3b-f0cb50c2d9f7",
+        "disabled": false,
+        "settings": {
+        }
+      }
+    }
   },
   "presets": {
     "Essentials": {
