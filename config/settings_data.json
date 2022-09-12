@@ -43,8 +43,9 @@
         "settings": {
           "enabled": false,
           "home-page-only": false,
+          "icon": "shopify:\/\/shop_images\/Asters.jpg",
           "text": "Love what you Grow!",
-          "link": ""
+          "link": "shopify:\/\/pages\/the-nursery"
         }
       },
       "header": {
@@ -964,10 +965,50 @@
       },
       "framework--service-list": {
         "type": "framework--service-list",
+        "blocks": {
+          "56b9bf3c-6664-4c44-b682-ee134fc3bd58": {
+            "type": "item",
+            "settings": {
+              "title": "Bulk Delivery Fees",
+              "price": "$60.00",
+              "description": "<p>Less than 7 Miles <\/p><p><\/p>"
+            }
+          },
+          "d94096c2-d46e-4da4-904c-d2b65f4b588c": {
+            "type": "item",
+            "settings": {
+              "title": "Bulk Delivery Fees",
+              "price": "$90.00",
+              "description": "<p>7-10 Miles<\/p>"
+            }
+          },
+          "625500c4-430d-4a49-b1fa-2ea6bc39df1b": {
+            "type": "item",
+            "settings": {
+              "title": "Bulk Delivery Fee",
+              "price": "120.00",
+              "description": "<p>11-14 Miles<\/p>"
+            }
+          },
+          "99232013-d10b-4abf-8ad5-d3530f97b277": {
+            "type": "item",
+            "settings": {
+              "title": "Bulk Delivery Fee",
+              "price": "$190.00",
+              "description": "<p>15-20 Miles<\/p><p><\/p>"
+            }
+          }
+        },
+        "block_order": [
+          "56b9bf3c-6664-4c44-b682-ee134fc3bd58",
+          "d94096c2-d46e-4da4-904c-d2b65f4b588c",
+          "625500c4-430d-4a49-b1fa-2ea6bc39df1b",
+          "99232013-d10b-4abf-8ad5-d3530f97b277"
+        ],
         "settings": {
           "background-color": "none",
-          "section--title": "Add title here",
-          "show-description": false
+          "section--title": "Delivery",
+          "show-description": true
         }
       }
     },
@@ -986,15 +1027,7 @@
       "1620626685871fc992",
       "16296677428bd0b34b",
       "16296680153dcd395d"
-    ],
-    "blocks": {
-      "16256948136948485038": {
-        "type": "shopify:\/\/apps\/upcharge-surcharges-fees\/blocks\/app-embed-block\/3660e544-1847-4d53-9b3b-f0cb50c2d9f7",
-        "disabled": false,
-        "settings": {
-        }
-      }
-    }
+    ]
   },
   "presets": {
     "Essentials": {
