@@ -1,0 +1,17 @@
+{% comment %}
+Add product and collection handles which you want to disable pickup and split them by commas
+
+Example:
+{% capture scasp_disable_products %}shoes,hat,t-shirt{% endcapture %}
+{% capture scasp_disable_collections %}fashion,accessories,jewelry{% endcapture %}
+
+http://www.secomapp.com
+{% endcomment %}
+
+{% if template contains 'cart' %}
+	{% capture scasp_disable_products %}{% endcapture %}
+	{% capture scasp_disable_collections %}{% endcapture %}
+{% endif %}
+
+{% include 'sca.storepickup_params' %}
+{% include 'sca.storepickup_execute' %}

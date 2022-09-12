@@ -1,0 +1,28 @@
+{
+  "shopify": {
+    "checkout": {
+      "contact": {
+        "shipping_address_title": "Delivery information"
+      },
+      "thank_you": {
+        "marker": {
+          "shipping": "Delivery address"
+        },
+        "shipping_address_title": "Delivery address"
+      },
+      "general": {
+        "edit_shipping_address": "Edit delivery address",
+        "continue_to_shipping_method": "Continue to delivery method"
+      },
+      "order_summary": {
+        "shipping_label": "Delivery"
+      },
+      "shipping": {
+        "title": "Delivery method",
+        "waiting_on_rate_notice": "Please wait while we fetch available delivery rates...",
+        "no_rates_for_cart_or_destination_notice": "Delivery is not available for your cart or destination.",
+        "no_rates_for_country_notice": "We don't offer delivery in {{ country }}."
+      }
+    }
+  }
+}

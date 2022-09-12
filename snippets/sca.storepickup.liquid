@@ -1,0 +1,231 @@
+<link rel="stylesheet" type="text/css" href='{{ "sca.storepickup.css" | asset_url }}' />
+{% if template contains 'cart' %}
+
+{% assign scasp_disable_pickup = false %}
+{% assign scasp_disable_delivery = false %}
+{% include 'sca.storepickup.extend' %}
+
+{% if scasp_disable_products != '' %}
+  {% for item in cart.items %}
+    {% assign disable_products = scasp_disable_products | downcase | split: ',' %}
+    {% for disable_product in disable_products %}
+      {% if item.product.handle contains disable_product %}
+      	{% capture scasp_disable_pickup %}true{% endcapture %}
+      	{% break %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}
+
+{% if scasp_disable_collections != '' and scasp_disable_pickup == false %}
+  {% assign disable_collections = scasp_disable_collections | downcase | split: ',' %}
+  {% for item in cart.items %}
+    {% for collection in item.product.collections %}
+      {% for disable_collection in disable_collections %}
+        {% if collection.handle contains disable_collection %}
+          {% capture scasp_disable_pickup %}true{% endcapture %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+{% endif %}
+<div class='scasp-wrapper'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+<script id='scasp-init'>
+  var SCASPDisablePickup = {{ scasp_disable_pickup }};
+  var SCASPDisableDelivery = {{ scasp_disable_delivery }};
+  var SCASPLocale = '{{ shop.locale }}';
+
+  {% if customer %}
+    var SCASPCustomer = {};
+    SCASPCustomer.addresses = {{ customer.addresses | json }};
+  {% endif %}
+
+  if("undefined"==typeof Handlebars&&"function"==typeof define&&define.amd){var scasp_tempamd=define.amd;define.amd=void 0;var scasp_fileref=document.createElement("script");scasp_fileref.setAttribute("type","text/javascript"),scasp_fileref.setAttribute("src","//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"),document.getElementsByTagName("head")[0].appendChild(scasp_fileref),setTimeout(function(){define.amd=scasp_tempamd},1e3)}
+</script>
+
+
+<!-- TEMPLATES -->
+<script id="scasp-container-template" type="text">
+{%raw%}
+<div id="sca-storepickup-container" class="new-for-mobile" style="display: none">
+  <div class="sca-storepickup-loading"></div>
+  <ul id="sca-storepickup-methods">
+    <li class="sca-storepickup-shipping-tab active">
+      <img src="{% endraw %}{{ 'scasp-shipping-icon.png' | asset_url }}{% raw %}" />
+      <p>{{ st_shipping_tab }}</p>
+    </li>
+    <li class="sca-storepickup-delivery-tab">
+      <img src="{% endraw %}{{ 'scasp-delivery-icon.png' | asset_url }}{% raw %}" />
+      <p>{{ st_local_delivery_tab }}</p>
+    </li>
+    <li class="sca-storepickup-pickup-tab">
+      <img src="{% endraw %}{{ 'scasp-pickup-icon.png' | asset_url }}{% raw %}" />
+      <p>{{ st_store_pickup_tab }}</p>
+    </li>
+  </ul>
+
+  <div id="sca-storepickup-desc">
+    <p class="sca-storepickup-shipping-desc">{{ st_shipping_text_content }}</p>
+    <p class="sca-storepickup-delivery-desc" style="display: none">{{ st_local_delivery_text_content }}</p>
+    <p class="sca-storepickup-pickup-desc" style="display: none">{{ st_store_pickup_text_content }}</p>
+
+    <div class="bh-sl-container" style="display: none">
+      <div class="bh-sl-form-container">
+        <input type="text" id="bh-sl-address" name="bh-sl-address" placeholder="{{ st_search_box_placeholder }}" {{#if sg_search_box}}{{else}}style="display: none"{{/if}} />
+        <a href="#" id="scasp-geocode-btn" title="{{ st_find_my_location }}" {{#if sg_search_box}}{{else}}style="display: none"{{/if}}>
+        	<img src="{% endraw %}{{ 'scasp-find-location.png' | asset_url }}{% raw %}" />
+        </a>
+        <span class="scasp-address-required scasp-error-msg">{{ st_delivery_address_is_required }}</span>
+      </div>
+
+      <ul id="scasp-tabs">
+        <li class="scasp-tab-list active">List</li>
+        <li class="scasp-tab-map">Map</li>
+      </ul>
+
+      <div id="bh-sl-map-container" class="bh-sl-map-container">
+        <div id="bh-sl-map" class="bh-sl-map"></div>
+        <div class="bh-sl-loc-list">
+          <ul class="list"></ul>
+        </div>
+      </div>
+      <div class="bh-sl-pagination-container">
+        <ol class="bh-sl-pagination"></ol>
+      </div>
+      <span class="scasp-store-required scasp-error-msg">{{ st_non_select_store_validate_text }}</span>
+      <span class="scasp-delivery-validate scasp-error-msg" style="display: none">{{ st_delivery_address_is_not_valid }}</span>
+      <span class="scasp-delivery-success" style="display: none">{{ st_delivery_address_validate_success }}</span>
+    </div>
+
+    <span class="scasp-delivery-no-validate" style="display: none">{{ st_delivery_no_validate }}</span>
+
+    <input type="text" id="date-pickup" placeholder="{{ st_datetime_pickup_placeholder }}" style="display: none" onfocus="blur();" />
+    <input type="text" id="date-delivery" placeholder="{{ st_datetime_pickup_placeholder }}" style="display: none" onfocus="blur();" />
+    <input type="text" id="scasp-date" style="display:none;" />
+    <input type="text" id="scasp-time" style="display:none;" />
+    <input type="text" id="scasp-delivery-date" style="display:none;" />
+    <input type="text" id="scasp-delivery-time" style="display:none;" />
+    <img src="https://cdn.secomapp.com/storepickup/assets/cdn/img/loading.svg" alt="loading" class="d-none scasp-loader" id="sca-limit-pickup-loader">
+    <span class="scasp-datetime-required scasp-error-msg">{{ st_non_select_datetime_validate_text }}</span>
+    <div class="scasp-selected">
+  		<p><span>&nbsp;</span><strong>{{ st_you_selected_location }}</strong></p>
+    	<div class="scasp-selected-content"></div>
+  	</div>
+
+    <input type="hidden" name="attributes[Checkout-Method]" />
+    <input type="hidden" name="attributes[Pickup-Location-Id]" />
+    <input type="hidden" name="attributes[Pickup-Date]" />
+    <input type="hidden" name="attributes[Pickup-Time]" />
+    <input type="hidden" name="attributes[Pickup-Location-Company]" />
+    <input type="hidden" name="attributes[Pickup-Location-Address-Line-1]" />
+    <input type="hidden" name="attributes[Pickup-Location-Address-Line-2]" />
+    <input type="hidden" name="attributes[Pickup-Location-City]" />
+    <input type="hidden" name="attributes[Pickup-Location-Region]" />
+    <input type="hidden" name="attributes[Pickup-Location-Postal-Code]" />
+    <input type="hidden" name="attributes[Pickup-Location-Country]" />
+    <input type="hidden" name="attributes[Delivery-Location-Id]" />
+    <input type="hidden" name="attributes[Delivery-Date]" />
+    <input type="hidden" name="attributes[Delivery-Time]" />
+
+    <div class="scasp-popup-template" style="display: none"></div>
+  </div>
+</div>
+{% endraw %}
+</script>
+
+<script id="scasp-infowindow-template" type="text">
+{%raw%}
+{{#location}}
+<div id="scasp-window-container" class="scasp-info-window">
+	<div class="scasp-info-location">
+		<div id="scasp-title" class="scasp-field"><strong>{{name}}</strong></div>
+        <div id="scasp-address" class="scasp-field">{{address}}</div>
+        <div id="scasp-address2" class="scasp-field">{{address2}}</div>
+        <div>{{#if city}}<span id="scasp-city" class="scasp-field">{{city}}</span> {{/if}}{{#if state}}<span id="scasp-state" class="scasp-field">{{state}}</span> {{/if}}{{#if postal}}<span id="scasp-zipcode" class="scasp-field">{{postal}}</span> {{/if}}{{#if country}} <span id="scasp-country" class="scasp-field">{{country}}</span>{{/if}}</div>
+        {{#if phone}}<div id="scasp-phone" class="scasp-field"><span id="scasp-phone-label">Ph:</span> <a href="tel:{{phone}}">{{phone}}</a> </div>{{/if}}
+        {{#if distance}}
+            <div id="scasp-distance" class="scasp-field">{{distance}} {{length}}</div>
+            <div id="scasp-direction" class="scasp-field"><a href="https://maps.google.com/maps?saddr={{origin}}&amp;daddr={{address}} {{address2}} {{city}}, {{state}} {{postal}}" target="_blank">Directions</a></div>
+        {{/if}}
+	</div>
+</div>
+{{/location}}
+{%endraw%}
+</script>
+
+<script id="scasp-list-template" type="text">
+{%raw%}
+{{#location}}
+<li class="scasp-list-container" data-markerid="{{markerid}}">
+	<div class="list-details scasp-list-details">
+    	<input type="radio" class="location_id" name="location_id" value="{{id}}" />
+		<div class="list-content scasp-list-content">
+			<div class="scasp-field scasp-title" >{{name}}</div>
+            <div class="scasp-field scasp-address">{{address}}</div>
+            <div class="scasp-field scasp-address2">{{address2}}</div>
+            <div><span class="scasp-field scasp-city">{{city}}{{#if city}},{{/if}}</span> {{#if state}}<span class="scasp-field scasp-state">{{state}}</span> <span class="scasp-field scasp-zipcode">{{postal}}</span>,{{/if}} <span class="scasp-field scasp-country"> {{#if country}}{{country}}{{/if}}</span></div>
+            <input type="hidden" name="distance-value" class="distance-value" value="{{distance}}" />
+            {{#if distance}}
+            	<div id="scasp-distance" class="scasp-field">{{distance}} {{length}}</div>
+            	<div id="scasp-direction" class="scasp-field"><a href="https://maps.google.com/maps?saddr={{origin}}&amp;daddr={{address}} {{address2}} {{city}}, {{state}} {{postal}}" target="_blank">Directions</a></div>
+            {{/if}}
+            <div id="scasp-more-info" class="scasp-field"><a data-fancybox data-src="#scasp-opening{{id}}" href="javascript:;" class="scasp-more-information">{{ st_more_information_text }}</a></div>
+		</div>
+        <div class="list-label"><span>{{marker}}</span></div>
+	</div>
+</li>
+{{/location}}
+{%endraw%}
+</script>
+
+<script id="scasp-popup-template" type="text">
+{% raw %}
+{{#location}}
+<div class="scasp-location-popup" id="scasp-opening{{id}}">
+    <h1>{{ name }}</h1>
+    <div>{{ address }}</div>
+    {{#if address2}}<div>{{address2}}</div>{{/if}}
+    <div><span class="scasp-field">{{city}}{{#if city}},{{/if}}</span> {{#if state}}<span class="scasp-field">{{state}}</span> <span class="scasp-field">{{postal}}</span>,{{/if}} <span class="scasp-field"> {{#if country}}{{country}}{{/if}}</span></div>
+    <div>{{ phone }}</div>
+    {{#if description}}<p style="white-space:pre-wrap;">{{ description }}</p>{{/if}}
+
+    <h3>{{ st_opening_hours_text }}</h3>
+    <table>
+        {{#each opening_hours}}
+          {{#if (eq status "1")}}
+          <tr>
+          	  <td>{{name}}</td>
+              <td>{{fromFormatted}} - {{toFormatted}}</td>
+          </tr>
+          {{/if}}
+        {{/each}}
+    </table>
+</div>
+{{/location}}
+{% endraw %}
+</script>
+
+<script id="scasp-viewmap-btn-template" type="text">
+{%raw%}
+<button class="scasp-view-map-btn" onclick="return false;">View Map</button>
+{%endraw%}
+</script>
+<!-- END TEMPLATES -->
+
+
+</div>
+<script>
+  try {
+    if (typeof $ !== 'undefined') {
+      	$(document).ready(function () {
+      		$('form[action*="cart"][method="post"]').attr('action','/cart?locale={{shop.locale}}');
+  		});
+    }
+  } catch (e) {
+  }
+</script>
+
+{% endif %}

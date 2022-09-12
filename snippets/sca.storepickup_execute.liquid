@@ -1,0 +1,137 @@
+{% comment %}
+Do not remove or edit this file, this file needs for working of Store Pickup Application
+https://www.secomapp.com
+{% endcomment %}
+
+{% comment %} Check condition of total cart's value {% endcomment %}
+{% assign scasp_total_condition = false %}
+{% assign scasp_has_total_value = false %}
+{% if scasp_total_min > 0 and scasp_total_max > 0 %}
+  {% assign scasp_has_total_value = true %}
+  {% if cart.original_total_price < scasp_total_min or cart.original_total_price > scasp_total_max %}
+    {% assign scasp_total_condition = true %}
+  {% endif %}
+{% else %}
+  {% if scasp_total_min > 0 %}
+  {% assign scasp_has_total_value = true %}
+  {% if cart.original_total_price < scasp_total_min %}
+    {% assign scasp_total_condition = true %}
+  {% endif %}
+  {% elsif scasp_total_max > 0 %}
+  {% assign scasp_has_total_value = true %}
+  {% if cart.original_total_price > scasp_total_max %}
+    {% assign scasp_total_condition = true %}
+  {% endif %}
+  {% endif %}
+{% endif %}
+{% comment %} End check condition of total cart's value {% endcomment %}
+
+{% comment %} Check condition of total cart's quantity {% endcomment %}
+{% assign scasp_qty_condition = false %}
+{% assign scasp_has_qty_value = false %}
+{% if scasp_qty_min > 0 and scasp_qty_max > 0 %}
+  {% assign scasp_has_qty_value = true %}
+  {% if cart.item_count < scasp_qty_min or cart.item_count > scasp_qty_max %}
+    {% assign scasp_qty_condition = true %}
+  {% endif %}
+{% else %}
+  {% if scasp_qty_min > 0 %}
+  {% assign scasp_has_qty_value = true %}
+  {% if cart.item_count < scasp_qty_min %}
+    {% assign scasp_qty_condition = true %}
+  {% endif %}
+  {% elsif scasp_qty_max > 0 %}
+  {% assign scasp_has_qty_value = true %}
+  {% if cart.item_count > scasp_qty_max %}
+    {% assign scasp_qty_condition = true %}
+  {% endif %}
+  {% endif %}
+{% endif %}
+{% comment %} End check condition of total cart's quantity {% endcomment %}
+
+{% comment %} Check condition of operator {% endcomment %}
+{% if scasp_operator == 'and' %}
+  {% if scasp_has_total_value and scasp_has_qty_value %}
+  {% if scasp_total_condition or scasp_qty_condition %}
+      {% assign scasp_disable_pickup = true %}
+    {% endif %}
+  {% elsif scasp_has_total_value and scasp_total_condition %}
+  {% assign scasp_disable_pickup = true %}
+  {% elsif scasp_has_qty_value and scasp_qty_condition %}
+  {% assign scasp_disable_pickup = true %}
+  {% endif %}
+{% elsif scasp_operator == 'or' %}
+  {% if scasp_total_condition and scasp_qty_condition %}
+  {% assign scasp_disable_pickup = true %}
+  {% endif %}
+{% endif %}
+{% comment %} End check condition of operator {% endcomment %}
+
+{% comment %} Delivery check condition of total cart's value {% endcomment %}
+{% assign scasp_delivery_total_condition = false %}
+{% assign scasp_delivery_has_total_value = false %}
+{% if scasp_delivery_total_min > 0 and scasp_delivery_total_max > 0 %}
+  {% assign scasp_delivery_has_total_value = true %}
+  {% if cart.original_total_price < scasp_delivery_total_min or cart.original_total_price > scasp_delivery_total_max %}
+    {% assign scasp_delivery_total_condition = true %}
+  {% endif %}
+{% else %}
+  {% if scasp_delivery_total_min > 0 %}
+  {% assign scasp_delivery_has_total_value = true %}
+  {% if cart.original_total_price < scasp_delivery_total_min %}
+    {% assign scasp_delivery_total_condition = true %}
+  {% endif %}
+  {% elsif scasp_delivery_total_max > 0 %}
+  {% assign scasp_delivery_has_total_value = true %}
+  {% if cart.original_total_price > scasp_delivery_total_max %}
+    {% assign scasp_delivery_total_condition = true %}
+  {% endif %}
+  {% endif %}
+{% endif %}
+{% comment %} End check condition of total cart's value {% endcomment %}
+
+{% comment %} Delivery check condition of total cart's quantity {% endcomment %}
+{% assign scasp_disable_delivery = false %}
+{% assign scasp_delivery_qty_condition = false %}
+{% assign scasp_delivery_has_qty_value = false %}
+{% if scasp_delivery_qty_min > 0 and scasp_delivery_qty_max > 0 %}
+  {% assign scasp_delivery_has_qty_value = true %}
+  {% if cart.item_count < scasp_delivery_qty_min or cart.item_count > scasp_delivery_qty_max %}
+    {% assign scasp_delivery_qty_condition = true %}
+  {% endif %}
+{% else %}
+  {% if scasp_delivery_qty_min > 0 %}
+  {% assign scasp_delivery_has_qty_value = true %}
+  {% if cart.item_count < scasp_delivery_qty_min %}
+    {% assign scasp_delivery_qty_condition = true %}
+  {% endif %}
+  {% elsif scasp_delivery_qty_max > 0 %}
+  {% assign scasp_delivery_has_qty_value = true %}
+  {% if cart.item_count > scasp_delivery_qty_max %}
+    {% assign scasp_delivery_qty_condition = true %}
+  {% endif %}
+  {% endif %}
+{% endif %}
+{% comment %} End check condition of total cart's quantity {% endcomment %}
+
+{% comment %} Delivery check condition of operator {% endcomment %}
+{% if scasp_delivery_operator == 'and' %}
+  {% if scasp_delivery_has_total_value and scasp_delivery_has_qty_value %}
+  {% if scasp_delivery_total_condition or scasp_delivery_qty_condition %}
+      {% assign scasp_disable_delivery = true %}
+    {% endif %}
+  {% elsif scasp_delivery_has_total_value and scasp_delivery_total_condition %}
+  {% assign scasp_disable_delivery = true %}
+  {% elsif scasp_delivery_has_qty_value and scasp_delivery_qty_condition %}
+  {% assign scasp_disable_delivery = true %}
+  {% endif %}
+{% elsif scasp_delivery_operator == 'or' %}
+  {% if scasp_delivery_total_condition and scasp_delivery_qty_condition %}
+  {% assign scasp_disable_delivery = true %}
+  {% endif %}
+{% endif %}
+{% comment %} End check condition of operator {% endcomment %}
+
+<script>
+  var SCASPDisableDelivery = {{ scasp_disable_delivery }};
+</script>

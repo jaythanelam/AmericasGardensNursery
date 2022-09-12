@@ -94,7 +94,8 @@
 
     <script src="{{ 'custom.js' | asset_url }}" ></script>
     
-  </head>
+  {% include 'sca.storepickup' %}
+</head>
 
   <body
     class="template--{{ template | split: '.' | first | remove: '_' | replace: '/', '--' }} page--{{ page_title | handle }}"

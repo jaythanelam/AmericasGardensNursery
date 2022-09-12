@@ -1,0 +1,17 @@
+{% layout none %}
+{% capture tags %}{% paginate search.results by 20 %}{% for item in search.results %}{{ item.tags | json }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endpaginate %}{% endcapture %}
+{% capture products %}
+  {% paginate search.results by 20 %}
+  {% for item in search.results %}
+  {{ item.handle | json }}:
+    {
+      "handle": {{ item.handle | json }},
+      "tag": {{ item.tags | json }}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+  {% endpaginate %}
+{% endcapture %}
+scaspSearchCallback({
+  "products": { {{ products }} },
+  "tags":[{{ tags }}]
+});

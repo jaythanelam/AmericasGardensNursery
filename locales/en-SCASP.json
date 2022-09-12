@@ -1,0 +1,38 @@
+{
+  "shopify": {
+    "checkout": {
+      "contact": {
+        "shipping_address_title": "Pickup information"
+      },
+      "thank_you": {
+        "marker": {
+          "shipping": "Pickup address"
+        },
+        "shipping_address_title": "Pickup address"
+      },
+      "general": {
+        "edit_shipping_address": "Edit pickup address",
+        "continue_to_shipping_method": "Continue"
+      },
+      "order_summary": {
+        "free_shipping_discount_label": "Free pickup",
+        "shipping_label": "Store Pickup"
+      },
+      "shipping": {
+        "title": "Store Pickup",
+        "waiting_on_rate_notice": "Please wait while we fetch available pickup rates...",
+        "no_rates_for_cart_or_destination_notice": "Pickup is not available for your cart or destination.",
+        "no_rates_for_country_notice": "We don't offer pickups in {{ country }}.",
+        "please_enter_your_shipping_information_notice": "Please go back to the shopping cart page and choose a pickup location."
+      },
+      "review": {
+        "blocks": {
+          "shipping_address_title": "Pick up"
+        }
+      },
+      "payment": {
+        "same_billing_address_label": "Please use the option below ⬇"
+      }
+    }
+  }
+}
