@@ -99,7 +99,7 @@
                   {% assign property_size = item.properties | size %}
                   {% if property_size > 0 %}
                     {% for property in item.properties %}
-                      {% unless property.last == blank %}
+                      {% unless property.last == blank or property.first == "_alpaca_id" %}
                         <br>
                         {{ property.first }}:
                         {% comment %} Check if there was an uploaded file associated {% endcomment %}
@@ -253,7 +253,7 @@
                   {% if property_size > 0 %}
                     <div class="cart--item-properties">
                     {% for property in item.properties %}
-                      {% unless property.last == blank %}
+                      {% unless property.last == blank or property.first == "_alpaca_id" %}
                         <br>
                         {{ property.first }}:
                         {% comment %} Check if there was an uploaded file associated {% endcomment %}
