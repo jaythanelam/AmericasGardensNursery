@@ -1,0 +1,85 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% if shop.customer_accounts_enabled %}
+  {% assign ssw_manual_uninstall = shop.metafields.ssw['manual_uninstall'] | plus: 0 %}
+  {% assign ssw_script_tags_allowed = shop.metafields.ssw['script_tags_allowed'] | plus: 0 %}
+  {% if content_for_header contains 'ssw-empty.js' or ssw_manual_uninstall == 1 or ssw_script_tags_allowed != 1 %}
+  {% assign ssw_review_enabled = 1 %}
+    {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+    {% unless shop.metafields.ssw[customer_locale] %}
+      {% for published_locale in shop.published_locales %}
+        {% if published_locale.primary == true %}
+          {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+        {% endif %}
+      {% endfor %}
+    {% endunless %}
+  {% if shop.metafields.ssw['review_enabled'] %}
+    {% assign ssw_review_enabled = shop.metafields.ssw['review_enabled'] | plus: 0 %}
+  {% endif %}
+  {% if ssw_review_enabled == 1 %}
+    {% assign ssw_count_rate = 0 %}
+    {% assign ssw_avg_rate = 0 %}
+    {% assign ssw_rate_data_key = 'review' %}
+    {% assign ssw_unite_reviews = 0 %}
+    {% if shop.metafields.ssw['unite_reviews'] %}
+      {% assign ssw_unite_reviews = shop.metafields.ssw['unite_reviews'] | plus: 0 %}
+    {% endif %}
+    {% if ssw_unite_reviews == 1 %}
+      {% if shop.metafields.ssw['unite_product_ids'] %}
+        {% assign ssw_unite_product_ids = shop.metafields.ssw['unite_product_ids'] | split: ',' %}
+        {% assign unite_product_id = product.id | downcase %}
+        {% if ssw_unite_product_ids contains unite_product_id %}
+          {% assign ssw_rate_data_key = 'unite_review' %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+    {% assign gwReviewRateData = product.metafields.ssw[ssw_rate_data_key] %}
+    {% if gwReviewRateData.type == 'json' %}
+      {% assign gwReviewRateData = product.metafields.ssw[ssw_rate_data_key].value %}
+    {% endif %}
+    {% if gwReviewRateData %}
+      {% assign ssw_count_rate = gwReviewRateData.count | plus: 0 %}
+      {% assign ssw_avg_rate = gwReviewRateData.avg | plus: 0 %}
+      {% assign ssw_product_id = product.id %}
+      {% if gwReviewRateData.product_id %}
+        {% assign ssw_product_id = gwReviewRateData.product_id | plus: 0 %}
+      {% endif %}
+      {% if ssw_product_id != product.id  %}
+        {% assign ssw_count_rate  = 0 %}
+        {% assign ssw_avg_rate = 0 %}
+      {% endif %}
+    {% endif %}
+
+    {% assign review_listing = shop.metafields.ssw[customer_locale].value.review_listing | replace: "{{ ssw_avg_rate }}", ssw_avg_rate %}
+
+    <div class="ssw-widget-avg-rate-listing ssw-stars ssw-stars-large {% if ssw_count_rate == 0 %}ssw-hide{% endif %}" data-rate="{{ ssw_avg_rate }}" tabindex="0" aria-label="{{ review_listing }}">
+      {% assign ssw_j = ssw_avg_rate | floor %}
+      {% for i in (1..ssw_j) %}
+        <i class="ssw-icon-star"></i>
+      {% endfor %}
+      {% assign ssw_rate_last_star = 5 | minus:ssw_avg_rate %}
+      {% assign ssw_y = ssw_rate_last_star | floor %}
+      {% assign ssw_x = ssw_avg_rate | minus:ssw_j %}
+      {% if ssw_x > 0.74 %}
+        <i class="ssw-icon-star"></i>
+      {% else %}
+        {% if ssw_x > 0.24 %}
+          <i class="ssw-icon-star-half-alt"></i>
+        {% else %}
+          {% if ssw_x > 0 %}
+            {% assign ssw_y = ssw_y | plus:1 %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      {% for i in (1..ssw_y) %}
+        <i class="ssw-icon-star-empty"></i>
+      {% endfor %}
+      <span class="ssw-review-count" tabindex="0" aria-label=" {{ssw_count_rate}}"> ({{ssw_count_rate}}) </span>
+    </div>
+  {% endif %}
+  {% endif %}
+{% endif %}

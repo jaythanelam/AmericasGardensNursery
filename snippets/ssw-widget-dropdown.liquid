@@ -5,11 +5,19 @@
 **************************************************/
 {% endcomment %}
 {% assign ssw_fave_enabled = shop.metafields.ssw['fave_enabled'] | plus: 0 %}
+{% assign customer_locale = shop.locale | prepend: 'lang_' %}
+{% unless shop.metafields.ssw[customer_locale] %}
+  {% for published_locale in shop.published_locales %}
+      {% if published_locale.primary == true %}
+          {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+      {% endif %}
+  {% endfor %}
+{% endunless %}
 {% assign ssw_community_enabled = shop.metafields.ssw['community_enabled'] | plus: 0 %}
 {% if ssw_community_enabled or ssw_fave_enabled %}
-<li id="view_profile_link"><a tabindex="-1" href="/pages/profile">{{ 'socialshopwave.view_profile' | t }}</a></li>
+<li id="view_profile_link"><a tabindex="-1" href="/pages/profile">{{ shop.metafields.ssw[customer_locale].value.view_profile }}</a></li>
 {% endif %}
 {% if ssw_fave_enabled == 1 %}
-<li id="view_wishlist_link"><a tabindex="-1" href="/pages/wishlist">{{ 'socialshopwave.my_faves' | t }}</a></li>
+<li id="view_wishlist_link"><a tabindex="-1" href="/pages/wishlist">{{ shop.metafields.ssw[customer_locale].value.my_faves }}</a></li>
 {% endif %}
-<li id="edit_profile_link"><a tabindex="-1" href="/pages/profile-edit">{{ 'socialshopwave.edit_profile' | t }}</a></li>
+<li id="edit_profile_link"><a tabindex="-1" href="/pages/profile-edit">{{ shop.metafields.ssw[customer_locale].value.edit_profile }}</a></li>

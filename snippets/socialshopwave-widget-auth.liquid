@@ -5,10 +5,18 @@
 **************************************************/
 {% endcomment %}
 {% if shop.customer_accounts_enabled %}
+  {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+  {% unless shop.metafields.ssw[customer_locale] %}
+    {% for published_locale in shop.published_locales %}
+      {% if published_locale.primary == true %}
+        {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
   <div id="ssw-topauth" class="ssw-topauth">
     {% if customer %}
       <div class="ssw-tprofile ssw-dropdown">
-        <a class="ssw-dropdown-toggle" data-toggle="ssw-dropdown" href="javascript:void(0);">
+        <a id="ssw-widget-auth-dropdown-toggle" class="ssw-dropdown-toggle" data-toggle="ssw-dropdown" href="javascript:void(0);">
           <i class="ssw-icon-user"></i>
           {{ customer.first_name }}
           {% if customer.last_name != 'Unknown' %}
@@ -16,17 +24,21 @@
           {% endif %}
           <i class="ssw-icon-down-open-big"></i>
         </a>
-        <ul class="ssw-dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li id="customer_myorders_li"><a tabindex="-1" href="/account">{{ 'socialshopwave.my_orders' | t }}</a></li>
+        <ul class="ssw-dropdown-menu" role="menu" aria-labelledby="ssw-widget-auth-dropdown-toggle">
+          <li id="customer_myorders_li"><a tabindex="-1" href="/account">
+              {{ shop.metafields.ssw[customer_locale].value.my_orders }}
+            </a></li>
           {% render 'ssw-widget-dropdown' %}
           <li class="ssw-divider"></li>
-          <li><a id="customer_logout_link" tabindex="-1" href="/account/logout">{{ 'socialshopwave.logout' | t }}</a></li>
+          <li><a id="customer_logout_link" tabindex="-1" href="/account/logout">
+              {{ shop.metafields.ssw[customer_locale].value.logout }}
+            </a></li>
         </ul>
       </div>
     {% else %}
-      <a id="customer_login_link" href="#" data-toggle="ssw-modal" data-target="#login_modal" onclick="event.preventDefault();trackShopStats('login_popup_view', 'all')"><span class="ssw-visually-hidden" style="font-size:0">{{ shop.metafields.ssw.lang.go_to }}</span>{{ 'socialshopwave.log_in' | t }}</a>
+      <a id="customer_login_link" href="#" data-toggle="ssw-modal" data-target="#login_modal" onclick="event.preventDefault();trackShopStats('login_popup_view', 'all')"><span class="ssw-visually-hidden" style="font-size:0">{{ shop.metafields.ssw[customer_locale].value.go_to }}</span>{{ shop.metafields.ssw[customer_locale].value.log_in }}</a>
       <span class="ssw-login-divider">/</span>
-      <a id="customer_register_link" data-toggle="ssw-modal" data-target="#signup_modal" href="#" onclick="event.preventDefault();trackShopStats('login_popup_view', 'all')"><span class="ssw-visually-hidden" style="font-size:0">{{ shop.metafields.ssw.lang.go_to }}</span>{{ 'socialshopwave.sign_up' | t }}</a>
+      <a id="customer_register_link" data-toggle="ssw-modal" data-target="#signup_modal" href="#" onclick="event.preventDefault();trackShopStats('login_popup_view', 'all')"><span class="ssw-visually-hidden" style="font-size:0">{{ shop.metafields.ssw[customer_locale].value.go_to }}</span>{{ shop.metafields.ssw[customer_locale].value.sign_up }}</a>
     {% endif %}
   </div>
 {% endif %}

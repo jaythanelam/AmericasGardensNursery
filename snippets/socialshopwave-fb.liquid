@@ -4,7 +4,11 @@
 * IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
 **************************************************/
 {% endcomment %}
-{% if shop.metafields.ssw.settings.login_facebook_app_id > 0 or shop.metafields.ssw.settings.our_facebook_app == nil or shop.metafields.ssw.settings.our_facebook_app == 00 %}
+{% assign gwSettings = shop.metafields.ssw['settings'] %}
+{% if gwSettings.type == 'json' %}
+  {% assign gwSettings = shop.metafields.ssw['settings'].value %}
+{% endif %}
+{% if gwSettings.login_facebook_app_id > 0 or gwSettings.our_facebook_app == nil or gwSettings.our_facebook_app == 00 %}
 <div id="fb-root"></div>
 <script>
   function loadSswFB($){
@@ -13,7 +17,7 @@
     window.fbAsyncInit = function() {
       // init the FB JS SDK
       FB.init({
-        appId      : '{{ shop.metafields.ssw.settings.login_facebook_app_id }}',
+        appId      : '{{ gwSettings.login_facebook_app_id }}',
         channelUrl : sswProxyUrl + '/public/channel.html',
         status     : true,
         xfbml      : true,

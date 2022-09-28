@@ -1,0 +1,36 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% assign gwSettings = shop.metafields.ssw['settings'] %}
+{% if gwSettings.type == 'json' %}
+  {% assign gwSettings = shop.metafields.ssw['settings'].value %}
+{% endif %}
+{% if shop.customer_accounts_enabled or gwSettings.wishlist_users_only != 1 %}
+  {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+  {% unless shop.metafields.ssw[customer_locale] %}
+    {% for published_locale in shop.published_locales %}
+      {% if published_locale.primary == true %}
+        {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
+  {% assign ssw_fave_enabled = 1 %}
+  {% if shop.metafields.ssw['fave_enabled'] %}
+    {% assign ssw_fave_enabled = shop.metafields.ssw['fave_enabled'] | plus: 0 %}
+  {% endif %}
+  {% if ssw_fave_enabled == 1 %}
+    {% assign productId = ssw-widget-favebtn %}
+    <div class="ssw-faveappbtn ssw-faveappbtn-hidden-count ssw-faveappbtn-counter ssw-faveappbtn2 ssw-fave-btn ssw-wishlist-element sswfavebtn{{ productId }} ssw-fave-btn-default ssw-not-synch"
+         data-count="..." data-pending="0" data-product-id="{{ productId }}"
+         data-params='{"product_id":"{{ productId }}","event":"fave","page":"product_profile"}'>
+      <div class="ssw-fave-btn-content">
+          <i class="ssw-icon-heart-o"></i>
+        {{ shop.metafields.ssw[customer_locale].value.fave }}
+      </div>
+      <div class="ssw-fave-btn-counter"></div>
+    </div>
+  {% endif %}
+{% endif %}

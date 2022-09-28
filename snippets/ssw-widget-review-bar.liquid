@@ -4,9 +4,21 @@
 * IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
 **************************************************/
 {% endcomment %}
+{% assign gwSettings = shop.metafields.ssw['settings'] %}
+{% if gwSettings.type == 'json' %}
+  {% assign gwSettings = shop.metafields.ssw['settings'].value %}
+{% endif %}
 {% assign ssw_review_enabled = shop.metafields.ssw['review_enabled'] | plus: 0 %}
-{% if shop.customer_accounts_enabled and ssw_review_enabled == 1 and shop.metafields.ssw.settings.reviews_widget_enabled == 1 %}
-  {% if shop.metafields.ssw.settings.reviews_tab_position == 'left' %}
+{% if shop.customer_accounts_enabled and ssw_review_enabled == 1 and gwSettings.reviews_widget_enabled == 1 %}
+  {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+  {% unless shop.metafields.ssw[customer_locale] %}
+    {% for published_locale in shop.published_locales %}
+      {% if published_locale.primary == true %}
+        {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
+  {% if gwSettings.reviews_tab_position == 'left' %}
     {% assign direction = 'left' %}
     {% assign tab_position = 'ssw-left-top' %}
   {% else %}
@@ -16,18 +28,18 @@
   <div id="ssw-widget-review-bar" class="ssw-reviews-widget {{ tab_position }}" data-direction="{{ direction }}">
     <div class="ssw-review-side-backdrop"></div>
     <div class="ssw-reviews-caption {{ tab_position }}" data-direction="{{ direction }}">
-      <div class="ssw-reviews-caption__element">
+      <button class="ssw-reviews-caption__element" type="button" role="button" tabindex="1" aria-label="Growave reviews tab">
         <span class="ssw-mobile-hidden">
           <i class="gw-review-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15.476" viewBox="0 0 16 15.476">
                             <path id="Path_1859" data-name="Path 1859" d="M7.925,12.426l4.039,2.908a.857.857,0,0,0,1.293-.969L11.641,9.679l3.878-2.747A.755.755,0,0,0,15.2,5.478H10.349L8.733.631a.739.739,0,0,0-1.454,0L5.663,5.478H.816A.8.8,0,0,0,.331,6.932L4.209,9.679,2.755,14.365a.887.887,0,0,0,1.293.969Z" transform="translate(0.013 -0.025)" fill="#fff"></path>
                         </svg></i>
-          {{ "socialshopwave.reviews" | t }}</span>
+          {{ shop.metafields.ssw[customer_locale].value.reviews }}</span>
         <span class="ssw-mobile-visible"><i class="gw-review-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15.476" viewBox="0 0 16 15.476">
                             <path id="Path_1859" data-name="Path 1859" d="M7.925,12.426l4.039,2.908a.857.857,0,0,0,1.293-.969L11.641,9.679l3.878-2.747A.755.755,0,0,0,15.2,5.478H10.349L8.733.631a.739.739,0,0,0-1.454,0L5.663,5.478H.816A.8.8,0,0,0,.331,6.932L4.209,9.679,2.755,14.365a.887.887,0,0,0,1.293.969Z" transform="translate(0.013 -0.025)" fill="#fff"></path>
                         </svg></i></span>
-      </div>
+      </button>
     </div>
-    <div id="ssw-review-widget-content" class="ssw-reviews-wlist {{ tab_position }}" data-module="recommendation" data-name="reviewsPopup" data-metafield_key="review_tab">
+    <div id="ssw-review-widget-content" class="ssw-reviews-wlist gw-container {{ tab_position }}" data-module="recommendation" data-name="reviewsPopup" data-metafield_key="review_tab" tabindex="1" aria-label="Welcome to Growave reviews section" style="display: none">
       <div class="ssw-loader-wrapper ssw-text-center"><span class="ssw-spin ssw-loader"></span></div>
       <script type="text/javascript">
         /* global sswRun */
@@ -36,9 +48,10 @@
             let loader = Ssw.gwAssetsManifestLoader;
             Promise.all([
               loader.requireByKey("core.critical.css", "STYLE"),
-              loader.requireByKey("review.critical.css", "STYLE"),
-              loader.requireByKey("review.popup.critical.js", "SCRIPT")
+              loader.requireByKey("review.critical.css", "STYLE")
             ]).then(function () {
+              return loader.requireByKey("review.popup.critical.js", "SCRIPT");
+            }).then(function () {
               gwReviewPopupCriticalInit();
             });
           });

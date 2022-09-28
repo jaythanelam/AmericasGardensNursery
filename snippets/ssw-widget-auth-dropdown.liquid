@@ -5,6 +5,14 @@
 **************************************************/
 {% endcomment %}
 {% if shop.customer_accounts_enabled %}
+  {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+  {% unless shop.metafields.ssw[customer_locale] %}
+    {% for published_locale in shop.published_locales %}
+      {% if published_locale.primary == true %}
+        {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
   {% if customer %}
     {% capture the_snippet_auth %}{% render 'socialshopwave-widget-auth' %}{% endcapture %}
     {% unless the_snippet_auth contains 'Liquid error' %}
@@ -13,29 +21,30 @@
   {% else %}
     <span class="ssw-auth-dropdown">
           <span class="ssw-auth-dropdown-register">
-            <a href="/account/register">{{ 'socialshopwave.sign_up' | t }}</a>
+            <a href="/account/register" aria-label="Go to sign up page">{{ shop.metafields.ssw[customer_locale].value.sign_up }}</a>
           </span>
           <span class="ssw-dropdown">
-            <a href="javascript:void(0);" class="ssw-dropdown-toggle" data-toggle="ssw-dropdown">
-              {{ 'socialshopwave.log_in' | t }}
+            <button class="ssw-dropdown-toggle" data-toggle="ssw-dropdown" aria-label="Click here to log in">
+              {{ shop.metafields.ssw[customer_locale].value.log_in }}
               <i class="ssw-icon-down-open-big"></i>
-            </a>
-            <ul class="ssw-dropdown-menu" role="menu" aria-labelledby="dLabel">
+            </button>
+            <ul class="ssw-dropdown-menu" role="menu">
               <li>
                 <form method="post" action="/account/login">
+                  <input type="hidden" value="customer_login" name="form_type" enabled="enabled">
                   <div class="ssw-auth-dropdown-message"></div>
                   <div class="ssw-control-group">
-                    <input name="customer[email]" type="email" placeholder="{{ 'socialshopwave.email_address' | t }}" class="ssw-input-block-level" required="required">
+                    <input name="customer[email]" type="email" placeholder="{{ shop.metafields.ssw[customer_locale].value.email_address }}" class="ssw-input-block-level" required="required" aria-label="Enter your email address here">
                   </div>
                   <div class="ssw-control-group">
-                    <input name="customer[password]" type="password" placeholder="{{ 'socialshopwave.password' | t }}" class="ssw-input-block-level" required="required">
+                    <input name="customer[password]" type="password" placeholder="{{ shop.metafields.ssw[customer_locale].value.password }}" class="ssw-input-block-level" required="required" aria-label="Enter your password here">
                   </div>
                   <div class="ssw-control-group">
-                    <a href="account/login#recover" class="ssw-pull-right">{{ 'socialshopwave.forgot_password' | t }}</a>
+                    <a href="account/login#recover" class="ssw-pull-right" aria-label="Click here to reset your password" >{{ shop.metafields.ssw[customer_locale].value.forgot_password }}</a>
                     <div class="ssw-clearfix"></div>
                   </div>
                   <div class="ssw-control-group">
-                    <input type="submit" class="btn button ssw-input-block-level" value="{{ 'socialshopwave.log_in' | t }}">
+                    <input type="submit" class="btn button ssw-input-block-level" aria-label="Submit login form" value="{{ shop.metafields.ssw[customer_locale].value.log_in }}">
                   </div>
                 </form>
               </li>

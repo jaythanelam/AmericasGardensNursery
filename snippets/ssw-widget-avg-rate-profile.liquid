@@ -1,0 +1,245 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% if shop.customer_accounts_enabled %}
+  {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+  {% unless shop.metafields.ssw[customer_locale] %}
+      {% for published_locale in shop.published_locales %}
+          {% if published_locale.primary == true %}
+              {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+          {% endif %}
+      {% endfor %}
+  {% endunless %}
+  {% assign ssw_manual_uninstall = shop.metafields.ssw['manual_uninstall'] | plus: 0 %}
+  {% assign ssw_script_tags_allowed = shop.metafields.ssw['script_tags_allowed'] | plus: 0 %}
+  {% if content_for_header contains 'ssw-empty.js' or ssw_manual_uninstall == 1 or ssw_script_tags_allowed != 1 %}
+    {% if product %}
+      {% assign ssw_review_enabled = 1 %}
+      {% if shop.metafields.ssw['review_enabled'] %}
+        {% assign ssw_review_enabled = shop.metafields.ssw['review_enabled'] | plus: 0 %}
+      {% endif %}
+      {% assign ssw_questions_enabled = 0 %}
+      {% if shop.metafields.ssw['questions_enabled'] %}
+        {% assign ssw_questions_enabled = shop.metafields.ssw['questions_enabled'] | plus: 0 %}
+      {% endif %}
+      {% assign ssw_unite_reviews = 0 %}
+      {% if shop.metafields.ssw['unite_reviews'] %}
+        {% assign ssw_unite_reviews = shop.metafields.ssw['unite_reviews'] | plus: 0 %}
+      {% endif %}
+      <div id="ssw-avg-rate-profile-html" class="gw-hide" data-product-id="{{ product.id }}">
+        {% assign gwSettings = shop.metafields.ssw['settings'] %}
+        {% if gwSettings.type == 'json' %}
+          {% assign gwSettings = shop.metafields.ssw['settings'].value %}
+        {% endif %}
+        {% assign ssw_reviews_widget_show = 0 %}
+        {% if gwSettings %}
+           {% assign ssw_reviews_widget_show = gwSettings.reviews_widget_show | plus: 0 %}
+        {% endif %}
+
+        {% if ssw_review_enabled == 1 %}
+          {% assign ssw_count_rate = 0 %}
+          {% assign ssw_avg_rate = 0 %}
+          {% assign ssw_rate_data_key = 'review' %}
+          {% if ssw_unite_reviews == 1 %}
+            {% if shop.metafields.ssw['unite_product_ids'] %}
+              {% assign ssw_unite_product_ids = shop.metafields.ssw['unite_product_ids'] | split: ',' %}
+              {% assign unite_product_id = product.id | downcase %}
+              {% if ssw_unite_product_ids contains unite_product_id %}
+                {% assign ssw_rate_data_key = 'unite_review' %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+          {% assign gwReviewRateData = product.metafields.ssw[ssw_rate_data_key] %}
+          {% if gwReviewRateData.type == 'json' %}
+            {% assign gwReviewRateData = product.metafields.ssw[ssw_rate_data_key].value %}
+          {% endif %}
+          {% if gwReviewRateData %}
+            {% assign ssw_count_rate = gwReviewRateData.count | plus: 0 %}
+            {% assign ssw_avg_rate = gwReviewRateData.avg | plus: 0 %}
+            {% assign ssw_product_id = product.id %}
+            {% if gwReviewRateData.product_id %}
+              {% assign ssw_product_id = gwReviewRateData.product_id | plus: 0 %}
+            {% endif %}
+            {% if ssw_product_id != product.id %}
+              {% assign ssw_count_rate  = 0 %}
+              {% assign ssw_avg_rate = 0 %}
+            {% endif %}
+          {% endif %}
+
+          {% if ssw_reviews_widget_show == 1 %}
+            <div class="ssw-stars ssw-stars-large" tabindex="0" aria-label="{{ shop.metafields.ssw[customer_locale].value.write_a_review }}">
+              {% if ssw_count_rate == 0 %}
+                {% for i in (1..5) %}
+                  <i class="ssw-icon-star-empty"></i>
+                {% endfor %}
+              {% else %}
+                {% assign ssw_j = ssw_avg_rate | floor %}
+                {% for i in (1..ssw_j) %}
+                  <i class="ssw-icon-star"></i>
+                {% endfor %}
+                {% assign ssw_rate_last_star = 5 | minus:ssw_avg_rate %}
+                {% assign ssw_y = ssw_rate_last_star | floor %}
+                {% assign ssw_x = ssw_avg_rate | minus:ssw_j %}
+                {% if ssw_x > 0.74 %}
+                  <i class="ssw-icon-star"></i>
+                {% else %}
+                  {% if ssw_x > 0.24 %}
+                    <i class="ssw-icon-star-half-alt"></i>
+                  {% else %}
+                    {% if ssw_x > 0 %}
+                      {% assign ssw_y = ssw_y | plus:1 %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+                {% for i in (1..ssw_y) %}
+                  <i class="ssw-icon-star-empty"></i>
+                {% endfor %}
+              {% endif %}
+              <span class="ssw-review-count">
+                  {% if ssw_count_rate == 0 %}
+                      {{ shop.metafields.ssw[customer_locale].value.write_a_review }}
+                  {% else %}
+                    {% if ssw_count_rate == 1 %}
+                        {% assign quantity_review2 = shop.metafields.ssw[customer_locale].value.quantity_review2 | replace: "{{ ssw_count_rate }}", ssw_count_rate %}
+                        {{ quantity_review2 }}
+                    {% else %}
+                        {% assign quantity_reviews2 = shop.metafields.ssw[customer_locale].value.quantity_reviews2 | replace: "{{ ssw_count_rate }}", ssw_count_rate %}
+                        {{ quantity_reviews2 }}
+                    {% endif %}
+                  {% endif %}
+                </span>
+            </div>
+          {% endif %}
+        {% endif %}
+        {% if ssw_questions_enabled == 1 and ssw_review_enabled == 1 %}
+          <div class="ssw-question-count" tabindex="0" aria-label="{{ shop.metafields.ssw[customer_locale].value.ask_question }}">
+            {% if ssw_reviews_widget_show == 1 %}
+              <span class="ssw-rq-divider">|</span>
+            {% endif %}
+
+            <span>
+            {% assign ssw_question_count = 0 %}
+              {% if product.metafields.ssw.question %}
+                {% assign ssw_question_count_key = 'question' %}
+              {% else %}
+                {% assign ssw_question_count_key = product.id | append: '_question_count' %}
+              {% endif %}
+              {% assign gwQuestionData = product.metafields.ssw[ssw_question_count_key] %}
+              {% if gwQuestionData.type == 'json' %}
+                {% assign gwQuestionData = product.metafields.ssw[ssw_question_count_key].value %}
+              {% endif %}
+              {% if gwQuestionData %}
+                {% assign ssw_product_id = product.id %}
+                {% if ssw_question_count_key contains 'question_count' %}
+                  {% assign ssw_question_count = gwQuestionData %}
+                {% else %}
+                  {% assign ssw_question_count = gwQuestionData.count | plus: 0 %}
+                  {% assign ssw_product_id = gwQuestionData.product_id | plus: 0 %}
+                {% endif %}
+                {% if ssw_product_id != product.id %}
+                  {% assign ssw_question_count = 0 %}
+                {% endif %}
+              {% endif %}
+              {% if ssw_question_count == 0 %}
+                <i class="ssw-icon-chat"></i>{{ shop.metafields.ssw[customer_locale].value.ask_question }}
+              {% else %}
+                {% if ssw_question_count == 1 %}
+                  <i class="ssw-icon-chat"></i>
+                   {% assign quantity_question = shop.metafields.ssw[customer_locale].value.quantity_question | replace: "{{ ssw_question_count }}", ssw_question_count %}
+                   {{ quantity_question }}
+                  {% else %}
+                  <i class="ssw-icon-chat"></i>
+                    {% assign quantity_questions = shop.metafields.ssw[customer_locale].value.quantity_questions | replace: "{{ ssw_question_count }}", ssw_question_count %}
+                    {{ quantity_questions }}
+                {% endif %}
+              {% endif %}
+            </span>
+          </div>
+        {% endif %}
+        <div class="ssw-clearfix"></div>
+      </div>
+      <style>
+        .gw-hide {
+          display: none;
+        }
+      </style>
+      <script type="text/javascript" defer>
+          if (typeof sswRun === 'function') {
+              sswRun(function () {
+                  Ssw.gwAssetsManifestLoader.requireByKey("review.critical.css", "STYLE")
+                  ssw('#ssw-avg-rate-profile-html').removeClass('gw-hide');
+                  ssw('#ssw-avg-rate-profile-html .ssw-stars, #ssw-avg-rate-profile-html .ssw-question-count')
+                      .click(e => handleScroll(e.currentTarget))
+
+                  function handleScroll(target) {
+                      if (ssw('#ssw-widget-recommends-html').length > 0) {
+                          const body = ssw('body').get(0)
+                          const reviewWidget = ssw("#ssw-widget-recommends-html");
+                          const initialOffset = reviewWidget.offset().top
+                          const scrollToWidget = (offset) => {
+                              const scrollHeight = offset - document.documentElement.clientHeight / 4
+                              ssw('html, body').animate({scrollTop: scrollHeight}, 800);
+                          }
+                          scrollToWidget(initialOffset)
+
+                          const observer = new ResizeObserver(() => {
+                              const newOffset = reviewWidget.offset().top
+                              if (initialOffset !== newOffset) {
+                                  scrollToWidget(newOffset)
+                                  observer.unobserve(body)
+                              }
+                          })
+                          observer.observe(body)
+
+                          setTimeout(() => {
+                              observer.unobserve(body)
+                          }, 1500)
+
+                          const $self = ssw(target);
+                          sswAddEventListener('reviewWidgetLoaded', function () {
+                              clickButton($self)
+                          });
+                      }
+                  }
+
+                  ssw('#ssw-avg-rate-profile-html .ssw-stars').on("keydown", function (e) {
+                      if (e.key === "Enter") {
+                          handleScroll(e.currentTarget)
+                      }
+                  });
+
+                  ssw('#ssw-avg-rate-profile-html .ssw-question-count').on("keydown", function (e) {
+                      if (e.key === "Enter") {
+                          handleScroll(e.currentTarget)
+                      }
+                  });
+
+                  function clickButton($element) {
+                      if ($element.hasClass('ssw-stars')) {
+                          if (ssw('.ssw-nav > li[data-content="#ssw-reviews-content"]').length) {
+                              ssw('.ssw-nav > li[data-content="#ssw-reviews-content"]').click();
+                          }
+                          if (ssw("#add_recommend").length) {
+                              ssw("#add_recommend").click();
+                          }
+                      } else if ($element.hasClass('ssw-question-count')) {
+                          if (ssw('.ssw-nav > li[data-content="#ssw-questions-content"]').length || ssw('.ssw-photo-layout__main')) {
+                              ssw('.ssw-nav > li[data-content="#ssw-questions-content"]').click();
+                              if (ssw(".ssw-ask-question-link").length) {
+                                  ssw(".ssw-ask-question-link").click();
+                              }
+                              if (ssw('.ssw-ask-question-button').length) {
+                                  ssw('.ssw-ask-question-button').click();
+                              }
+                          }
+                      }
+                  }
+              })
+          }
+      </script>
+    {% endif %}
+  {% endif %}
+{% endif %}

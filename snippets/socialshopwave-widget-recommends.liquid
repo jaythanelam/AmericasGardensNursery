@@ -1,0 +1,34 @@
+{% comment %}
+/**************************************************
+* DO NOT MODIFY THIS FILE!!!                      *
+* IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
+**************************************************/
+{% endcomment %}
+{% if product and shop.customer_accounts_enabled %}
+  {% assign ssw_review_enabled = 1 %}
+  {% assign customer_locale = shop.locale | prepend: 'lang_' %}
+  {% unless shop.metafields.ssw[customer_locale] %}
+    {% for published_locale in shop.published_locales %}
+      {% if published_locale.primary == true %}
+        {% assign customer_locale = published_locale.iso_code | prepend: 'lang_' %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
+  {% if shop.metafields.ssw['review_enabled'] %}
+    {% assign ssw_review_enabled = shop.metafields.ssw['review_enabled'] | plus: 0 %}
+  {% endif %}
+  {% if ssw_review_enabled == 1 %}
+    {% assign ssw_new_widget = 0 %}
+    {% if socialshopwave-widget-recommends %}
+      {% assign ssw_new_widget = socialshopwave-widget-recommends %}
+    {% elsif new_widget == 1 %}
+      {% assign ssw_new_widget = 1 %}
+    {% endif %}
+    {% assign ssw_widget_class = 'ssw-html-widget' %}
+    {% if ssw_new_widget != 0 %}
+      {% assign ssw_widget_class = ssw_widget_class | append: ' ssw-new-widget' %}
+    {% endif %}
+    {% assign ssw_widget_class = ssw_widget_class | append: ' ssw-review-widget-lazyload' %}
+    <div id="ssw-widget-recommends-html" class="gw-container {{ ssw_widget_class }}" data-request-url="review/index" data-product_id="{{ product.id }}" data-new_widget="{{ ssw_new_widget }}" data-additional_params="new_widget" tabindex="0" aria-label="{{ shop.metafields.ssw[customer_locale].value.review_widget }}"></div>
+  {% endif %}
+{% endif %}

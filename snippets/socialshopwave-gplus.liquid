@@ -4,13 +4,17 @@
 * IT WILL BE OVERWRITTEN BY UPDATES FROM GROWAVE! *
 **************************************************/
 {% endcomment %}
-{% if shop.metafields.ssw.settings.login_gplus_client_id <> '' or shop.metafields.ssw.settings.our_gplus_app == nil or shop.metafields.ssw.settings.our_gplus_app == '' or shop.metafields.ssw.settings.our_gplus_app == 0 %}
+{% assign gwSettings = shop.metafields.ssw['settings'] %}
+{% if gwSettings.type == 'json' %}
+    {% assign gwSettings = shop.metafields.ssw['settings'].value %}
+{% endif %}
+{% if gwSettings.login_gplus_client_id <> '' or gwSettings.our_gplus_app == nil or gwSettings.our_gplus_app == '' or gwSettings.our_gplus_app == 0 %}
   <script id="gw-gapi-load-script">
       var clientIdMetaTag = document.createElement('meta');
       var scopeMetaTag = document.createElement('meta');
       var script = document.createElement('script');
       clientIdMetaTag.name = "google-signin-clientid";
-      clientIdMetaTag.content = "{{ shop.metafields.ssw.settings.login_gplus_client_id }}";
+      clientIdMetaTag.content = "{{ gwSettings.login_gplus_client_id }}";
       scopeMetaTag.name = "google-signin-scope";
       scopeMetaTag.content = "profile email";
       script.src = "https://apis.google.com/js/api:client.js?onload=gwGapiLoad";
