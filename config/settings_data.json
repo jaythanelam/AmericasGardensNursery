@@ -112,7 +112,7 @@
             "type": "image",
             "disabled": true,
             "settings": {
-              "image": "shopify:\/\/shop_images\/home-full-bleed-01.png",
+              "image": "shopify:\/\/shop_images\/pot-half_2x_89a13943-6e22-428f-bc9a-b40e4a28999f.png",
               "text-position": "center",
               "text-width": "medium",
               "overline": "America's Garden Nursery",
@@ -198,18 +198,17 @@
       },
       "162062620665c87507": {
         "type": "framework--grid-with-overlay",
-        "disabled": true,
         "blocks": {
           "162062620665c87507-0": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/Smiley_Face.png",
+              "image": "shopify:\/\/shop_images\/AMG_DirtDollar.png",
               "wide": true,
               "tall": true,
               "retain-ratio": false,
-              "heading": "Grid image heading",
-              "link-url": "",
-              "link-text": "View more"
+              "heading": "AMG VIP Club",
+              "link-url": "shopify:\/\/pages\/dirt-dollar",
+              "link-text": "Click Here"
             }
           },
           "162062620665c87507-1": {
@@ -253,15 +252,15 @@
           "162062620665c87507-3"
         ],
         "settings": {
-          "text-style": "light-with-overlay",
+          "text-style": "light",
           "background-color": "none",
           "spacing": true,
           "mobile-overlay": true,
           "container-width": 5,
           "width": 4,
           "mobile-width": "2",
-          "heading": "Hot, Hot, Hot!",
-          "subtitle": "Summer Activities",
+          "heading": "Fall Planting Season",
+          "subtitle": "Is The Best Time to Plant!",
           "link-url": "",
           "link-text": ""
         }
@@ -1034,8 +1033,8 @@
           "button_text_color": "#ffffff",
           "primary_text_color": "#323232",
           "secondary_text_color": "#565656",
-          "selected_cell_bg_color": "#000",
-          "selected_cell_text_color": "#fff",
+          "selected_cell_bg_color": "#000000",
+          "selected_cell_text_color": "#ffffff",
           "delivery_methods_indicator_icon": "#000000",
           "use_custom_fonts": false,
           "primary_font": "roboto_n7",
@@ -1112,14 +1111,14 @@
           "checkout_button_selector": "",
           "timesheet_bg_color": "#ffffff",
           "timesheet_bg_color_dark": "#f4f4f4",
-          "timesheet_border_color": "#E0E0E0",
-          "disabled_cell_bg_color": "#eee",
-          "disabled_cell_text_color": "#999",
+          "timesheet_border_color": "#e0e0e0",
+          "disabled_cell_bg_color": "#eeeeee",
+          "disabled_cell_text_color": "#999999",
           "icon_color": "#323232",
           "text_field_border_color": "#666666",
           "text_field_border_color_focus": "#000000",
-          "in_stock_icon_color": "#2AB02F",
-          "out_of_stock_icon_color": "#E85F5F",
+          "in_stock_icon_color": "#2ab02f",
+          "out_of_stock_icon_color": "#e85f5f",
           "primary_font_override": "",
           "primary_font_size": 14,
           "primary_font_letter_spacing": 0,
