@@ -171,7 +171,7 @@
           "1620626123773e4061-3"
         ],
         "settings": {
-          "background-color": "light",
+          "background-color": "none",
           "spacing-above": false,
           "spacing-below": true,
           "spacing-around-blocks": false,
@@ -202,45 +202,48 @@
           "162062620665c87507-0": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/AMG_DirtDollar.png",
+              "image": "shopify:\/\/shop_images\/Black_Eyed_Susans.jpg",
               "wide": true,
               "tall": true,
               "retain-ratio": false,
-              "heading": "AMG VIP Club",
-              "link-url": "shopify:\/\/pages\/dirt-dollar",
+              "heading": "One Gallon Perennial Plants\nBuy 2; Get one FREE!",
+              "link-url": "shopify:\/\/collections\/perennials",
               "link-text": "Click Here"
             }
           },
           "162062620665c87507-1": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Landscape_Plants.png",
               "wide": true,
               "tall": false,
               "retain-ratio": false,
-              "heading": "Grid image heading",
-              "link-url": "",
+              "heading": "Use Dirt Dollar$ To Make Your Garden Tool Purchases",
+              "link-url": "shopify:\/\/collections\/bags-apparel",
               "link-text": "View more"
             }
           },
           "162062620665c87507-2": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Gifts1_Sun_4x4_e6eed6ea-d6db-469d-b99b-e67b2af0af66.png",
               "wide": false,
               "tall": false,
               "retain-ratio": false,
-              "heading": "Grid image heading",
-              "link-url": "",
+              "heading": "Trees",
+              "link-url": "shopify:\/\/collections\/fruit-trees",
               "link-text": "View more"
             }
           },
           "162062620665c87507-3": {
             "type": "image",
             "settings": {
+              "image": "shopify:\/\/shop_images\/Smiley_Face.png",
               "wide": false,
               "tall": false,
               "retain-ratio": false,
-              "heading": "Grid image heading",
-              "link-url": "",
+              "heading": "Shrubs",
+              "link-url": "shopify:\/\/collections\/shrubs",
               "link-text": "View more"
             }
           }
@@ -252,15 +255,15 @@
           "162062620665c87507-3"
         ],
         "settings": {
-          "text-style": "light",
+          "text-style": "light-with-overlay",
           "background-color": "none",
           "spacing": true,
           "mobile-overlay": true,
-          "container-width": 5,
+          "container-width": 2,
           "width": 4,
           "mobile-width": "2",
           "heading": "Fall Planting Season",
-          "subtitle": "Is The Best Time to Plant!",
+          "subtitle": "It's The Best Time to Plant!",
           "link-url": "",
           "link-text": ""
         }
@@ -396,12 +399,12 @@
           "box-around-text": false,
           "alternative-color": false,
           "mobile-overlay": true,
-          "image": "shopify:\/\/shop_images\/Pots.png",
-          "overline": "At the Nursery",
+          "image": "shopify:\/\/shop_images\/Dirt_Dollar_4x4_debf6be3-56c8-4b7c-8714-9e672e19c519.jpg",
+          "overline": "America's Gardens",
           "title": "Shop With Us!",
-          "description": "<p>Our annuals, perennials and seed grown veggies have made their grand entrance. Come see us for our buy to get one free specials while supplies last!<\/p>",
-          "link-url": "shopify:\/\/pages\/location",
-          "link-text": "Our Location"
+          "description": "<p>We love our customers and we love to give back to you. We do this with our Loyalty Program (Dirt Dollars). Please join and save.<\/p>",
+          "link-url": "shopify:\/\/pages\/dirt-dollar",
+          "link-text": "Learn More"
         }
       },
       "1620626665f401fe84": {
